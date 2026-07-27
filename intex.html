@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ShadowCraft</title>
+
+    <meta name="description" content="Step into the dark fantasy world of Shadow Slave in Minecraft. Custom Aspects, Flaws, Nightmare Dungeons, and intense PvP/PvE gameplay.">
+    <meta name="keywords" content="Minecraft, Shadow Slave, Minecraft Server, Custom RPG, Aspects, Memories, Nightmare Spell">
+    <meta name="author" content="ShadowCraft Team">
+
+    <meta property="og:title" content="ShadowCraft">
+    <meta property="og:description" content="Step into the dark fantasy world of Shadow Slave in Minecraft. Join now!">
+    <meta property="og:image" content="images/banner.png">
+    <meta property="og:url" content="https://shadowcraftmc.com/">
+    <meta property="og:type" content="website">
+
+    <meta name="theme-color" content="#1a002c">
+    <link rel="icon" type="image/x-icon" href="images/website.logo.png">
+
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="main">
+        
+        <header class="navbar">
+            <div class="icon">
+                <a href="index.html" class="logo-link">
+                    <img src="images/website.logo.png" alt="ShadowCraft Logo" class="nav-logo">
+                    <span class="logo-text">ShadowCraft</span>
+                </a>
+            </div>
+
+            <nav class="menu">
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="rules.html">Rules</a></li>
+                    <li><a href="wiki.html">Wiki</a></li>
+                    <li><a href="shop.html">Shop</a></li>
+                    <li><a href="credits.html">Credits</a></li>
+                    <li><a href="https://discord.gg/dk4qPGN579" target="_blank" rel="noopener noreferrer">Discord</a></li>
+                </ul>
+            </nav>
+        </header>
+
+        <main class="content">
+            <h1>ShadowCraft</h1>
+            <p>A dark-fantasy Minecraft realm where every soul is forged in nightmare. Awaken your Aspect, shoulder your Flaw, and climb the tiers of the Soul Core.</p>
+            
+            <div class="button-container">
+                <button class="btn border-btn" onclick="copyIP()">
+                    Join Your Nightmares
+                </button>
+
+                <a href="https://discord.gg/dk4qPGN579" target="_blank" rel="noopener noreferrer" class="btn border-btn discord-btn">
+                    Join Discord
+                </a>
+            </div>
+        </main>
+
+    </div>
+
+    <div class="divider"></div>
+
+   <section class="section-two">
+    <div class="announcements-container">
+        
+        <div class="section-header">
+            <h2>Announcements & Updates</h2>
+            <p>Stay updated with the latest server news, modpack releases, and trailers.</p>
+        </div>
+
+        <div class="modpack-card">
+            <div class="modpack-info">
+                <h3>ShadowCraft Official Modpack</h3>
+                <p>Version 26.1.2 — Custom Aspects, Textures & Soundscapes</p>
+            </div>
+            <a href="https://modrinth.com" target="_blank" rel="noopener noreferrer" class="download-btn">
+                Download Modpack
+            </a>
+        </div>
+
+        <div class="announcements-grid">
+
+    <article class="announcement-card">
+        <div class="card-media video-wrapper">
+            <video controls poster="/images/annoucement.trailer.webp">
+                <source src="/videos/trailer.mp4" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
+        </div>
+        <div class="card-content">
+            <span class="card-tag">Direct Upload</span>
+            <h3>First Trailer</h3>
+            <p class="card-date">July 2026</p>
+            <p>Some footage of the forgotten shore.</p>
+        </div>
+    </article>
+
+    <article class="announcement-card">
+        <div class="card-media video-wrapper">
+            <video controls poster="images/countdown.webp">
+                <source src="/Videos/countdown.mp4">
+                Your browser does not support the video tag.
+            </video>
+        </div>
+        <div class="card-content">
+            <span class="card-tag">Direct Upload</span>
+            <h3>Its almost time</h3>
+            <p class="card-date">July 2026</p>
+            <p>7 . . 7 . . 7 oh what could it mean </p>
+        </div>
+    </article>
+
+
+</div>
+
+        </div>
+
+    </div>
+</section>
+
+    <script>
+        function copyIP() {
+            const serverIP = "play.shadowcraft.com"; // Replace with actual IP
+            navigator.clipboard.writeText(serverIP);
+            alert("Server IP copied to clipboard: " + serverIP);
+        }
+    </script>
+
+</body>
+</html>
