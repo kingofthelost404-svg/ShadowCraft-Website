@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ShadowCraft - Home</title>
+
+    <meta name="description" content="Step into the dark fantasy world of Shadow Slave in Minecraft. Custom Aspects, Flaws, Nightmare Dungeons, and intense PvP/PvE gameplay.">
+    <meta name="keywords" content="Minecraft, Shadow Slave, Minecraft Server, Custom RPG, Aspects, Memories, Nightmare Spell">
+    <meta name="author" content="ShadowCraft Team">
+
+    <meta property="og:title" content="ShadowCraft">
+    <meta property="og:description" content="Step into the dark fantasy world of Shadow Slave in Minecraft. Join now!">
+    <meta property="og:image" content="images/banner.png">
+    <meta property="og:url" content="https://shadowcraftmc.com/">
+    <meta property="og:type" content="website">
+
+    <meta name="theme-color" content="#1a002c">
+    <link rel="icon" type="image/x-icon" href="images/website.logo.png">
+
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="main">
+        
+        <header class="wiki-navbar">
+            <div class="wiki-logo">
+                <a href="index.html">
+                    <img src="images/website.logo.png" alt="ShadowCraft Logo">
+                    <span>ShadowCraft</span>
+                </a>
+            </div>
+
+            <nav class="wiki-nav-menu">
+                <ul>
+                    <li><a href="index.html" class="active">Home</a></li>
+                    <li><a href="rules.html">Rules</a></li>
+                    <li><a href="wiki.html">Wiki</a></li>
+                    <li><a href="shop.html">Shop</a></li>
+                </ul>
+            </nav>
+        </header>
+
+        <main class="content">
+            <h1>ShadowCraft</h1>
+            <p>A dark-fantasy Minecraft realm where every soul is forged in nightmare. Awaken your Aspect, shoulder your Flaw, and climb the tiers of the Soul Core.</p>
+            
+            <div class="button-container">
+                <button class="btn border-btn" onclick="copyIP()">
+                    Join Your Nightmares
+                </button>
+
+                <a href="https://discord.gg/dk4qPGN579" target="_blank" rel="noopener noreferrer" class="btn border-btn discord-btn">
+                    Join Discord
+                </a>
+            </div>
+        </main>
+
+    </div>
+
+    <div class="divider"></div>
+
+    <section class="section-two">
+        <div class="announcements-container">
+            
+            <div class="section-header">
+                <h2>Announcements & Updates</h2>
+                <p>Stay updated with the latest server news, modpack releases, and trailers.</p>
+            </div>
+
+            <div class="modpack-card">
+                <div class="modpack-info">
+                    <h3>ShadowCraft Official launcher</h3>
+                    <p>Version 26.1.2 — Custom Aspects, Textures & Soundscapes</p>
+                </div>
+                <a href="https://modrinth.com" target="_blank" rel="noopener noreferrer" class="download-btn">
+                    Download launcher
+                </a>
+            </div>
+
+            <div class="announcements-grid">
+
+                <article class="announcement-card">
+                    <div class="card-media video-wrapper">
+                        <video controls poster="images/annoucement.trailer.webp">
+                            <source src="videos/trailer.mp4" type="video/mp4">
+                            Your browser does not support the video tag.
+                        </video>
+                    </div>
+                    <div class="card-content">
+                        <span class="card-tag">Direct Upload</span>
+                        <h3>First Trailer</h3>
+                        <p class="card-date">July 2026</p>
+                        <p>Some footage of the forgotten shore.</p>
+                    </div>
+                </article>
+
+                <article class="announcement-card">
+                    <div class="card-media video-wrapper">
+                        <video controls poster="images/countdown.webp">
+                            <source src="videos/countdown.mp4" type="video/mp4">
+                            Your browser does not support the video tag.
+                        </video>
+                    </div>
+                    <div class="card-content">
+                        <span class="card-tag">Direct Upload</span>
+                        <h3>It's almost time</h3>
+                        <p class="card-date">July 2026</p>
+                        <p>7 . . 7 . . 7 oh what could it mean</p>
+                    </div>
+                </article>
+
+            </div>
+
+        </div>
+    </section>
+
+    <div class="divider"></div>
+
+    <section class="section-features">
+        <div class="announcements-container">
+            <div class="section-header">
+                <h2>Server Features</h2>
+                <p>What awaits you inside the Nightmare Spell.</p>
+            </div>
+
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">✨</div>
+                    <h3>Unique Aspects</h3>
+                    <p>Awaken custom soul pathways categorized across Combat, Utility, and Support paths to shape your combat playstyle.</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">👁️</div>
+                    <h3>Curse of Flaws</h3>
+                    <p>Power comes at a price. Every player carries a unique Flaw that dictates their survival strategies and limitations.</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">🏰</div>
+                    <h3>Dream Realm Exploration</h3>
+                    <p>Traverse dangerous floating regions, explore ruined wilderness, and seek refuge inside Great Citadels like Bastion.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        function copyIP() {
+            const serverIP = "play.shadowcraft.com"; // Replace with actual IP
+            navigator.clipboard.writeText(serverIP);
+            alert("Server IP copied to clipboard: " + serverIP);
+        }
+    </script>
+
+</body>
+
+<footer class="site-footer">
+        <div class="footer-container">
+            
+            <div class="footer-col footer-brand">
+                <div class="wiki-logo">
+                    <img src="images/website.logo.png" alt="ShadowCraft Logo">
+                    <span>ShadowCraft</span>
+                </div>
+                <p class="footer-desc">
+                    An unofficial fan project inspired by the Nightmare Spell. Awaken your soul, face your flaw, and explore the Dream Realm.
+                </p>
+            </div>
+
+            <div class="footer-col">
+                <h4>Legal & Policies</h4>
+                <ul>
+                    <li><a href="/legal/service.terms.html">Terms of Service</a></li>
+                    <li><a href="/legal/privacy.html">Privacy Policy</a></li>
+                    <li><a href="/legal/sla.html">Service Level Agreement (SLA)</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-col">
+                <h4>Community</h4>
+                <ul>
+                    <li><a href="https://discord.gg/dk4qPGN579" target="_blank" rel="noopener noreferrer">Discord Server</a></li>
+                    <li><a href="placeholder" target="_blank" rel="noopener noreferrer">Official launcher</a></li>
+                </ul>
+            </div>
+
+        </div>
+
+        <div class="footer-bottom">
+            <p>&copy; 2026 ShadowCraft. Unofficial Fan Project.</p>
+            <p class="disclaimer">Not an official Minecraft product. Not approved by or associated with Mojang, shadow slave, or original copyright holders.</p>
+        </div>
+    </footer>
+</html>

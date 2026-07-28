@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dream Realm - ShadowCraft Wiki</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" type="image/x-icon" href="images/website.logo.png">
+</head>
+<body>
+
+    <header class="wiki-navbar">
+        <div class="wiki-logo">
+            <a href="wiki.html">
+                <img src="images/website.logo.png" alt="ShadowCraft Logo">
+                <span>ShadowCraft Wiki</span>
+            </a>
+        </div>
+        <nav class="wiki-nav-menu">
+            <ul>
+                <li><a href="aspects.html">Aspects</a></li>
+                <li><a href="flaws.html">Flaws</a></li>
+                <li><a href="memories.html">Memories</a></li>
+                <li><a href="nightmares.html">Nightmares</a></li>
+                <li><a href="creatures.html">Nightmare Creatures</a></li>
+                <li><a href="dream-realm.html" class="active">Dream Realm</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="wiki-container">
+        <h1 class="article-title">Dream Realm Atlas</h1>
+        <p class="intro-text">
+            Explore the vast territories, shattered regions, and safe Citadels of the Dream Realm. Filter by location category or structure type.
+        </p>
+
+        <div class="search-container">
+            <input 
+                type="text" 
+                id="search-input" 
+                placeholder="Search locations by name, realm, or description..." 
+                oninput="applyFilters()"
+            >
+        </div>
+
+        <div class="filter-group">
+            <label class="filter-label">Filter by Type:</label>
+            <div class="filter-container" id="type-filters">
+                <button class="filter-btn active" onclick="setFilter('type', 'all', this)">All Locations</button>
+                <button class="filter-btn" onclick="setFilter('type', 'citadel', this)">Citadels</button>
+                <button class="filter-btn" onclick="setFilter('type', 'region', this)">Wilderness & Regions</button>
+            </div>
+        </div>
+
+        <div class="card-grid">
+
+            <a href="locations/chained-isles.html" class="wiki-card location-item region">
+                <div class="card-badge rank-transcendent">Region</div>
+                <div class="card-image">
+                    <img src="images/locations/chained_isles.png" alt="Chained Isles">
+                </div>
+                <div class="card-info">
+                    <h3>Chained Isles</h3>
+                    <p class="card-type">Chained Isles • Floating Realm</p>
+                    <p class="card-snippet">An archipelago of floating landmasses tethered together by massive ancient iron chains.</p>
+                </div>
+            </a>
+
+            <a href="locations/forgotten-shore.html" class="wiki-card location-item region">
+                <div class="card-badge rank-transcendent">Region</div>
+                <div class="card-image">
+                    <img src="images/locations/forgotten_shore.png" alt="Forgotten Shore">
+                </div>
+                <div class="card-info">
+                    <h3>Forgotten Shore</h3>
+                    <p class="card-type">Forgotten Shore • Wasteland</p>
+                    <p class="card-snippet">A desolate coast submerged under a crimson sea during the night, filled with ancient ruins.</p>
+                </div>
+            </a>
+
+            <a href="locations/bastion.html" class="wiki-card location-item citadel">
+                <div class="card-badge rank-supreme">Great Citadel</div>
+                <div class="card-image">
+                    <img src="images/locations/bastion.png" alt="Bastion">
+                </div>
+                <div class="card-info">
+                    <h3>Bastion</h3>
+                    <p class="card-type">Great Citadel • Domain of Valor</p>
+                    <p class="card-snippet">One of the three Great Citadels of the Dream Realm, serving as a massive ancestral stronghold for Domain Valor.</p>
+                </div>
+            </a>
+
+        </div>
+    </main>
+
+  <script>
+        let currentType = 'all';
+
+        function setFilter(category, val, btn) {
+            const container = btn.parentElement;
+            container.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+
+            if (category === 'type') currentType = val;
+
+            applyFilters();
+        }
+
+        function applyFilters() {
+            const input = document.getElementById('search-input');
+            const searchQuery = input ? input.value.toLowerCase().trim() : '';
+            const items = document.querySelectorAll('.location-item');
+
+            items.forEach(item => {
+                const matchesType = (currentType === 'all' || item.classList.contains(currentType));
+                const itemText = item.textContent.toLowerCase();
+                const matchesSearch = searchQuery === '' || itemText.includes(searchQuery);
+
+                if (matchesType && matchesSearch) {
+                    item.style.display = 'flex';
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+        }
+    </script>
+
+<footer class="site-footer">
+        <div class="footer-container">
+            
+            <div class="footer-col footer-brand">
+                <div class="wiki-logo">
+                    <img src="images/website.logo.png" alt="ShadowCraft Logo">
+                    <span>ShadowCraft</span>
+                </div>
+                <p class="footer-desc">
+                    An unofficial fan project inspired by the Nightmare Spell. Awaken your soul, face your flaw, and explore the Dream Realm.
+                </p>
+            </div>
+
+            <div class="footer-col">
+                <h4>Legal & Policies</h4>
+                <ul>
+                    <li><a href="/legal/service.terms.html">Terms of Service</a></li>
+                    <li><a href="/legal/privacy.html">Privacy Policy</a></li>
+                    <li><a href="/legal/sla.html">Service Level Agreement (SLA)</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-col">
+                <h4>Community</h4>
+                <ul>
+                    <li><a href="https://discord.gg/dk4qPGN579" target="_blank" rel="noopener noreferrer">Discord Server</a></li>
+                    <li><a href="placeholder" target="_blank" rel="noopener noreferrer">Official launcher</a></li>
+                </ul>
+            </div>
+
+        </div>
+
+        <div class="footer-bottom">
+            <p>&copy; 2026 ShadowCraft. Unofficial Fan Project.</p>
+            <p class="disclaimer">Not an official Minecraft product. Not approved by or associated with Mojang, shadow slave, or original copyright holders.</p>
+        </div>
+    </footer>
+</body>
+</html>

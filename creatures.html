@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nightmare Creatures - ShadowCraft Wiki</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" type="image/x-icon" href="images/website.logo.png">
+</head>
+<body>
+
+    <header class="wiki-navbar">
+        <div class="wiki-logo">
+            <a href="wiki.html">
+                <img src="images/website.logo.png" alt="ShadowCraft Logo">
+                <span>ShadowCraft Wiki</span>
+            </a>
+        </div>
+        <nav class="wiki-nav-menu">
+            <ul>
+                <li><a href="aspects.html">Aspects</a></li>
+                <li><a href="flaws.html">Flaws</a></li>
+                <li><a href="memories.html">Memories</a></li>
+                <li><a href="nightmares.html">Nightmares</a></li>
+                <li><a href="creatures.html" class="active">Nightmare Creatures</a></li>
+                <li><a href="dream-realm.html">Dream Realm</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="wiki-container">
+        <h1 class="article-title">Nightmare Creatures Archive</h1>
+        <p class="intro-text">
+            Abominations born from the Corruption. Filter through known entities by their Rank Tier to study their weaknesses and Soul Drops.
+        </p>
+
+        <div class="search-container">
+            <input 
+                type="text" 
+                id="search-input" 
+                placeholder="Search creatures by name or description..." 
+                oninput="applyFilters()"
+            >
+        </div>
+
+        <div class="filter-group">
+            <label class="filter-label">Filter by Rank Tier:</label>
+            <div class="filter-container">
+                <button class="filter-btn active" onclick="filterRank('all', this)">All Ranks</button>
+                <button class="filter-btn" onclick="filterRank('dormant', this)">Dormant</button>
+                <button class="filter-btn" onclick="filterRank('awakened', this)">Awakened</button>
+                <button class="filter-btn" onclick="filterRank('fallen', this)">Fallen</button>
+                <button class="filter-btn" onclick="filterRank('corrupted', this)">Corrupted</button>
+                <button class="filter-btn" onclick="filterRank('great', this)">Great</button>
+                <button class="filter-btn" onclick="filterRank('cursed', this)">Cursed</button>
+            </div>
+        </div>
+
+        <div class="card-grid">
+            
+            <a href="creatures/placeholder.html" class="wiki-card creature-item dormant">
+                <div class="card-badge rank-awakened">Dormant</div>
+                <div class="card-image">
+                    <img src="images/placeholder.png" alt="placeholder">
+                </div>
+                <div class="card-info">
+                    <h3>dormant template</h3>
+                    <p class="card-snippet">description</p>
+                </div>
+            </a>
+
+            <a href="creatures/placeholder.html" class="wiki-card creature-item fallen">
+                <div class="card-badge rank-ascended">Fallen</div>
+                <div class="card-image">
+                    <img src="images/placeholder.png" alt="placeholder">
+                </div>
+                <div class="card-info">
+                    <h3>fallen template</h3>
+                    <p class="card-snippet">description.</p>
+                </div>
+            </a>
+
+            <a href="creatures/placeholder.html" class="wiki-card creature-item corrupted">
+                <div class="card-badge rank-transcendent">Corrupted</div>
+                <div class="card-image">
+                    <img src="images/placeholder.png" alt="placeholder">
+                </div>
+                <div class="card-info">
+                    <h3>corrupted template</h3>
+                    <p class="card-snippet">description</p>
+                </div>
+            </a>
+
+        </div>
+    </main>
+
+    <script>
+        let selectedRank = 'all';
+
+        function filterRank(rank, buttonEl) {
+            const buttons = buttonEl.parentElement.querySelectorAll('.filter-btn');
+            buttons.forEach(btn => btn.classList.remove('active'));
+            buttonEl.classList.add('active');
+
+            selectedRank = rank;
+            applyFilters();
+        }
+
+        function applyFilters() {
+            const input = document.getElementById('search-input');
+            const searchQuery = input ? input.value.toLowerCase().trim() : '';
+            const items = document.querySelectorAll('.creature-item');
+
+            items.forEach(item => {
+                const matchesRank = (selectedRank === 'all' || item.classList.contains(selectedRank));
+                const itemText = item.textContent.toLowerCase();
+                const matchesSearch = searchQuery === '' || itemText.includes(searchQuery);
+
+                if (matchesRank && matchesSearch) {
+                    item.style.display = 'flex';
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+        }
+    </script>
+
+<footer class="site-footer">
+        <div class="footer-container">
+            
+            <div class="footer-col footer-brand">
+                <div class="wiki-logo">
+                    <img src="images/website.logo.png" alt="ShadowCraft Logo">
+                    <span>ShadowCraft</span>
+                </div>
+                <p class="footer-desc">
+                    An unofficial fan project inspired by the Nightmare Spell. Awaken your soul, face your flaw, and explore the Dream Realm.
+                </p>
+            </div>
+
+            <div class="footer-col">
+                <h4>Legal & Policies</h4>
+                <ul>
+                    <li><a href="/legal/service.terms.html">Terms of Service</a></li>
+                    <li><a href="/legal/privacy.html">Privacy Policy</a></li>
+                    <li><a href="/legal/sla.html">Service Level Agreement (SLA)</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-col">
+                <h4>Community</h4>
+                <ul>
+                    <li><a href="https://discord.gg/dk4qPGN579" target="_blank" rel="noopener noreferrer">Discord Server</a></li>
+                    <li><a href="placeholder" target="_blank" rel="noopener noreferrer">Official launcher</a></li>
+                </ul>
+            </div>
+
+        </div>
+
+        <div class="footer-bottom">
+            <p>&copy; 2026 ShadowCraft. Unofficial Fan Project.</p>
+            <p class="disclaimer">Not an official Minecraft product. Not approved by or associated with Mojang, shadow slave, or original copyright holders.</p>
+        </div>
+    </footer>
+</body>
+</html>
