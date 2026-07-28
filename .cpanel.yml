@@ -1,0 +1,12 @@
+---
+deployment:
+  tasks:
+    - export DEPLOYPATH=/home/nighguaq/public_html/
+    - /bin/cp index.html $DEPLOYPATH
+    - /bin/cp rules.html $DEPLOYPATH
+    - /bin/cp wiki.html $DEPLOYPATH
+    - /bin/cp shop.html $DEPLOYPATH
+    - /bin/cp launcher.html $DEPLOYPATH
+    - /bin/cp style.css $DEPLOYPATH
+    - /bin/cp -R images $DEPLOYPATH
+    - /bin/cp -R legal $DEPLOYPATH
