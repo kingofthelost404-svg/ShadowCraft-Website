@@ -15,6 +15,17 @@ html, body {
     color: #f3f0ed;
     overflow-x: hidden;
     overflow-y: auto;
+    min-height: 100vh;
+}
+
+body {
+    background-image: url('images/castle.background.png'); 
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center top;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
 }
 
 /* ================= HERO SECTION ================= */
@@ -23,6 +34,7 @@ html, body {
     width: 100%;
     min-height: 100vh;
     display: flex;
+    flex: 1 0 auto;
     flex-direction: column;
     background-image: linear-gradient(to top, rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('images/castle.background.png');
     background-position: center;
@@ -30,7 +42,10 @@ html, body {
     background-repeat: no-repeat;
     position: relative;
     z-index: 1;
+    margin-top: 0 !important;
+    padding-top: 0 !important;
 }
+
 
 /* ================= NAVBAR SECTION ================= */
 
@@ -43,6 +58,10 @@ html, body {
     align-items: center;
     background-color: rgba(15, 15, 20, 0.85);
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    margin: 0;
+    position: relative; 
+    top: 0;
+    z-index: 10;
 }
 
 .icon {
@@ -81,6 +100,8 @@ ul {
     align-items: center;
     gap: 30px;
     list-style: none;
+    margin: 0;
+    padding: 0;
 }
 
 ul li a {
@@ -92,7 +113,8 @@ ul li a {
     transition: color 0.3s ease, text-shadow 0.3s ease;
 }
 
-ul li a:hover {
+ul li a:hover,
+ul li a.active {
     color: #80e5ff;
     text-shadow: 
         0 0 8px rgba(128, 229, 255, 0.8),
@@ -105,13 +127,16 @@ ul li a:hover {
 .content {
     max-width: 1400px;
     width: 95%;
-    height: calc(100vh - 80px); 
-    margin: auto;
+    min-height: calc(100vh - 80px); 
+    padding: 60px 20px 100px 20px; 
+    margin: 0 auto;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     text-align: center;
+    position: relative;
+    z-index: 2; 
 }
 
 .content h1 {
@@ -192,67 +217,21 @@ ul li a:hover {
 .divider {
     width: 100%;
     height: 160px;
-    margin-top: -80px;  
-    margin-bottom: -80px; 
+    margin-top: -80px;
+    margin-bottom: -80px;
     position: relative;
-    z-index: 5;
+    z-index: 10;
     pointer-events: none;
 
-    
     background: linear-gradient(
         to bottom,
         rgba(0, 0, 0, 0) 0%,
-        rgba(11, 11, 14, 0.7) 35%,
-        rgba(11, 11, 14, 0.95) 50%,
-        rgba(11, 11, 14, 0.7) 65%,
+        rgba(11, 11, 14, 0.85) 50%,
         rgba(0, 0, 0, 0) 100%
     );
 }
 
 /* ================= ANNOUNCEMENTS ================= */
-.section-features {
-    padding: 50px 20px;
-    background-color: rgba(10, 0, 20, 0.4);
-}
-
-.features-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 20px;
-    margin-top: 30px;
-}
-
-.feature-card {
-    background-color: #1a1a24;
-    border: 1px solid #2e2e3e;
-    border-radius: 10px;
-    padding: 25px 20px;
-    text-align: center;
-    transition: transform 0.2s ease, border-color 0.2s ease;
-}
-
-.feature-card:hover {
-    transform: translateY(-5px);
-    border-color: #7b42ff;
-}
-
-.feature-icon {
-    font-size: 2.5rem;
-    margin-bottom: 15px;
-}
-
-.feature-card h3 {
-    color: #fff;
-    font-size: 1.3rem;
-    margin-bottom: 10px;
-}
-
-.feature-card p {
-    color: #a0a0b0;
-    font-size: 0.95rem;
-    line-height: 1.5;
-}
-
 .section-two {
     width: 100%;
     min-height: 100vh;
@@ -260,12 +239,12 @@ ul li a:hover {
     justify-content: center;
     align-items: center;
     padding: 100px 20px;
-    background-image: linear-gradient(to top, rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.8)), url('images/inside.background.png');
+    background-image: linear-gradient(to top, rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.8)), url('/images/inside.background.png');
     background-position: center;
     background-size: cover;
     background-repeat: no-repeat;
     position: relative;
-    z-index: 1;
+    z-index: 2;
 }
 
 .announcements-container {
@@ -379,26 +358,6 @@ ul li a:hover {
     border: none;
 }
 
-.tiktok-wrapper {
-    height: 380px;
-}
-
-.tiktok-wrapper iframe {
-    width: 100%;
-    height: 100%;
-    border: none;
-}
-
-.youtube-tag {
-    background-color: rgba(255, 0, 0, 0.2);
-    color: #ff4d4d;
-}
-
-.tiktok-tag {
-    background-color: rgba(254, 44, 85, 0.2);
-    color: #fe2c55;
-}
-
 .card-content {
     padding: 20px;
 }
@@ -413,11 +372,6 @@ ul li a:hover {
     color: #80e5ff;
     border-radius: 4px;
     margin-bottom: 10px;
-}
-
-.update-tag {
-    background-color: rgba(88, 101, 242, 0.2);
-    color: #7983f5;
 }
 
 .card-content h3 {
@@ -438,13 +392,67 @@ ul li a:hover {
     line-height: 1.5;
 }
 
+/* ================= FEATURES SECTION ================= */
+
+.section-features {
+    width: 100%;
+    padding: 100px 20px;
+    background-image: linear-gradient(to top, rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.8)), url('images/background.wiki.png');
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    position: relative;
+    z-index: 2;
+}
+
+.features-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 20px;
+    margin-top: 30px;
+}
+
+.feature-card {
+    background-color: #1a1a24;
+    border: 1px solid #2e2e3e;
+    border-radius: 10px;
+    padding: 25px 20px;
+    text-align: center;
+    transition: transform 0.2s ease, border-color 0.2s ease;
+}
+
+.feature-card:hover {
+    transform: translateY(-5px);
+    border-color: #7b42ff;
+}
+
+.feature-icon {
+    font-size: 2.5rem;
+    margin-bottom: 15px;
+}
+
+.feature-card h3 {
+    color: #fff;
+    font-size: 1.3rem;
+    margin-bottom: 10px;
+}
+
+.feature-card p {
+    color: #a0a0b0;
+    font-size: 0.95rem;
+    line-height: 1.5;
+}
+
 /* ================= Footer ================= */
 .site-footer {
     background-color: #0d0a14;
     border-top: 1px solid #2e2e3e;
     color: #a0a0b0;
-    margin-top: 60px;
+    margin-top: 0 !important;
     padding: 50px 20px 20px 20px;
+    flex-shrink: 0;
+    position: relative;
+    z-index: 3;
 }
 
 .footer-container {
@@ -508,7 +516,6 @@ ul li a:hover {
     color: #ffffff;
     padding-left: 4px;
 }
-
 
 .footer-bottom {
     max-width: 1200px;
