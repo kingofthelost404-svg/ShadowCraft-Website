@@ -34,6 +34,30 @@
             Explore the vast territories, shattered regions, and safe Citadels of the Dream Realm. Filter by location category or structure type.
         </p>
 
+        <!-- ============ WORLD MAP ============
+             A true render of the Dream Realm's actual terrain: the generated world is
+             pre-built with Chunky and exported as a zoomable tile map with uNmINeD.
+             Region layout per the mod's DreamRealmRegions: the world border spans
+             X/Z -6500..23500. Zone labels + completion status: map/custom.markers.js. -->
+        <section class="atlas-map-section">
+            <div class="atlas-map-panel">
+                <h2 class="atlas-map-title">Map of the Dream Realm</h2>
+                <p class="atlas-map-sub">A true render of the realm's terrain, block for block. Drag to pan, scroll to zoom. Dark void is territory the dream has not yet built.</p>
+                <div class="atlas-map-frame">
+                    <iframe src="map/index.html" title="Interactive Dream Realm map" loading="lazy"></iframe>
+                </div>
+                <div class="atlas-legend">
+                    <span class="legend-chip legend-complete">Complete</span>
+                    <span class="legend-chip legend-progress">In Progress</span>
+                    <span class="legend-chip legend-planned">Planned / Not Built</span>
+                </div>
+                <p class="atlas-footnote">
+                    Beyond the realm: the First Nightmare's mountain, the Dungeons (Crypt &amp; Hell complete, Frost in progress),
+                    and the Nexus Void lie in their own dimensions and do not appear on this map.
+                </p>
+            </div>
+        </section>
+
         <div class="search-container">
             <input 
                 type="text" 
