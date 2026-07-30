@@ -140,12 +140,12 @@ ul li a.active {
 }
 
 .content h1 {
-    font-size: 130px;
+    font-size: clamp(42px, 8vw, 130px);
     font-weight: 900;
     color: #a6f0ff;
-    letter-spacing: 6px;
+    letter-spacing: 4px;
     text-transform: uppercase;
-    line-height: 1;
+    line-height: 1.1;
     margin-bottom: 20px;
     text-shadow: 
         0 0 15px rgba(128, 229, 255, 0.9),
