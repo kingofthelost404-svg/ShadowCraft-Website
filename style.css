@@ -46,12 +46,6 @@
     --ease: cubic-bezier(.22, .61, .36, 1);
 }
 
-@property --angle {
-    syntax: '<angle>';
-    inherits: false;
-    initial-value: 0deg;
-}
-
 /* ================= UNIVERSAL RESET ================= */
 * {
     margin: 0;
@@ -153,25 +147,6 @@ body {
     0%, 100% { filter: drop-shadow(0 0 5px rgba(168, 85, 247, 0.35)) drop-shadow(0 0 12px rgba(168, 85, 247, 0.18)); }
     50%      { filter: drop-shadow(0 0 10px rgba(168, 85, 247, 0.8)) drop-shadow(0 0 26px rgba(168, 85, 247, 0.45)); }
 }
-
-/* Charging rune-ring on hover, used by every button-like element. */
-.btn, .download-btn, .filter-btn {
-    position: relative;
-    overflow: hidden;
-    z-index: 0;
-}
-.btn::before, .download-btn::before, .filter-btn::before {
-    content: '';
-    position: absolute;
-    inset: -1px;
-    z-index: -1;
-    opacity: 0;
-    background: conic-gradient(from var(--angle), transparent 0 62%, var(--glow) 82%, var(--gold-soft) 92%, transparent 100%);
-    animation: spin 2.2s linear infinite paused;
-    transition: opacity 0.35s var(--ease);
-}
-.btn:hover::before, .download-btn:hover::before, .filter-btn.active::before { opacity: 0.9; animation-play-state: running; }
-@keyframes spin { to { --angle: 360deg; } }
 
 /* ================= HERO SECTION ================= */
 
@@ -845,6 +820,20 @@ body {
     transform: translateX(-50%);
 }
 
+.nav-support-btn {
+    padding: 9px 20px;
+    font-size: 11px;
+    color: var(--value);
+    border-color: #4a3a8a;
+    flex-shrink: 0;
+}
+
+.nav-support-btn:hover {
+    background-color: #2a1f4d;
+    border-color: #8577e0;
+    color: #cfc4ff;
+}
+
 .wiki-nav-menu ul {
     list-style: none;
     display: flex;
@@ -1270,6 +1259,37 @@ body {
     height: 100%;
     border: none;
     display: block;
+}
+
+.atlas-map-frame.map-locked {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background:
+        radial-gradient(ellipse 500px 300px at 50% 50%, rgba(124, 58, 237, 0.1), transparent 70%),
+        var(--void);
+}
+
+.map-locked-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 14px;
+}
+
+.map-locked-icon {
+    font-size: 40px;
+    opacity: 0.8;
+    filter: drop-shadow(0 0 12px rgba(168, 85, 247, 0.4));
+}
+
+.map-locked-label {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    font-weight: bold;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--label);
 }
 
 .atlas-legend {
