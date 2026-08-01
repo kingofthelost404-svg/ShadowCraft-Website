@@ -20,7 +20,6 @@
             <ul>
                 <li><a href="index.html">Home</a></li>
                 <li><a href="aspects.html">Aspects</a></li>
-                <li><a href="flaws.html">Flaws</a></li>
                 <li><a href="memories.html">Memories</a></li>
                 <li><a href="nightmares.html">Nightmares</a></li>
                 <li><a href="creatures.html" class="active">Nightmare Creatures</a></li>
@@ -32,98 +31,102 @@
     <main class="wiki-container">
         <h1 class="article-title">Nightmare Creatures Archive</h1>
         <p class="intro-text">
-            Abominations born from the Corruption. Filter through known entities by their Rank Tier to study their weaknesses and Soul Drops.
+            Abominations born from the Corruption. All 25 named entities found in the Dream Realm, filterable by Rank Tier.
         </p>
 
-        <div class="search-container">
-            <input 
-                type="text" 
-                id="search-input" 
-                placeholder="Search creatures by name or description..." 
-                oninput="applyFilters()"
-            >
+        <div class="search-shell">
+            <span class="glyph">&#9670;</span>
+            <input type="text" id="creature-search" placeholder="Search creatures by name or description…">
         </div>
 
         <div class="filter-group">
             <label class="filter-label">Filter by Rank Tier:</label>
-            <div class="filter-container">
-                <button class="filter-btn active" onclick="filterRank('all', this)">All Ranks</button>
-                <button class="filter-btn" onclick="filterRank('dormant', this)">Dormant</button>
-                <button class="filter-btn" onclick="filterRank('awakened', this)">Awakened</button>
-                <button class="filter-btn" onclick="filterRank('fallen', this)">Fallen</button>
-                <button class="filter-btn" onclick="filterRank('corrupted', this)">Corrupted</button>
-                <button class="filter-btn" onclick="filterRank('great', this)">Great</button>
-                <button class="filter-btn" onclick="filterRank('cursed', this)">Cursed</button>
+            <div class="filter-container" id="creature-rank-filters">
+                <button class="filter-btn active" data-rank="all">All Ranks</button>
+                <button class="filter-btn" data-rank="Dormant">Dormant</button>
+                <button class="filter-btn" data-rank="Awakened">Awakened</button>
+                <button class="filter-btn" data-rank="Fallen">Fallen</button>
+                <button class="filter-btn" data-rank="Corrupted">Corrupted</button>
+                <button class="filter-btn" data-rank="Unholy">Unholy</button>
             </div>
         </div>
 
-        <div class="card-grid">
-            
-            <a href="creatures/placeholder.html" class="wiki-card creature-item dormant">
-                <div class="card-badge rank-awakened">Dormant</div>
-                <div class="card-image">
-                    <img src="images/placeholder.png" alt="placeholder">
-                </div>
-                <div class="card-info">
-                    <h3>dormant template</h3>
-                    <p class="card-snippet">description</p>
-                </div>
-            </a>
-
-            <a href="creatures/placeholder.html" class="wiki-card creature-item fallen">
-                <div class="card-badge rank-ascended">Fallen</div>
-                <div class="card-image">
-                    <img src="images/placeholder.png" alt="placeholder">
-                </div>
-                <div class="card-info">
-                    <h3>fallen template</h3>
-                    <p class="card-snippet">description.</p>
-                </div>
-            </a>
-
-            <a href="creatures/placeholder.html" class="wiki-card creature-item corrupted">
-                <div class="card-badge rank-transcendent">Corrupted</div>
-                <div class="card-image">
-                    <img src="images/placeholder.png" alt="placeholder">
-                </div>
-                <div class="card-info">
-                    <h3>corrupted template</h3>
-                    <p class="card-snippet">description</p>
-                </div>
-            </a>
-
-        </div>
+        <p class="archive-count" id="creature-count"></p>
+        <div class="entry-grid" id="creature-grid"></div>
     </main>
 
     <script>
-        let selectedRank = 'all';
+        var CREATURES = [
+            ['Underworld Resurgent','Awakened','Fast, disposable nightmare filler — dangerous in packs, mindless alone.'],
+            ['Reanimated Marksman','Awakened','A kiting, bow-armed corpse-soldier with just enough tactics to be a real threat at range.'],
+            ['Bloated Corpse','Dormant','A shambling, short, wide bomb of a creature — barely a creature at all.'],
+            ['Hellhound','Awakened','A two-block, wolf-shaped pack hound that runs down its prey in numbers.'],
+            ['Blood Fiend','Awakened','A gaunt, hooded ghoul that opens veins — cunning enough to be more than a beast.'],
+            ['Mountain King Larva','Dormant','A hound-sized, mindless grub — the mountain’s lowest, most disposable brood.'],
+            ['Caravan NPCs','Dormant','Ordinary human figures haunting the First Nightmare’s slave caravan — mundane, not monstrous.'],
+            ['Hell Guardian','Awakened','A broad-shouldered, plate-armored demon guarding the Hell dungeon’s halls.'],
+            ['Fallen Angel','Awakened','A slender, floating, winged figure — a corrupted remnant of something once holy.'],
+            ['Iron Spider','Awakened','A huge, web-spitting arachnid whose legs overhang a body built for three-wide corridors.'],
+            ['Stone Saint','Awakened','A three-block statue-knight, standing sentinel over the nightmare it guards.'],
+            ['Carapace Scavenger','Awakened','An insectoid Forgotten-region raider that ambushes, burrows, and swarms.'],
+            ['Black Knight','Fallen','An armored Forgotten-region duelist who blocks, lunges, and slashes with disciplined swordplay.'],
+            ['Carapace Centurion','Fallen','A larger, armored insectoid enforcer of the Carapace Army’s ranks.'],
+            ['Carapace Demon','Corrupted','A massive, four-block insectoid horror — the Forgotten Shore’s top-tier carapace threat.'],
+            ['Reaper of Hades','Corrupted','The Crypt’s floor boss — a scythe-wielding reaper that spins, sweeps, and volleys souls at range.'],
+            ['Demon Mage','Fallen','A Hell-dungeon spellcaster hurling arcane bolts, curses, and lightning.'],
+            ['The Unchained One','Corrupted','A colossal, nearly ten-block-tall Hell-dungeon giant that slams and burns with waves of flame.'],
+            ['Mountain King','Fallen','The mountain’s tyrant — a massive titan-class beast that claws, pounces, stomps, and roars.'],
+            ['Defiled God','Unholy','The First Nightmare’s eight-block corpse-god: a shrouded titan with six black-green wings, a black crown, and a rotting, sorrowful face.'],
+            ['Mimic','Fallen','A Dream Realm roamer disguised as ordinary treasure.'],
+            ['Chain Worm','Fallen','A Dream Realm roamer wrapped in chain-like coils.'],
+            ['Spire Messenger','Fallen','A winged Dream Realm roamer that carries word between the isles’ towers.'],
+            ['Dread Wolf','Awakened','The great cold wolf of the Chained Isles pack.'],
+            ['Griffin','Fallen','The white-winged sky tyrant of the Chained Isles.']
+        ];
 
-        function filterRank(rank, buttonEl) {
-            const buttons = buttonEl.parentElement.querySelectorAll('.filter-btn');
-            buttons.forEach(btn => btn.classList.remove('active'));
-            buttonEl.classList.add('active');
+        var CREATURE_CLASS = { dormant:'c-dormant', awakened:'c-awakened', fallen:'c-fallen',
+            corrupted:'c-corrupted', great:'c-great', cursed:'c-cursed', unholy:'c-unholy' };
 
-            selectedRank = rank;
-            applyFilters();
+        function esc(s) { return s.replace(/&/g,'&amp;').replace(/</g,'&lt;'); }
+
+        function renderCreatures(list) {
+            var grid = document.getElementById('creature-grid');
+            if (!list.length) { grid.innerHTML = '<div class="empty-result">No creatures match those filters.</div>'; return; }
+            grid.innerHTML = list.map(function (c) {
+                var cClass = CREATURE_CLASS[c[1].toLowerCase()] || 'c-dormant';
+                return '<div class="wiki-card entry-card">' +
+                    '<span class="rank-pill ' + cClass + '">' + esc(c[1]) + '</span>' +
+                    '<h3>' + esc(c[0]) + '</h3><span class="type">Nightmare Creature</span>' +
+                    '<p class="desc">' + esc(c[2]) + '</p></div>';
+            }).join('');
         }
+
+        var currentRank = 'all', currentQuery = '';
 
         function applyFilters() {
-            const input = document.getElementById('search-input');
-            const searchQuery = input ? input.value.toLowerCase().trim() : '';
-            const items = document.querySelectorAll('.creature-item');
-
-            items.forEach(item => {
-                const matchesRank = (selectedRank === 'all' || item.classList.contains(selectedRank));
-                const itemText = item.textContent.toLowerCase();
-                const matchesSearch = searchQuery === '' || itemText.includes(searchQuery);
-
-                if (matchesRank && matchesSearch) {
-                    item.style.display = 'flex';
-                } else {
-                    item.style.display = 'none';
-                }
+            var filtered = CREATURES.filter(function (c) {
+                if (currentRank !== 'all' && c[1] !== currentRank) return false;
+                if (currentQuery && c.join(' ').toLowerCase().indexOf(currentQuery) === -1) return false;
+                return true;
             });
+            document.getElementById('creature-count').textContent = filtered.length + ' of ' + CREATURES.length + ' named creatures';
+            renderCreatures(filtered);
         }
+
+        document.getElementById('creature-rank-filters').querySelectorAll('.filter-btn').forEach(function (btn) {
+            btn.addEventListener('click', function () {
+                this.parentElement.querySelectorAll('.filter-btn').forEach(function (b) { b.classList.remove('active'); });
+                this.classList.add('active');
+                currentRank = this.dataset.rank;
+                applyFilters();
+            });
+        });
+        document.getElementById('creature-search').addEventListener('input', function () {
+            currentQuery = this.value.toLowerCase().trim();
+            applyFilters();
+        });
+
+        applyFilters();
     </script>
 
 <footer class="site-footer">
@@ -151,7 +154,8 @@
             <div class="footer-col">
                 <h4>Community</h4>
                 <ul>
-                    <li><a href="https://discord.gg/dk4qPGN579" target="_blank" rel="noopener noreferrer">Discord Server</a></li>
+                    <li><a href="https://discord.gg/shadowcraft" target="_blank" rel="noopener noreferrer">Discord Server</a></li>
+                    <li><a href="https://buymeacoffee.com/yet3keozej" target="_blank" rel="noopener noreferrer">Support Us</a></li>
                     <li><a href="../legal/laucher.html" target="_blank" rel="noopener noreferrer">Official launcher</a></li>
                 </ul>
             </div>

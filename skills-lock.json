@@ -1,0 +1,11 @@
+{
+  "version": 1,
+  "skills": {
+    "website-builder-setup": {
+      "source": "tenfoldmarc/website-builder-setup",
+      "sourceType": "github",
+      "skillPath": "website-builder-setup/SKILL.md",
+      "computedHash": "027602b0083201a5afa281357a2fce2e83ed19b5bec22f7f976ba7980d6c29f4"
+    }
+  }
+}

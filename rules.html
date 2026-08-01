@@ -30,37 +30,72 @@
         </header>
 
         <main class="wiki-container">
-            <h1 class="article-title">Server Rules & Code of Conduct</h1>
+            <h1 class="article-title">Laws of the Nightmare Spell</h1>
             <p class="intro-text">
                 To ensure a fair and dark-fantasy immersive experience for all players in the Dream Realm, please review and abide by our community regulations.
             </p>
 
-            <section class="wiki-section">
-                
-                <div class="info-block">
-                    <h2>1. General Conduct & Community</h2>
-                    <p>Treat all players and staff members with respect. Toxic behavior, harassment, hate speech, and excessive spam in global chat will not be tolerated.</p>
-                </div>
+            <div class="rules-layout">
+                <nav class="toc-panel">
+                    <h4>Table of Contents</h4>
+                    <div class="toc-list">
+                        <a href="#rule-1" class="active"><span class="num">1</span> General Conduct &amp; Community</a>
+                        <a href="#rule-2"><span class="num">2</span> Fair Play</a>
+                        <a href="#rule-3"><span class="num">3</span> Exploits &amp; Bug Reporting</a>
+                        <a href="#rule-4"><span class="num">4</span> World &amp; PvP Engagement</a>
+                    </div>
+                </nav>
 
-                <div class="info-block">
-                    <h2>2. Fair Play</h2>
-                    <p>Unfair advantages diminish the survival experience. Use of hacked clients, X-ray texture packs, or unauthorized automation scripts is strictly prohibited.</p>
-                </div>
+                <section class="rules-thread">
+                    <div class="rule-item" id="rule-1">
+                        <div class="num-box">1</div>
+                        <div class="rule-content">
+                            <h2>General Conduct &amp; Community</h2>
+                            <p>Treat all players and staff members with respect. Toxic behavior, harassment, hate speech, and excessive spam in global chat will not be tolerated.</p>
+                        </div>
+                    </div>
 
-                <div class="info-block">
-                    <h2>3. Exploits & Bug Reporting</h2>
-                    <p>Exploiting bugs, item duplication glitches, or abusing game mechanics for personal gain is forbidden. Any game-breaking glitches should be reported immediately on our Discord.</p>
-                </div>
+                    <div class="rule-item" id="rule-2">
+                        <div class="num-box">2</div>
+                        <div class="rule-content">
+                            <h2>Fair Play</h2>
+                            <p>Unfair advantages diminish the survival experience. Use of hacked clients, X-ray texture packs, or unauthorized automation scripts is strictly prohibited.</p>
+                        </div>
+                    </div>
 
-                <div class="info-block">
-                    <h2>4. World & PvP Engagement</h2>
-                    <p>Respect zone designations. While PvP and open-world conflict are central to the Nightmare Spell, unprovoked spawn camping or griefing designated safe havens (such as Great Citadels) will result in disciplinary action.</p>
-                </div>
+                    <div class="rule-item" id="rule-3">
+                        <div class="num-box">3</div>
+                        <div class="rule-content">
+                            <h2>Exploits &amp; Bug Reporting</h2>
+                            <p>Exploiting bugs, item duplication glitches, or abusing game mechanics for personal gain is forbidden. Any game-breaking glitches should be reported immediately on our Discord.</p>
+                        </div>
+                    </div>
 
-            </section>
+                    <div class="rule-item" id="rule-4">
+                        <div class="num-box">4</div>
+                        <div class="rule-content">
+                            <h2>World &amp; PvP Engagement</h2>
+                            <p>Respect zone designations. While PvP and open-world conflict are central to the Nightmare Spell, unprovoked spawn camping or griefing designated safe havens (such as Great Citadels) will result in disciplinary action.</p>
+                        </div>
+                    </div>
+                </section>
+            </div>
         </main>
 
     </div>
+
+    <script>
+        document.querySelectorAll('.toc-list a').forEach(function (link) {
+            link.addEventListener('click', function (e) {
+                e.preventDefault();
+                var target = document.getElementById(link.getAttribute('href').slice(1));
+                if (!target) return;
+                document.querySelectorAll('.toc-list a').forEach(function (a) { a.classList.remove('active'); });
+                link.classList.add('active');
+                target.scrollIntoView({ block: 'start', behavior: 'smooth' });
+            });
+        });
+    </script>
 
     <footer class="site-footer">
         <div class="footer-container">
@@ -87,8 +122,10 @@
             <div class="footer-col">
                 <h4>Community</h4>
                 <ul>
-                    <li><a href="https://discord.gg/dk4qPGN579" target="_blank" rel="noopener noreferrer">Discord Server</a></li>
+                    <li><a href="https://discord.gg/shadowcraft" target="_blank" rel="noopener noreferrer">Discord Server</a></li>
+                    <li><a href="https://buymeacoffee.com/yet3keozej" target="_blank" rel="noopener noreferrer">Support Us</a></li>
                     <li><a href="../legal/laucher.html" target="_blank" rel="noopener noreferrer">Official Modpack</a></li>
+                    <li><a href="changelog.html">Changelog</a></li>
                 </ul>
             </div>
 

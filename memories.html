@@ -20,7 +20,6 @@
             <ul>
                 <li><a href="index.html">Home</a></li>
                 <li><a href="aspects.html">Aspects</a></li>
-                <li><a href="flaws.html">Flaws</a></li>
                 <li><a href="memories.html">Memories</a></li>
                 <li><a href="nightmares.html">Nightmares</a></li>
                 <li><a href="creatures.html">Nightmare Creatures</a></li>
@@ -31,93 +30,234 @@
 
     <main class="wiki-container">
         <h1 class="article-title">Memories Archive</h1>
-        <p class="intro-text">Filter through known Memory relics by their rank tier below.</p>
+        <p class="intro-text">Relic items, weapons, and tools forged from soul essence. All 110 registered Memories, filterable by tier and category.</p>
 
-        <div class="search-container">
-            <input 
-                type="text" 
-                id="search-input" 
-                placeholder="Search memories..." 
-                oninput="applyFilters()"
-            >
+        <div class="search-shell">
+            <span class="glyph">&#9670;</span>
+            <input type="text" id="memory-search" placeholder="Search memories by name or description…">
         </div>
 
-        <div class="filter-container">
-            <button class="filter-btn active" onclick="filterRank('all', this)">All Ranks</button>
-            <button class="filter-btn" onclick="filterRank('dormant', this)">Dormant</button>
-            <button class="filter-btn" onclick="filterRank('awakened', this)">Awakened</button>
-            <button class="filter-btn" onclick="filterRank('ascended', this)">Ascended</button>
-            <button class="filter-btn" onclick="filterRank('transcendent', this)">Transcendent</button>
-            <button class="filter-btn" onclick="filterRank('supreme', this)">Supreme</button>
+        <div class="filter-group">
+            <label class="filter-label">Filter by Tier:</label>
+            <div class="filter-container" id="memory-tier-filters">
+                <button class="filter-btn active" data-tier="all">All Tiers</button>
+                <button class="filter-btn" data-tier="Dormant">Dormant</button>
+                <button class="filter-btn" data-tier="Awakened">Awakened</button>
+                <button class="filter-btn" data-tier="Ascended">Ascended</button>
+                <button class="filter-btn" data-tier="Transcended">Transcended</button>
+                <button class="filter-btn" data-tier="Supreme">Supreme</button>
+                <button class="filter-btn" data-tier="Divine">Divine</button>
+            </div>
         </div>
 
-        <div class="card-grid">
-            
-            <a href="memories/weavers-mask.html" class="wiki-card memory-item transcendent">
-                <div class="card-badge rank-transcendent">Transcendent</div>
-                <div class="card-image">
-                    <img src="images/weavers_mask.png" alt="Weaver's Mask">
-                </div>
-                <div class="card-info">
-                    <h3>Weaver's Mask</h3>
-                    <p class="card-snippet">Hides the wearer's true identity and reveals lies spoken in their presence.</p>
-                </div>
-            </a>
+        <div class="filter-group">
+            <label class="filter-label">Filter by Category:</label>
+            <div class="filter-container" id="memory-cat-filters">
+                <button class="filter-btn active" data-cat="all">All Categories</button>
+                <button class="filter-btn" data-cat="Weapon">Weapon</button>
+                <button class="filter-btn" data-cat="Armor">Armor</button>
+                <button class="filter-btn" data-cat="Garment">Garment</button>
+                <button class="filter-btn" data-cat="Utility">Utility</button>
+                <button class="filter-btn" data-cat="Charm">Charm</button>
+                <button class="filter-btn" data-cat="Artifact">Artifact</button>
+            </div>
+        </div>
 
-            <a href="memories/midnight-shard.html" class="wiki-card memory-item awakened">
-                <div class="card-badge rank-awakened">Awakened</div>
-                <div class="card-image">
-                    <img src="images/midnight_shard.png" alt="Midnight Shard">
-                </div>
-                <div class="card-info">
-                    <h3>Midnight Shard</h3>
-                    <p class="card-snippet">A pitch-black longsword that absorbs ambient shadows to increase edge sharpness.</p>
-                </div>
-            </a>
-
-            <a href="memories/starlight-pendant.html" class="wiki-card memory-item ascended">
-                <div class="card-badge rank-ascended">Ascended</div>
-                <div class="card-image">
-                    <img src="images/starlight_pendant.png" alt="Starlight Pendant">
-                </div>
-                <div class="card-info">
-                    <h3>Starlight Pendant</h3>
-                    <p class="card-snippet">Passively accelerates soul force recovery while standing under moonlight.</p>
-                </div>
-            </a>
-
+        <p class="archive-count" id="memory-count"></p>
+        <div class="entry-grid" id="memory-grid"></div>
+        <div class="pager" id="memory-pager">
+            <button class="pager-btn" id="memory-prev">&lsaquo; Prev</button>
+            <span class="pager-label" id="memory-page-label">Page 1 of 1</span>
+            <button class="pager-btn" id="memory-next">Next &rsaquo;</button>
         </div>
     </main>
 
     <script>
-        let activeRank = 'all';
+        var MEMORIES = [
+            ['First Nightmare Trophy','Dormant','Artifact','A sliver of the mountain’s cold, worn smooth by a dreamer’s grip, that remembers the climb better than you ever will.'],
+            ['Rusty Blade','Dormant','Weapon','An old soldier’s sword, dulled by years of neglect.'],
+            ['Splintered Club','Dormant','Weapon','A heavy chunk of timber, split and worn from years of hard use.'],
+            ['Chipped Dagger','Dormant','Weapon','A thin knife with a chipped point, kept more out of habit than hope.'],
+            ['Dented Helm','Dormant','Armor','A battered helm that has taken one too many blows and still holds its shape.'],
+            ['Patched Tunic','Dormant','Armor','A cloth tunic mended over and over again by unskilled hands.'],
+            ['Worn Greaves','Dormant','Armor','Leg wraps worn thin at the knees from long, weary roads.'],
+            ['Sharpening Stone','Dormant','Utility','A coarse stone for keeping an edge keen, humble but never idle.'],
+            ['Azure Blade','Awakened','Weapon','On this forgotten shore, only steel remembers — patient, sharp, and impossible to forget.'],
+            ['Carapace Buckler','Awakened','Utility','A sturdy shield fashioned from the armored plates of a Carapace Scavenger, built to turn aside claw and blade alike.'],
+            ['Carapace Centurion Breastplate','Awakened','Armor','A robust breastplate formed from a Carapace Centurion’s plating, commanding respect amongst the ranks of the Carapace Army.'],
+            ['Carapace Centurion’s Helm','Awakened','Armor','An imposing helmet of hardened chitin, once worn by the elite of the Carapace Army.'],
+            ['Carapace Centurion’s Leggings','Awakened','Armor','Rugged leg armor pried and grafted from the many limbs of a fallen Carapace Centurion.'],
+            ['Carapace Centurion’s Sabatons','Awakened','Armor','Durable armored footwear, ideal for traversing the broken terrain of the Forgotten Shore.'],
+            ['Starlight Legion Helmet','Awakened','Armor','Relic of seven heroes who swore to return light to a cursed land; their names are gone, their oath is not.'],
+            ['Starlight Legion Chestplate','Awakened','Armor','Worn by a legion born in darkness, sworn to carry light back to a land that had forgotten it.'],
+            ['Starlight Legion Leggings','Awakened','Armor','Time has erased the faces of the seven who wore this, but their defiant oath still remains.'],
+            ['Starlight Legion Boots','Awakened','Armor','Forged for heroes who walked into all-consuming darkness and swore to bring back the dawn.'],
+            ['Broken Oath','Awakened','Charm','Those who broke this terrible oath were consumed by the curse, and none could escape their promise.'],
+            ['Midnight Shard','Awakened','Weapon','Forged from the shard of a fallen star, this stalwart blade favors those who fight to the last drop of blood.'],
+            ['Scavenger’s Husk','Awakened','Armor','Makeshift body armor cobbled together from the hard plates of a Carapace Scavenger.'],
+            ['Scavenger’s Claw','Awakened','Utility','A meaty claw ripped from the corpse of a Carapace Scavenger, still twitching with old instinct.'],
+            ['Blood Fiend’s Fang','Awakened','Weapon','A razor-sharp fang fallen from the mouth of a vile beast, hungry even after death.'],
+            ['Demon Scythe','Awakened','Weapon','A fierce scythe created from the remains of the Carapace Demon, still humming with its rage.'],
+            ['Dark Wing','Awakened','Garment','This cloak is light as a dragonfly’s wing — and every bit as durable.'],
+            ['Bloodied Shroud','Awakened','Armor','A blood-stained shroud once draped over the vile Blood Fiend, granting its wearer resistance to bleeding.'],
+            ['Bleeding Heart','Awakened','Charm','Torn from the Blood Fiend’s chest, this heart drips with a near-endless supply of foul blood.'],
+            ['Lightning in a Bottle','Awakened','Utility','Nature’s fury, contained inside a convenient, portable container, until it isn’t.'],
+            ['Cry of the Underworld','Awakened','Weapon','A strange rod-like instrument that emits an aura of death, gradually corrupting whoever carries it.'],
+            ['Giant’s Shackles','Awakened','Utility','A set of thick iron restraints, far too large for any normal human wrist.'],
+            ['Sunfire','Awakened','Weapon','A brilliant gilded blade whose metal radiates flames resembling the sun itself.'],
+            ['Freezing Wind','Awakened','Weapon','A small but incredibly sharp dagger, fashioned from ice that refuses to melt.'],
+            ['Prowling Thorn','Awakened','Weapon','This flying dagger is as unpredictable and fickle as young affection, but perhaps not quite as deadly.'],
+            ['Mind Stone','Awakened','Charm','A strange gray stone — something about it makes it feel almost alive.'],
+            ['Rolling Thunder','Awakened','Weapon','A stout battle axe brimming with charged potential, smiting its foes and, on occasion, its own wielder.'],
+            ['Brimstone','Awakened','Weapon','A blade of superheated stone, once forged in the fires of hell, still carrying an oppressive, violent aura.'],
+            ['Permafrost Helmet','Awakened','Armor','Once mundane iron armor, abandoned in a frozen wasteland until it inherited the eternal cold that once held it.'],
+            ['Permafrost Chestplate','Awakened','Armor','Left behind in an endless winter, this plate now carries the frost in its bones forever.'],
+            ['Permafrost Leggings','Awakened','Armor','Iron that spent an age buried in ice, and never quite let the cold go.'],
+            ['Permafrost Boots','Awakened','Armor','Forgotten in a frozen wasteland, these boots now walk with winter itself.'],
+            ['Infernal Helmet','Awakened','Armor','Plate armor chiseled from hardened molten lava, radiating a heat that must be carefully managed to avoid scorching its wearer.'],
+            ['Infernal Chestplate','Awakened','Armor','Cast from cooled magma, this chestplate still smolders with an inextinguishable inner heat.'],
+            ['Infernal Leggings','Awakened','Armor','Hardened lava plating that never quite stopped burning, even after the forge went cold.'],
+            ['Infernal Boots','Awakened','Armor','Molten stone shaped into boots, radiating a heat that scorches the ground with every step.'],
+            ['Scorpion Dagger','Awakened','Weapon','Carved from the stinger of a rather sizeable arachnid, this dagger drips with lethal venom.'],
+            ['Endless Spring','Awakened','Utility','A beautiful bottle of patterned blue glass that can supply an endless amount of water.'],
+            ['Burrower’s Appendage','Awakened','Utility','Torn from a creature that dug earthen holes spanning the length of whole cities — its true nature remains a mystery.'],
+            ['Green Thumb','Awakened','Charm','A literal thumb, green with decay and sprouting small tendrils where blood vessels should be.'],
+            ['Dreamer’s Knell','Awakened','Weapon','Cast from the bell of a drowned chapel, its toll is heard not with the ears, but with the mind.'],
+            ['Gale-Feather Saber','Awakened','Weapon','So light it barely exists — a saber honed from the pinion of some vast, unseen sky-beast.'],
+            ['Famine’s Edge','Awakened','Weapon','A reaper’s sickle from a land where the harvest never came; it knows only how to take.'],
+            ['Widow’s Needle','Awakened','Weapon','A mourning gift stitched in silence — she buried three husbands, and none of them died of age.'],
+            ['Tidecaller Cutlass','Awakened','Weapon','A corsair’s blade tempered in brine; the sea remembers its own and lends its weight to every cut.'],
+            ['Ring of Awakening','Awakened','Charm','An opal ring shimmering with a myriad of colors, and stranger effects still.'],
+            ['Defiled Flesh','Awakened','Weapon','Flesh for flesh, an eye for an eye — this memory lets its bearer turn their own body into a devastating weapon.'],
+            ['Messenger’s Sandals','Awakened','Utility','A pair of winged sandals granting incredible speed, though not always the control needed to master it.'],
+            ['Explosive Arrow','Awakened','Weapon','Some great thinker once had the idea to strap explosives onto speeding projectiles; this arrow is one of many results.'],
+            ['Ritualist’s Figurine','Awakened','Utility','A lifelike figurine that morphs into the appearance of its wielder, though it can never quite capture true life.'],
+            ['Silent Night','Awakened','Weapon','And the night was quiet, for there were no more voices left to be heard.'],
+            ['Pure White Helmet','Awakened','Armor','Beautiful and elegant armor embodying all which is true, pure, and good.'],
+            ['Pure White Chestplate','Awakened','Armor','Radiant plate said to embody purity itself, worn by those who still believe in it.'],
+            ['Pure White Leggings','Awakened','Armor','Elegant white-forged leg armor, untouched by the corruption it wards away.'],
+            ['Pure White Boots','Awakened','Armor','Gleaming boots of a set that embodies all which is true, pure, and good.'],
+            ['Gale Helmet','Awakened','Armor','A light, mobile helm that lets its wearer move as freely as a gust of wind, though its protection is just as fleeting.'],
+            ['Gale Chestplate','Awakened','Armor','Airy plating built for speed over sturdiness, offering protection as fleeting as the wind it’s named for.'],
+            ['Gale Leggings','Awakened','Armor','Light leg armor that trades bulk for freedom of movement, swift as a passing breeze.'],
+            ['Gale Boots','Awakened','Armor','Feather-light boots that let their wearer move like the wind, and guard about as much.'],
+            ['Bone Quill','Awakened','Weapon','A narrow, barbed quill of bone, light and aerodynamic enough to serve as a deadly projectile.'],
+            ['All-Seeing Eye','Awakened','Utility','He screamed as he tore his own eyeball from its socket, yet even rolling on the ground, it still saw all, and all saw it.'],
+            ['Chain Worm Mucus','Awakened','Charm','A fistful of the worm’s grip, still faintly alive; it refuses to let go of anything above it.'],
+            ['Wolf’s Coat Hood','Awakened','Armor','Pelt of the great cold wolf, still warm — on some nights it forgets it was ever skinned.'],
+            ['Wolf’s Coat Mantle','Awakened','Armor','Cut from the hide of the great cold wolf, it carries a warmth that never quite left.'],
+            ['Wolf’s Coat Breeches','Awakened','Armor','Fashioned from the pelt of the great cold wolf, still faintly warm to the touch.'],
+            ['Wolf’s Coat Pads','Awakened','Armor','Padded footwear cut from the great cold wolf’s hide, silent and strangely warm underfoot.'],
+            ['Blood Arrow','Ascended','Weapon','A debt of blood must be paid in blood — arrows conjured from the archer’s own veins.'],
+            ['Blackhorn Bow','Ascended','Weapon','A powerful bow made of horn and polished black wood, exceptionally durable and mighty in the draw.'],
+            ['Dusk Shard','Ascended','Weapon','Forged from a shard of a fallen star, this shield carries the weight of the heavens, or none at all, depending on its wielder’s heart.'],
+            ['Forsaken Knight’s Longsword','Ascended','Weapon','A monolithic dark sword of tremendous proportions, requiring immense strength but delivering devastating strikes.'],
+            ['Forsaken Knight’s Helmet','Ascended','Armor','Hardened anthracite steel, as strong as it is durable — its wearer shall never bend the knee, even in the face of death.'],
+            ['Forsaken Knight’s Chestplate','Ascended','Armor','Plate of hardened anthracite steel worn by a knight who swore never to kneel, not even before death.'],
+            ['Forsaken Knight’s Leggings','Ascended','Armor','Anthracite-black leg armor tempered for a knight who would rather break than bow.'],
+            ['Forsaken Knight’s Boots','Ascended','Armor','Heavy, unyielding boots of a knight whose oath outlasted his own life.'],
+            ['Colossus Greathammer','Ascended','Weapon','A ridiculously large and unwieldy hammer, providing unparalleled brute destructive force at the expense of all else.'],
+            ['Ethereal Spear','Ascended','Utility','An incorporeal, ghastly spear that lets its wielder surpass the confines of the physical world.'],
+            ['Nimble Catch','Ascended','Armor','A harness made of a fisherman’s net — little effective protection, but it grants the wearer inhuman speed in water.'],
+            ['Profane Whip','Ascended','Weapon','A blackened whip forged from tightly intertwined strands of human hair; evil, and it corrupts its wielder little by little.'],
+            ['Revenant Helmet','Ascended','Armor','Dark, corrupted armor that rejects mortal wearers, granting dominion over the undead at the cost of becoming one.'],
+            ['Revenant Chestplate','Ascended','Armor','Corrupted plate that grants power over the undead, and slowly turns its wearer into one.'],
+            ['Revenant Leggings','Ascended','Armor','Cursed leg armor from a set that trades mortality for dominion over the dead.'],
+            ['Revenant Boots','Ascended','Armor','Dark armor that carries its wearer one step closer to the undead ranks it commands.'],
+            ['Cruciform Pendant','Ascended','Charm','A small golden pendant that emits a warming glow, purifying evil and shielding its wearer from corruption’s touch.'],
+            ['Memory of Fire','Ascended','Charm','And then, there was nothing but flame.'],
+            ['Memory of Ice','Ascended','Charm','Even when the sun returned, they shivered and remembered the neverending winter.'],
+            ['Patient Avenger','Ascended','Weapon','Aflame with hatred, she waited and watched — when the time came, her vengeance was colder than ice.'],
+            ['Hyper-Precision Longbow','Ascended','Weapon','An incredibly finely tuned bow that seems to adjust its mass and draw-weight to suit its user perfectly.'],
+            ['Anarchy','Ascended','Weapon','This memory dislikes order, seeking only to cause chaos and disrupt the peace of others.'],
+            ['Ferryman’s Coin','Ascended','Charm','Even the dead are susceptible to bribery — this shiny coin buys a soul’s return, though never the body.'],
+            ['Soul Dice','Ascended','Utility','A man once wagered with an evil being for his lost lover’s soul; this dice is all that remains of him.'],
+            ['Juggernaut Helmet','Ascended','Armor','A colossal, heavy helm unbefitting a human to wear, but incredible protection for those strong enough to lift it.'],
+            ['Juggernaut Chestplate','Ascended','Armor','Massive plating from a suit few could bear to lift, let alone wear into battle.'],
+            ['Juggernaut Leggings','Ascended','Armor','Thick, punishing leg armor built for a wearer strong enough to carry its full weight.'],
+            ['Juggernaut Boots','Ascended','Armor','Heavy armored boots that ground their wearer like an immovable object.'],
+            ['Griffin’s Feather','Ascended','Utility','A white pinion the length of an arm; it remembers the sky, and for a heartbeat, it can make you remember it too.'],
+            ['Mimic’s Relic','Ascended','Utility','A splinter of the creature that spent its whole life being furniture — it knows five shapes, and knows them perfectly.'],
+            ['Pillar of Light','Transcended','Weapon','A spear infused with the breath of divinity, capable of purifying the profane and bolstering the righteous.'],
+            ['Essence of Self','Transcended','Utility','Philosophers spent all of human history seeking the essence of self; now, through the Spell, it rests in the palm of your hand.'],
+            ['Gauntlet of Desires','Transcended','Utility','Each devil was named for a desire of man, ruled by a mighty devil-king — for to control desire is to control all.'],
+            ['Crown of Dawn','Supreme','Artifact','A simple band of metal, unremarkable but for its single gem, until the light of an ending night catches, and the world remembers what power once felt like.'],
+            ['Hammer of Creation','Divine','Utility','A hammer of immense, even comical proportions, capable in the right hands of creating worlds, or destroying them.'],
+            ['Weaver’s Mask','Divine','Artifact','Black lacquer unblemished by candlelight or blade, woven for the High Priests of the Nightmare Spell so even Fate might lose their thread.']
+        ];
 
-        function filterRank(rank, buttonEl) {
-            const allButtons = buttonEl.parentElement.querySelectorAll('.filter-btn');
-            allButtons.forEach(btn => btn.classList.remove('active'));
-            buttonEl.classList.add('active');
+        function esc(s) { return s.replace(/&/g,'&amp;').replace(/</g,'&lt;'); }
 
-            activeRank = rank;
-            applyFilters();
+        function renderMemories(list) {
+            var grid = document.getElementById('memory-grid');
+            if (!list.length) { grid.innerHTML = '<div class="empty-result">No memories match those filters.</div>'; return; }
+            grid.innerHTML = list.map(function (m) {
+                return '<div class="wiki-card entry-card">' +
+                    '<span class="rank-pill tier-' + m[1].toLowerCase().replace('transcended','transcendent') + '">' + esc(m[1]) + '</span>' +
+                    '<h3>' + esc(m[0]) + '</h3><span class="type">' + esc(m[2]) + '</span>' +
+                    '<p class="desc">' + esc(m[3]) + '</p></div>';
+            }).join('');
         }
+
+        var currentTier = 'all', currentCat = 'all', currentQuery = '', page = 1;
+        var PAGE_SIZE = 12;
 
         function applyFilters() {
-            const input = document.getElementById('search-input');
-            const query = input ? input.value.toLowerCase().trim() : '';
-            const cards = document.querySelectorAll('.memory-item');
-
-            cards.forEach(card => {
-                const matchesRank = (activeRank === 'all' || card.classList.contains(activeRank));
-                const cardText = card.textContent.toLowerCase();
-                const matchesSearch = (query === '' || cardText.includes(query));
-
-                if (matchesRank && matchesSearch) {
-                    card.style.display = 'flex';
-                } else {
-                    card.style.display = 'none';
-                }
+            var filtered = MEMORIES.filter(function (m) {
+                if (currentTier !== 'all' && m[1] !== currentTier) return false;
+                if (currentCat !== 'all' && m[2] !== currentCat) return false;
+                if (currentQuery && m.join(' ').toLowerCase().indexOf(currentQuery) === -1) return false;
+                return true;
             });
+
+            document.getElementById('memory-count').textContent = filtered.length + ' of ' + MEMORIES.length + ' memories';
+
+            var totalPages = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE));
+            if (page > totalPages) page = totalPages;
+            if (page < 1) page = 1;
+            var shown = filtered.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
+
+            document.getElementById('memory-page-label').textContent = 'Page ' + page + ' of ' + totalPages;
+            document.getElementById('memory-prev').disabled = page <= 1;
+            document.getElementById('memory-next').disabled = page >= totalPages;
+            document.getElementById('memory-pager').style.display = totalPages <= 1 ? 'none' : 'flex';
+
+            renderMemories(shown);
         }
+
+        document.getElementById('memory-tier-filters').querySelectorAll('.filter-btn').forEach(function (btn) {
+            btn.addEventListener('click', function () {
+                this.parentElement.querySelectorAll('.filter-btn').forEach(function (b) { b.classList.remove('active'); });
+                this.classList.add('active');
+                currentTier = this.dataset.tier;
+                page = 1;
+                applyFilters();
+            });
+        });
+        document.getElementById('memory-cat-filters').querySelectorAll('.filter-btn').forEach(function (btn) {
+            btn.addEventListener('click', function () {
+                this.parentElement.querySelectorAll('.filter-btn').forEach(function (b) { b.classList.remove('active'); });
+                this.classList.add('active');
+                currentCat = this.dataset.cat;
+                page = 1;
+                applyFilters();
+            });
+        });
+        document.getElementById('memory-search').addEventListener('input', function () {
+            currentQuery = this.value.toLowerCase().trim();
+            page = 1;
+            applyFilters();
+        });
+        document.getElementById('memory-prev').addEventListener('click', function () {
+            page -= 1; applyFilters();
+            document.getElementById('memory-grid').scrollIntoView({ block: 'start', behavior: 'smooth' });
+        });
+        document.getElementById('memory-next').addEventListener('click', function () {
+            page += 1; applyFilters();
+            document.getElementById('memory-grid').scrollIntoView({ block: 'start', behavior: 'smooth' });
+        });
+
+        applyFilters();
     </script>
    <footer class="site-footer">
         <div class="footer-container">
@@ -144,7 +284,8 @@
             <div class="footer-col">
                 <h4>Community</h4>
                 <ul>
-                    <li><a href="https://discord.gg/dk4qPGN579" target="_blank" rel="noopener noreferrer">Discord Server</a></li>
+                    <li><a href="https://discord.gg/shadowcraft" target="_blank" rel="noopener noreferrer">Discord Server</a></li>
+                    <li><a href="https://buymeacoffee.com/yet3keozej" target="_blank" rel="noopener noreferrer">Support Us</a></li>
                     <li><a href="../legal/laucher.html" target="_blank" rel="noopener noreferrer">Official launcher</a></li>
                 </ul>
             </div>

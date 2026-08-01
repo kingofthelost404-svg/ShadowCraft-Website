@@ -46,17 +46,43 @@
             <p>A dark-fantasy Minecraft realm where every soul is forged in nightmare. Awaken your Aspect, shoulder your Flaw, and climb the tiers of the Soul Core.</p>
             
             <div class="button-container">
-                <button class="btn border-btn" onclick="copyIP()">
-                    Join Your Nightmares
+                <button class="btn border-btn ip-btn" id="ip-btn" onclick="copyIP()">
+                    <span class="ip-btn-label">mc.nightmarespell.org</span>
+                    <span class="ip-btn-icon">⧉</span>
                 </button>
 
                 <a href="https://discord.gg/shadowcraft" target="_blank" rel="noopener noreferrer" class="btn border-btn discord-btn">
                     Join Discord
                 </a>
             </div>
+
+            <div class="stats-bar">
+                <div class="stat-pill">
+                    <span class="stat-dot" id="mc-dot"></span>
+                    <span id="mc-stat">Checking server…</span>
+                </div>
+                <div class="stat-pill">
+                    <span class="stat-dot" id="discord-dot"></span>
+                    <span id="discord-stat">Checking Discord…</span>
+                </div>
+            </div>
         </main>
 
     </div>
+
+    <div class="divider"></div>
+
+    <section class="section-teaser">
+        <div class="archive-teaser">
+            <div class="glyph-cluster"><span>&#10209;</span><span>&#10022;</span><span>&#9672;</span></div>
+            <div class="body">
+                <div class="eyebrow">Aspect Archive</div>
+                <h3>Explore the Current Aspects</h3>
+                <p>Explore all 41 soul pathways, their ranks, and the price each one asks of its bearer.</p>
+            </div>
+            <a class="open-link" href="aspects.html">Open the Archive <span class="arrow-ring">&#8594;</span></a>
+        </div>
+    </section>
 
     <div class="divider"></div>
 
@@ -172,7 +198,9 @@
                 <h4>Community</h4>
                 <ul>
                     <li><a href="https://discord.gg/shadowcraft" target="_blank" rel="noopener noreferrer">Discord Server</a></li>
+                    <li><a href="https://buymeacoffee.com/yet3keozej" target="_blank" rel="noopener noreferrer">Support Us</a></li>
                     <li><a href="/legal/laucher.html">Official Launcher</a></li>
+                    <li><a href="changelog.html">Changelog</a></li>
                 </ul>
             </div>
 
@@ -186,10 +214,56 @@
 
     <script>
         function copyIP() {
-            const serverIP = "play.shadowcraft.com"; // Replace with actual IP
+            const serverIP = "mc.nightmarespell.org";
+            const btn = document.getElementById('ip-btn');
+            const label = btn.querySelector('.ip-btn-label');
+            const original = label.textContent;
+
             navigator.clipboard.writeText(serverIP);
-            alert("Server IP copied to clipboard: " + serverIP);
+
+            label.textContent = "Copied!";
+            btn.classList.add('copied');
+            setTimeout(() => {
+                label.textContent = original;
+                btn.classList.remove('copied');
+            }, 1800);
         }
+
+        async function loadServerStats() {
+            const mcStat = document.getElementById('mc-stat');
+            const mcDot = document.getElementById('mc-dot');
+            try {
+                const res = await fetch('https://api.mcstatus.io/v2/status/java/mc.nightmarespell.org');
+                const data = await res.json();
+                if (data.online) {
+                    mcStat.textContent = data.players.online + " Online";
+                    mcDot.classList.add('online');
+                    mcDot.classList.remove('offline');
+                } else {
+                    mcStat.textContent = "Server Offline";
+                    mcDot.classList.add('offline');
+                    mcDot.classList.remove('online');
+                }
+            } catch (e) {
+                mcStat.textContent = "Status Unavailable";
+                mcDot.classList.add('offline');
+            }
+
+            const discordStat = document.getElementById('discord-stat');
+            const discordDot = document.getElementById('discord-dot');
+            try {
+                const res = await fetch('https://discord.com/api/v10/invites/shadowcraft?with_counts=true');
+                const data = await res.json();
+                discordStat.textContent = data.approximate_presence_count + " Online · " + data.approximate_member_count + " Members";
+                discordDot.classList.add('online');
+            } catch (e) {
+                discordStat.textContent = "Discord Unavailable";
+                discordDot.classList.add('offline');
+            }
+        }
+
+        loadServerStats();
+        setInterval(loadServerStats, 60000);
     </script>
 
 </body>
