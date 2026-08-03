@@ -23,49 +23,59 @@
 <body>
 
     <div class="main">
-        
-         <header class="wiki-navbar">
-            <div class="wiki-logo">
-                <a href="index.html">
-                    <img src="images/website.logo.png" alt="ShadowCraft Logo">
-                    <span>ShadowCraft</span>
-                </a>
-            </div>
-
-            <nav class="wiki-nav-menu">
-                <ul>
-                    <li><a href="rules.html" class="active">Rules</a></li>
-                    <li><a href="wiki.html">Wiki</a></li>
-                    <li><a href="shop.html">Shop</a></li>
-                </ul>
-            </nav>
-
-            <a href="https://buymeacoffee.com/yet3keozej" target="_blank" rel="noopener noreferrer" class="btn nav-support-btn">Support Us</a>
-        </header>
 
         <main class="content">
-            <h1>ShadowCraft</h1>
-            <p>A dark-fantasy Minecraft realm where every soul is forged in nightmare. Awaken your Aspect, shoulder your Flaw, and climb the tiers of the Soul Core.</p>
-            
-            <div class="button-container">
-                <button class="btn border-btn ip-btn" id="ip-btn" onclick="copyIP()">
-                    <span class="ip-btn-label">mc.nightmarespell.org</span>
-                    <span class="ip-btn-icon">⧉</span>
-                </button>
+            <div class="hero-grid">
+                <div class="hero-text">
+                    <div class="content-inner">
+                        <div class="terminal-tag">~/nightmare-spell $ awaken<span class="cursor">_</span></div>
+                        <h1>ShadowCraft</h1>
+                        <p>A dark-fantasy Minecraft realm where every soul is forged in nightmare. Awaken your Aspect, shoulder your Flaw, and climb the tiers of the Soul Core.</p>
 
-                <a href="https://discord.gg/shadowcraft" target="_blank" rel="noopener noreferrer" class="btn border-btn discord-btn">
-                    Join Discord
-                </a>
-            </div>
+                        <div class="button-container">
+                            <button class="btn border-btn ip-btn" id="ip-btn" onclick="copyIP()">
+                                <span class="ip-btn-label">mc.nightmarespell.org</span>
+                                <span class="ip-btn-icon">⧉</span>
+                            </button>
 
-            <div class="stats-bar">
-                <div class="stat-pill">
-                    <span class="stat-dot" id="mc-dot"></span>
-                    <span id="mc-stat">Checking server…</span>
+                            <a href="https://discord.gg/shadowcraft" target="_blank" rel="noopener noreferrer" class="btn border-btn discord-btn">
+                                Join Discord
+                            </a>
+                        </div>
+
+                        <div class="stats-bar">
+                            <div class="stat-pill">
+                                <span class="stat-dot" id="mc-dot"></span>
+                                <span id="mc-stat">Checking server…</span>
+                            </div>
+                            <div class="stat-pill">
+                                <span class="stat-dot" id="discord-dot"></span>
+                                <span id="discord-stat">Checking Discord…</span>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div class="stat-pill">
-                    <span class="stat-dot" id="discord-dot"></span>
-                    <span id="discord-stat">Checking Discord…</span>
+
+                <div class="core-panel-col">
+                    <a href="https://buymeacoffee.com/yet3keozej" target="_blank" rel="noopener noreferrer" class="btn border-btn hero-support-btn">Support Us</a>
+
+                    <div class="core-panel">
+                        <span class="corner-tick tl">+</span>
+                        <span class="corner-tick tr">+</span>
+                        <span class="corner-tick bl">+</span>
+                        <span class="corner-tick br">+</span>
+
+                        <div class="core-panel-head"><span class="core-dot"></span>SOUL_CORE.SYS</div>
+                        <div class="core-panel-divider"></div>
+
+                        <div class="core-row"><span class="core-key">ASPECT</span><span class="core-val">UNBOUND</span></div>
+                        <div class="core-row"><span class="core-key">FLAW</span><span class="core-val">UNASSIGNED</span></div>
+                        <div class="core-row"><span class="core-key">TIER</span><span class="core-val">DORMANT</span></div>
+                        <div class="core-row"><span class="core-key">REALM</span><span class="core-val">DREAM_REALM_01</span></div>
+
+                        <div class="core-panel-divider"></div>
+                        <div class="core-status"><span class="stat-dot online"></span>Awaiting Bearer</div>
+                    </div>
                 </div>
             </div>
         </main>
@@ -74,103 +84,16 @@
 
     <div class="divider"></div>
 
-    <section class="section-teaser">
-        <div class="archive-teaser">
-            <div class="glyph-cluster"><span>&#10209;</span><span>&#10022;</span><span>&#9672;</span></div>
-            <div class="body">
-                <div class="eyebrow">Aspect Archive</div>
-                <h3>Explore the Current Aspects</h3>
-                <p>Explore all fully developed aspects, their ranks, and the price each one asks of its bearer.</p>
-            </div>
-            <a class="open-link" href="aspects.html">Open the Archive <span class="arrow-ring">&#8594;</span></a>
-        </div>
-    </section>
-
-    <div class="divider"></div>
-
-    <section class="section-two">
-        <div class="announcements-container">
-            
-            <div class="section-header">
-                <h2>Announcements & Updates</h2>
-                <p>Stay updated with the latest server news, modpack releases, and trailers.</p>
-            </div>
-
-            <div class="modpack-card">
-                <div class="modpack-info">
-                    <h3>ShadowCraft Official Launcher</h3>
-                    <p>Version 26.1.2 — Custom Aspects, Textures & Soundscapes</p>
-                </div>
-                <a href="/legal/laucher.html" class="download-btn">
-                    Download Launcher
-                </a>
-            </div>
-
-            <div class="announcements-grid">
-
-                <article class="announcement-card">
-                    <div class="card-media video-wrapper">
-                        <video controls poster="images/annoucement.trailer.webp">
-                            <source src="videos/trailer.mp4" type="video/mp4">
-                            Your browser does not support the video tag.
-                        </video>
-                    </div>
-                    <div class="card-content">
-                        <span class="card-tag">Direct Upload</span>
-                        <h3>First Trailer</h3>
-                        <p class="card-date">July 2026</p>
-                        <p>Some footage of the forgotten shore.</p>
-                    </div>
-                </article>
-
-                <article class="announcement-card">
-                    <div class="card-media video-wrapper">
-                        <video controls poster="images/countdown.webp">
-                            <source src="videos/countdown.mp4" type="video/mp4">
-                            Your browser does not support the video tag.
-                        </video>
-                    </div>
-                    <div class="card-content">
-                        <span class="card-tag">Direct Upload</span>
-                        <h3>It's almost time</h3>
-                        <p class="card-date">July 2026</p>
-                        <p>7 . . 7 . . 7 oh what could it mean</p>
-                    </div>
-                </article>
-
-            </div>
-
-        </div>
-    </section>
-
-    <div class="divider"></div>
-
-    <section class="section-features">
-        <div class="announcements-container">
-            <div class="section-header">
-                <h2>Server Features</h2>
-                <p>What awaits you inside the Nightmare Spell.</p>
-            </div>
-
-            <div class="features-grid">
-                <div class="feature-card">
-                    <div class="feature-icon">✨</div>
-                    <h3>Unique Aspects</h3>
-                    <p>Awaken custom soul pathways categorized across Combat, Utility, and Support paths to shape your combat playstyle.</p>
-                </div>
-
-                <div class="feature-card">
-                    <div class="feature-icon">👁️</div>
-                    <h3>Curse of Flaws</h3>
-                    <p>Power comes at a price. Every player carries a unique Flaw that dictates their survival strategies and limitations.</p>
-                </div>
-
-                <div class="feature-card">
-                    <div class="feature-icon">🏰</div>
-                    <h3>Dream Realm Exploration</h3>
-                    <p>Traverse dangerous floating regions, explore ruined wilderness, and seek refuge inside Great Citadels like Bastion.</p>
-                </div>
-            </div>
+    <section class="section-quicklinks">
+        <div class="quicklinks-grid">
+            <a class="quick-tile" href="wiki.html"><span class="quick-glyph">&#167;</span><span class="quick-label">Wiki</span></a>
+            <a class="quick-tile" href="aspects.html"><span class="quick-glyph">&#10022;</span><span class="quick-label">Aspects</span></a>
+            <a class="quick-tile" href="memories.html"><span class="quick-glyph">&#10209;</span><span class="quick-label">Memories</span></a>
+            <a class="quick-tile" href="creatures.html"><span class="quick-glyph">&#9670;</span><span class="quick-label">Creatures</span></a>
+            <a class="quick-tile" href="dream-realm.html"><span class="quick-glyph">&#9672;</span><span class="quick-label">Dream Realm</span></a>
+            <a class="quick-tile" href="rules.html"><span class="quick-glyph">!</span><span class="quick-label">Rules</span></a>
+            <a class="quick-tile" href="shop.html"><span class="quick-glyph">$</span><span class="quick-label">Shop</span></a>
+            <a class="quick-tile" href="https://discord.gg/shadowcraft" target="_blank" rel="noopener noreferrer"><span class="quick-glyph">@</span><span class="quick-label">Discord</span></a>
         </div>
     </section>
 
