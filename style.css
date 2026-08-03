@@ -288,6 +288,7 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
+    flex-wrap: wrap;
     gap: 20px;
     margin-top: 30px;
 }
@@ -1157,6 +1158,59 @@ body {
 .wiki-main-content {
     margin-left: 220px;
     padding-top: 20px;
+}
+
+@media (max-width: 900px) {
+    .wiki-sidebar {
+        position: static;
+        width: 100%;
+        height: auto;
+        border-right: none;
+        border-bottom: 2px solid var(--border);
+        box-shadow: inset 0 -3px 0 var(--border-in);
+        padding: 14px 0;
+    }
+    .wiki-sidebar-content {
+        padding: 0 12px;
+    }
+    .wiki-sidebar-home {
+        padding: 0 0 12px 0;
+        margin-bottom: 12px;
+    }
+    .wiki-sidebar-menu {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 6px;
+    }
+    .wiki-sidebar-menu li {
+        margin-bottom: 0;
+    }
+    .wiki-sidebar-menu a {
+        border-left: none;
+        border-bottom: 3px solid transparent;
+        padding: 8px 10px;
+    }
+    .wiki-sidebar-menu a:hover,
+    .wiki-sidebar-menu a.active {
+        border-left-color: transparent;
+        border-bottom-color: var(--gold);
+        padding-left: 10px;
+    }
+    .wiki-main-content {
+        margin-left: 0;
+        padding-top: 12px;
+    }
+    .wiki-grid-layout {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 480px) {
+    .wiki-sidebar-menu a {
+        font-size: 10px;
+        padding: 7px 8px;
+    }
 }
 
 .search-form {
