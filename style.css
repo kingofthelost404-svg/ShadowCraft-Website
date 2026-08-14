@@ -28,6 +28,8 @@
     --tier-supreme:      #e0555a;
     --tier-sacred:       #d1477a;
     --tier-divine:       var(--gold);
+    /* off-ladder: a punishment rank, deliberately the dimmest thing on the page */
+    --tier-below-mundane: #5a5f6b;
 
     /* creature ladder — same 7 levels, monster-flavored names & hues */
     --c-dormant:   #8a93a6;
@@ -89,7 +91,7 @@ body {
    terminal-frame treatment (two pseudo-elements only get us two corners:
    top-left / bottom-right) replacing the old pulsing rune-diamond look. */
 .wiki-navbar, .navbar, .wiki-card, .info-block, .modpack-card, .feature-card,
-.atlas-map-panel, .team-member, .entry-card {
+.atlas-map-panel, .team-member, .entry-card, .trial-card, .qa-item, .loop-step, .recipe-panel {
     position: relative;
 }
 .wiki-navbar::before, .wiki-navbar::after,
@@ -99,7 +101,11 @@ body {
 .feature-card::before, .feature-card::after,
 .atlas-map-panel::before, .atlas-map-panel::after,
 .team-member::before, .team-member::after,
-.entry-card::before, .entry-card::after {
+.entry-card::before, .entry-card::after,
+.trial-card::before, .trial-card::after,
+.qa-item::before, .qa-item::after,
+.loop-step::before, .loop-step::after,
+.recipe-panel::before, .recipe-panel::after {
     content: '+';
     position: absolute;
     font-family: var(--font-mono);
@@ -111,18 +117,23 @@ body {
     transition: color 0.4s var(--ease), opacity 0.4s var(--ease);
 }
 .wiki-navbar::before, .wiki-card::before, .info-block::before, .modpack-card::before,
-.feature-card::before, .atlas-map-panel::before, .team-member::before, .entry-card::before {
+.feature-card::before, .atlas-map-panel::before, .team-member::before, .entry-card::before,
+.trial-card::before, .qa-item::before, .loop-step::before, .recipe-panel::before {
     top: 6px; left: 8px;
 }
 .wiki-navbar::after, .wiki-card::after, .info-block::after, .modpack-card::after,
-.feature-card::after, .atlas-map-panel::after, .team-member::after, .entry-card::after {
+.feature-card::after, .atlas-map-panel::after, .team-member::after, .entry-card::after,
+.trial-card::after, .qa-item::after, .loop-step::after, .recipe-panel::after {
     bottom: 6px; right: 8px;
 }
 .wiki-card:hover::before, .wiki-card:hover::after,
 .info-block:hover::before, .info-block:hover::after,
 .feature-card:hover::before, .feature-card:hover::after,
 .team-member:hover::before, .team-member:hover::after,
-.entry-card:hover::before, .entry-card:hover::after {
+.entry-card:hover::before, .entry-card:hover::after,
+.trial-card:hover::before, .trial-card:hover::after,
+.loop-step:hover::before, .loop-step:hover::after,
+.recipe-panel:hover::before, .recipe-panel:hover::after {
     color: var(--gold);
     opacity: 1;
 }
@@ -1730,6 +1741,7 @@ body {
 .rank-pill.tier-supreme      { color: var(--tier-supreme); border-color: var(--tier-supreme); }
 .rank-pill.tier-sacred       { color: var(--tier-sacred); border-color: var(--tier-sacred); }
 .rank-pill.tier-divine       { color: var(--tier-divine); border-color: var(--tier-divine); box-shadow: 0 0 8px -2px rgba(212, 175, 55, 0.6); }
+.rank-pill.tier-below-mundane { color: var(--tier-below-mundane); border-color: var(--tier-below-mundane); }
 .rank-pill.c-dormant   { color: var(--c-dormant); border-color: var(--c-dormant); }
 .rank-pill.c-awakened  { color: var(--c-awakened); border-color: var(--c-awakened); }
 .rank-pill.c-fallen    { color: var(--c-fallen); border-color: var(--c-fallen); }
@@ -1904,3 +1916,75 @@ body {
 .error-rule { width: 60px; height: 1px; background: var(--border-in); margin: 20px auto 26px; }
 .error-panel h1 { margin-bottom: 12px; }
 .error-panel p.lede { max-width: 46ch; margin: 0 auto 24px; color: #cfc4ee; line-height: 1.65; font-size: 14.5px; }
+
+/* ================= FAQ PAGE ================= */
+
+.loop-flow { display: flex; flex-direction: column; margin: 16px 0 6px; text-align: left; }
+.loop-step {
+    display: grid; grid-template-columns: 40px 1fr; gap: 16px; align-items: start;
+    background: rgba(var(--panel), 0.55); border: 1px solid var(--border-in); border-radius: 2px;
+    padding: 14px 18px; margin-bottom: 10px;
+    transition: border-color 0.35s var(--ease), transform 0.35s var(--ease);
+}
+.loop-step:hover { border-color: var(--glow); transform: translateX(3px); }
+.step-num {
+    width: 32px; height: 32px; border: 1px solid var(--gold); border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-family: var(--font-display); color: var(--gold); font-size: 13px; font-weight: 700;
+    background: rgba(212, 175, 55, 0.08); flex-shrink: 0;
+}
+.step-body h3 { font-family: var(--font-mono); font-size: 12.5px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--value); margin-bottom: 4px; }
+.step-body p { font-size: 13.5px; color: #a99dd0; line-height: 1.55; }
+
+.trial-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 16px; margin: 18px 0; text-align: left; }
+.trial-card {
+    background: rgba(var(--panel), var(--panel-a)); border: 1px solid var(--border);
+    box-shadow: inset 0 0 0 3px var(--border-in); border-radius: 2px; padding: 20px 18px;
+    transition: transform 0.35s var(--ease), border-color 0.35s var(--ease);
+}
+.trial-card:hover { transform: translateY(-3px); border-color: #4a2280; }
+.trial-glyph { font-size: 20px; color: var(--glow); margin-bottom: 10px; display: block; }
+.trial-card h3 { font-family: var(--font-display); color: var(--gold); font-size: 16px; margin-bottom: 6px; }
+.trial-tag { display: inline-block; font-family: var(--font-mono); font-size: 9.5px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--glow); background: rgba(168, 85, 247, 0.12); border-radius: 10px; padding: 3px 9px; margin-bottom: 10px; }
+.trial-card p { font-size: 13px; color: #bdb2dd; line-height: 1.6; }
+
+.recipe-wrap { display: flex; gap: 24px; flex-wrap: wrap; align-items: center; margin: 18px 0; text-align: left; }
+.recipe-panel {
+    background: rgba(var(--panel), var(--panel-a)); border: 1px solid var(--border);
+    box-shadow: inset 0 0 0 3px var(--border-in); border-radius: 2px; padding: 22px;
+}
+.recipe-grid { display: grid; grid-template-columns: repeat(3, 52px); grid-template-rows: repeat(3, 52px); gap: 4px; }
+.recipe-cell { display: flex; align-items: center; justify-content: center; font-family: var(--font-mono); font-size: 10px; text-align: center; border: 1px solid var(--border-in); border-radius: 2px; background: rgba(0,0,0,0.25); color: var(--label); line-height: 1.15; padding: 2px; }
+.recipe-cell.iron { color: #cfc9de; border-color: #6c6480; background: rgba(140, 132, 168, 0.12); }
+.recipe-cell.glass { color: #9fd6e8; border-color: #3d6b78; background: rgba(63, 150, 175, 0.1); }
+.recipe-cell.wool { color: var(--gold-soft); border-color: var(--gold); background: rgba(212, 175, 55, 0.1); }
+.recipe-key { display: flex; flex-direction: column; gap: 8px; font-size: 13px; color: #c3b9e6; min-width: 200px; }
+.recipe-key li { list-style: none; display: flex; gap: 8px; align-items: center; }
+.recipe-swatch { width: 12px; height: 12px; border-radius: 2px; flex-shrink: 0; }
+.recipe-swatch.iron { background: #8c84a8; }
+.recipe-swatch.glass { background: #3f96af; }
+.recipe-swatch.wool { background: var(--gold); }
+.recipe-note { font-size: 12.5px; color: #7c72a0; font-family: var(--font-mono); margin-top: 12px; max-width: 60ch; }
+
+.rank-table { width: 100%; border-collapse: collapse; margin: 16px 0; font-size: 13px; text-align: left; }
+.rank-table th, .rank-table td { text-align: left; padding: 9px 12px; border-bottom: 1px solid var(--border-in); }
+.rank-table th { font-family: var(--font-mono); font-size: 10.5px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--label); }
+.rank-name { font-family: var(--font-display); font-weight: 700; }
+.rank-name.r-dreamer { color: var(--tier-dormant); }
+.rank-name.r-awakened { color: var(--tier-awakened); }
+.rank-name.r-ascended { color: var(--tier-ascended); }
+.rank-name.r-transcendent { color: var(--tier-transcendent); }
+.rank-name.r-supreme { color: var(--tier-supreme); }
+.rank-name.r-sacred { color: var(--tier-sacred); }
+.rank-name.r-divine { color: var(--tier-divine); }
+.rank-table td:last-child { color: #a99dd0; }
+
+.key-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 10px; margin: 16px 0; text-align: left; }
+.key-row { display: flex; justify-content: space-between; gap: 14px; background: rgba(var(--panel), 0.5); border: 1px solid var(--border-in); border-radius: 2px; padding: 10px 14px; font-size: 12.5px; }
+.key-row .k-name { color: var(--value); }
+.key-row .k-hint { font-family: var(--font-mono); font-size: 10.5px; color: var(--label); text-transform: uppercase; letter-spacing: 0.04em; }
+
+.qa-list { display: flex; flex-direction: column; gap: 14px; margin: 16px 0; text-align: left; }
+.qa-item { background: rgba(168, 85, 247, 0.04); border-left: 3px solid var(--glow); border-radius: 0 4px 4px 0; padding: 14px 18px; }
+.qa-item h3 { font-size: 14px; color: var(--glow); margin-bottom: 5px; }
+.qa-item p { font-size: 13.5px; color: #c3b9e6; line-height: 1.6; }

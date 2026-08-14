@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FAQ &amp; Starter Guide - ShadowCraft Wiki</title>
+    <meta name="description" content="Starter guide and frequently asked questions for new ShadowCraft beta testers: the gameplay loop, the three trial types, the Sleeping Pod recipe, ranks, and more.">
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" type="image/x-icon" href="images/website.logo.png">
+</head>
+<body>
+
+    <header class="wiki-navbar">
+        <div class="wiki-logo">
+            <a href="wiki.html">
+                <img src="images/website.logo.png" alt="ShadowCraft Logo">
+                <span>ShadowCraft Wiki</span>
+            </a>
+        </div>
+        <nav class="wiki-nav-menu">
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="aspects.html">Aspects</a></li>
+                <li><a href="memories.html">Memories</a></li>
+                <li><a href="nightmares.html">Nightmares</a></li>
+                <li><a href="creatures.html">Nightmare Creatures</a></li>
+                <li><a href="dream-realm.html">Dream Realm</a></li>
+                <li><a href="faq.html" class="active">FAQ</a></li>
+            </ul>
+        </nav>
+
+        <a href="https://buymeacoffee.com/yet3keozej" target="_blank" rel="noopener noreferrer" class="btn nav-support-btn">Support Us</a>
+    </header>
+
+    <aside class="wiki-sidebar">
+        <div class="wiki-sidebar-content">
+            <div class="wiki-sidebar-home">
+                <a href="index.html">← Return Home</a>
+            </div>
+            <nav>
+                <ul class="wiki-sidebar-menu">
+                    <li><a href="wiki.html">Wiki Overview</a></li>
+                    <li><a href="aspects.html">Aspects</a></li>
+                    <li><a href="memories.html">Memories</a></li>
+                    <li><a href="nightmares.html">Nightmares</a></li>
+                    <li><a href="creatures.html">Nightmare Creatures</a></li>
+                    <li><a href="dream-realm.html">Dream Realm</a></li>
+                    <li><a href="faq.html" class="active">FAQ</a></li>
+                    <li><a href="rules.html">Rules</a></li>
+                    <li><a href="shop.html">Shop</a></li>
+                    <li><a href="changelog.html">Changelog</a></li>
+                </ul>
+            </nav>
+        </div>
+    </aside>
+
+    <div class="wiki-main-content">
+    <main class="wiki-container">
+        <h1 class="article-title">Dreamer FAQ &amp; Starter Guide</h1>
+        <p class="intro-text">
+            Welcome to the Spell. This page exists because the same handful of questions keeps coming up in
+            chat every time a new batch of testers joins, what the three trial types actually feel like,
+            why everyone's asking about a "sleeping pod," and what the mod even wants you to <em>do</em>.
+            Read it once and you'll know more than most week-one Dreamers.
+        </p>
+
+        <div class="rules-layout">
+            <nav class="toc-panel">
+                <h4>On This Page</h4>
+                <div class="toc-list">
+                    <a href="#loop" class="active"><span class="num">1</span> The Gameplay Loop</a>
+                    <a href="#trials"><span class="num">2</span> Your First Nightmare</a>
+                    <a href="#pod"><span class="num">3</span> The Sleeping Pod</a>
+                    <a href="#ranks"><span class="num">4</span> Ranks, Cores &amp; Memories</a>
+                    <a href="#keys"><span class="num">5</span> Controls &amp; Keybinds</a>
+                    <a href="#realm"><span class="num">6</span> The Dream Realm</a>
+                    <a href="#dreamscape"><span class="num">7</span> The Dreamscape</a>
+                    <a href="#betachat"><span class="num">8</span> From the Beta Chat</a>
+                    <a href="#quick"><span class="num">9</span> Quick Answers</a>
+                </div>
+            </nav>
+
+            <section class="rules-thread">
+
+                <div class="rule-item" id="loop">
+                    <div class="num-box">1</div>
+                    <div class="rule-content">
+                        <h2>The Gameplay Loop</h2>
+                        <p>
+                            If nothing else sticks, remember this cycle. Everything the mod does builds toward it,
+                            and every question below is really a question about one step of it.
+                        </p>
+                        <div class="loop-flow">
+                            <div class="loop-step">
+                                <div class="step-num">1</div>
+                                <div class="step-body">
+                                    <h3>Prepare</h3>
+                                    <p>You're infected the moment you join. You get <strong>3 in-game days</strong> before the First Nightmare pulls you in, gear up, and craft a <strong>Sleeping Pod</strong> (see §3, it matters a lot more than it sounds).</p>
+                                </div>
+                            </div>
+                            <div class="loop-step">
+                                <div class="step-num">2</div>
+                                <div class="step-body">
+                                    <h3>Awaken</h3>
+                                    <p>Clear your First Nightmare by choosing and completing a <strong>Combat, Utility, or Support</strong> trial. You walk away with a permanent <strong>Aspect</strong>, your soul power for the rest of the run.</p>
+                                </div>
+                            </div>
+                            <div class="loop-step">
+                                <div class="step-num">3</div>
+                                <div class="step-body">
+                                    <h3>Dream</h3>
+                                    <p>Sleep in your Pod to enter the <strong>Dream Realm</strong>. Loot corpses, fight nightmare creatures, and contest <strong>Outposts</strong> for a foothold in the realm.</p>
+                                </div>
+                            </div>
+                            <div class="loop-step">
+                                <div class="step-num">4</div>
+                                <div class="step-body">
+                                    <h3>Saturate</h3>
+                                    <p>Fights and Memory conversions fill your <strong>Soul Cores</strong> with shards, the currency behind your rank. Only kills against sufficiently strong enemies count, so keep pushing your limits.</p>
+                                </div>
+                            </div>
+                            <div class="loop-step">
+                                <div class="step-num">5</div>
+                                <div class="step-body">
+                                    <h3>Arsenal</h3>
+                                    <p>Rare <strong>Memory</strong> items drop from monsters and exploration. Store them in your Soul Sea, bind a few to quick-use slots, and grow your Memory Arsenal.</p>
+                                </div>
+                            </div>
+                            <div class="loop-step">
+                                <div class="step-num">6</div>
+                                <div class="step-body">
+                                    <h3>Rank Up</h3>
+                                    <p>Enough Soul Core progress advances your <strong>rank</strong> (Dreamer &rarr; Awakened &rarr; &hellip; &rarr; Divine), unlocking the next tier of your Aspect's abilities.</p>
+                                </div>
+                            </div>
+                            <div class="loop-step">
+                                <div class="step-num">7</div>
+                                <div class="step-body">
+                                    <h3>Repeat</h3>
+                                    <p>Back into the Dream Realm, deeper this time. Tougher creatures, bigger stakes, and more of the mod opens up the further you push.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="rule-item" id="trials">
+                    <div class="num-box">2</div>
+                    <div class="rule-content">
+                        <h2>Your First Nightmare</h2>
+                        <p>
+                            When the countdown ends, you're given a choice screen with three trial types. You pick
+                            <strong>one</strong>, nobody assigns it to you. Here's what each one is actually
+                            asking of you, in plain terms nobody bothers to say out loud:
+                        </p>
+                        <div class="trial-grid">
+                            <div class="trial-card">
+                                <span class="trial-glyph">&#9876;</span>
+                                <span class="trial-tag">Combat</span>
+                                <h3>Fighting</h3>
+                                <p>Exactly what it says. Melee your way through escalating danger, gear up as you go. Good hand-to-hand instincts and a cool head under pressure carry this path.</p>
+                            </div>
+                            <div class="trial-card">
+                                <span class="trial-glyph">&#9201;</span>
+                                <span class="trial-tag">Utility</span>
+                                <h3>Skill &amp; Timing</h3>
+                                <p>Lock-picking, rhythm checks, timing minigames, no combat at all. These are judged on precise, split-second input, so they're <strong>very ping-sensitive</strong>. A rough connection makes this path noticeably harder than it looks.</p>
+                            </div>
+                            <div class="trial-card">
+                                <span class="trial-glyph">&#10010;</span>
+                                <span class="trial-tag">Support</span>
+                                <h3>Keeping Others Alive</h3>
+                                <p>You're not the one being tested in a fight, NPCs around you are dying and it's on you to stop it. Expect quick-answer trivia (some genuinely medical) under a countdown, plus hands-on "healing" interactions. Basic Minecraft interface fluency and a sharp memory matter more than combat skill here.</p>
+                            </div>
+                        </div>
+                        <p>
+                            Your Aspect is permanently bound once you earn it. There is currently <strong>no reroll
+                            and no way to switch later</strong>, whatever you walk away with is what you're playing
+                            for the rest of the run, so pick the path that actually sounds like your kind of fun. The
+                            trial type you choose also decides the general flavor of Aspect you're eligible for
+                            (a Combat trial draws from Combat-flavored Aspects, and so on), with one exception:
+                            <strong>the rarest, Divine-tier Aspects aren't locked to any single trial type</strong>,
+                            they can come out of Combat, Utility, or Support alike. How well you do in the trial
+                            shapes your odds at a rarer Aspect too, it isn't a flat coin flip, but the exact mechanics
+                            of that are worth discovering for yourself rather than reading off a wiki page.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="rule-item" id="pod">
+                    <div class="num-box">3</div>
+                    <div class="rule-content">
+                        <h2>The Sleeping Pod</h2>
+                        <p>
+                            This is the single most-asked question in beta so far, and it isn't in the recipe book yet.
+                            Here it is, once and for all.
+                        </p>
+                        <p>
+                            <strong>Why you need one:</strong> falling asleep any other way (a bed, say) leaves your
+                            actual body lying in the waking world, vulnerable to anything that finds it. If that body
+                            is destroyed while you're off dreaming, dying again before you wake up is a
+                            <strong>full reset</strong>, rank, Aspect, everything, gone, infection restarting from
+                            scratch. A Sleeping Pod removes that risk entirely: there's no killable body left behind,
+                            just the pod. A normal death inside the Dream Realm on its own only costs you a chunk of
+                            your banked Soul Core shards, not a full reset, it's the pod that keeps it that way.
+                        </p>
+                        <p>Craft one, place it somewhere safe (your base, or inside a Citadel), and sleep there every time.</p>
+                        <div class="recipe-wrap">
+                            <div class="recipe-panel">
+                                <div class="recipe-grid">
+                                    <div class="recipe-cell iron">Iron<br>Block</div>
+                                    <div class="recipe-cell iron">Iron<br>Block</div>
+                                    <div class="recipe-cell iron">Iron<br>Block</div>
+                                    <div class="recipe-cell glass">Glass</div>
+                                    <div class="recipe-cell wool">Wool</div>
+                                    <div class="recipe-cell glass">Glass</div>
+                                    <div class="recipe-cell iron">Iron<br>Block</div>
+                                    <div class="recipe-cell iron">Iron<br>Block</div>
+                                    <div class="recipe-cell iron">Iron<br>Block</div>
+                                </div>
+                            </div>
+                            <ul class="recipe-key">
+                                <li><span class="recipe-swatch iron"></span> 6&times; Iron Block</li>
+                                <li><span class="recipe-swatch glass"></span> 2&times; Glass</li>
+                                <li><span class="recipe-swatch wool"></span> 1&times; Wool</li>
+                            </ul>
+                        </div>
+                        <p class="recipe-note">A recipe exists for every wool color, craft with the color you want and place it wherever you like.</p>
+                    </div>
+                </div>
+
+                <div class="rule-item" id="ranks">
+                    <div class="num-box">4</div>
+                    <div class="rule-content">
+                        <h2>Ranks, Soul Cores &amp; Memories</h2>
+                        <p>Your Soul Rank gates how much of your Aspect you can use. It climbs as you saturate Soul Cores with shards earned from fighting things above your weight class:</p>
+                        <table class="rank-table">
+                            <tr><th>Rank</th><th>Unlocks</th></tr>
+                            <tr><td class="rank-name r-dreamer">Dreamer</td><td>Dormant Aspect abilities</td></tr>
+                            <tr><td class="rank-name r-awakened">Awakened</td><td>Improved Dormant + Awakened abilities</td></tr>
+                            <tr><td class="rank-name r-ascended">Ascended</td><td>Ascended abilities</td></tr>
+                            <tr><td class="rank-name r-transcendent">Transcendent</td><td>Transcendent abilities</td></tr>
+                            <tr><td class="rank-name r-supreme">Supreme</td><td>Supreme abilities</td></tr>
+                            <tr><td class="rank-name r-sacred">Sacred</td><td>Sacred abilities</td></tr>
+                            <tr><td class="rank-name r-divine">Divine</td><td>Divine abilities</td></tr>
+                        </table>
+                        <p>
+                            <strong>Soul Cores</strong> fill from kills (only enemies of a sufficient tier relative to
+                            you count) and from converting spare Memories into shards. Losing a PvP fight hands the
+                            killer a cut of your shards, so power differences matter in every direction.
+                        </p>
+                        <p>
+                            <strong>Memories</strong> are hand-designed relic items found on monsters or out in the
+                            world. They live in your Soul Sea (soulbound, tradeable between players, not lost on
+                            death), have durability that degrades with use, and become <strong>Fragile</strong> below
+                            25% (risking destruction the more you push them). Bind your favorites to quick-use
+                            slots and that's your <strong>Memory Arsenal</strong>.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="rule-item" id="keys">
+                    <div class="num-box">5</div>
+                    <div class="rule-content">
+                        <h2>Controls &amp; Keybinds</h2>
+                        <p>
+                            The mod adds roughly three dozen keybinds, and every single one ships <strong>unbound</strong>
+                            on purpose, so nothing of yours gets silently overwritten. You'll see the full list once
+                            on your very first join; if you clicked past it, run <strong>/shadow controls</strong> any
+                            time to bring it back up, or set them yourself under <strong>Options &rarr; Controls &rarr;
+                            VoidSpell</strong>. Worth binding early:
+                        </p>
+                        <div class="key-grid">
+                            <div class="key-row"><span class="k-name">Open Memories</span><span class="k-hint">Soul Sea</span></div>
+                            <div class="key-row"><span class="k-name">Open Arsenal</span><span class="k-hint">Bound Memories</span></div>
+                            <div class="key-row"><span class="k-name">Status Page</span><span class="k-hint">Rank &amp; stats</span></div>
+                            <div class="key-row"><span class="k-name">Book of Mysteries</span><span class="k-hint">Aspect ability tree</span></div>
+                            <div class="key-row"><span class="k-name">Inbox</span><span class="k-hint">Notices</span></div>
+                            <div class="key-row"><span class="k-name">Ability Slots 1&ndash;12</span><span class="k-hint">Aspect abilities</span></div>
+                            <div class="key-row"><span class="k-name">Memory Bind Slots 1&ndash;6</span><span class="k-hint">Quick-use Memories</span></div>
+                            <div class="key-row"><span class="k-name">Read the Spell's Words</span><span class="k-hint">Prompt log</span></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="rule-item" id="realm">
+                    <div class="num-box">6</div>
+                    <div class="rule-content">
+                        <h2>The Dream Realm</h2>
+                        <p>
+                            A permanent alternate dimension you reach by sleeping. <strong>PvP is on</strong> everywhere
+                            in it except inside Citadels and other designated safe zones (the waking world stays
+                            PvP-off). A few things worth knowing before you dive in:
+                        </p>
+                        <p>
+                            <strong>Corpses</strong> surface ambiently across the realm's terrain and are worth hunting
+                            down, you'll get a toast notification when one turns up nearby.
+                            <strong>Outposts</strong> are claimable footholds: defeat the guardian holding one and it's
+                            yours to run, with members you approve.
+                            <strong>Citadels</strong> (Great Citadels like Bastion among them) are player strongholds and
+                            the realm's actual safe zones. If you're not part of one yet, that's where a good Pod
+                            placement and a friendly Outpost do the same job.
+                        </p>
+                        <p>
+                            The realm is built from several distinct regions (the Forgotten Shore, the Chained
+                            Isles, Godgrave, Bastion, more planned), and right now the only way between them is
+                            the <strong>Rift</strong> network: fixed portals through a central crossing point, free
+                            and exact. There's also the <strong>Key of the Rift</strong> for a chaotic, one-use
+                            trip that drops you somewhere near where you asked instead of exactly there. That's the
+                            whole travel system for now, the team knows it's a rough edge and it's on the list to
+                            improve.
+                        </p>
+                        <p>
+                            Once you hit Dreamer rank, expect to occasionally get swept into the realm together with
+                            every other Dreamer on the server on a shared clock, an event the mod itself calls the
+                            <strong>Solstice</strong>. It's server-configured and currently turns every <strong>10
+                            Minecraft days</strong> by default, so don't let your gear or your Pod situation slide.
+                            This is a separate thing from a full server wipe (see §8), the Solstice just pulls you
+                            into the realm, it doesn't reset your progress.
+                            Gates also spawn out in the waking world as a PvP-free alternative source of the same
+                            progression, if the realm isn't your speed that day.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="rule-item" id="dreamscape">
+                    <div class="num-box">7</div>
+                    <div class="rule-content">
+                        <h2>The Dreamscape</h2>
+                        <p>
+                            First, the thing everyone gets wrong: <strong>the Dreamscape is not the Dream
+                            Realm</strong>. The Dream Realm (§6) is where your progression happens, corpses,
+                            Outposts, Citadels, real stakes. The Dreamscape is a separate dimension that holds
+                            nothing but colosseums, and it's the one place in the whole mod where players are
+                            meant to kill each other <em>for nothing</em>. No shards change hands, no gear drops,
+                            no progress moves. It's there to settle arguments and to practise.
+                        </p>
+                        <p>
+                            It doesn't open to a Dormant soul, you need <strong>Awakened</strong> rank or higher
+                            to get in at all. Everything runs off one top-level command:
+                        </p>
+                        <div class="key-grid">
+                            <div class="key-row"><span class="k-name">/dreamscape enter</span><span class="k-hint">Take a seat</span></div>
+                            <div class="key-row"><span class="k-name">/dreamscape fight</span><span class="k-hint">Step onto the sand</span></div>
+                            <div class="key-row"><span class="k-name">/dreamscape duel &lt;player&gt;</span><span class="k-hint">Offer / accept</span></div>
+                            <div class="key-row"><span class="k-name">/dreamscape leaderboard</span><span class="k-hint">Top 10</span></div>
+                            <div class="key-row"><span class="k-name">/dreamscape leave</span><span class="k-hint">Go back</span></div>
+                        </div>
+                        <p>
+                            You always arrive in the <strong>stands</strong>, healed and out of reach of the
+                            fighting, never in the middle of a brawl. The stands are safe; the sand is not.
+                            Stepping down is an opt-in, and it's the only way onto the floor.
+                        </p>
+                        <p>
+                            <strong>Dying here isn't a death.</strong> It's caught before it counts: you're
+                            restored to full health, carried back to the stands, and you lose nothing, not shards,
+                            not durability, not an item on the floor. It won't even burn a Ferryman's Coin or any
+                            other death-cheating trick you're holding, because there was never a death to cheat.
+                            The only cost is <strong>30 seconds</strong> in the seats before the sand will take you
+                            again. Note the flip side: while you're carrying a combat tag in the free-for-all you
+                            <em>cannot</em> leave the sand, not by walking out, not by ability, not by knockback.
+                            Anything that gets you out puts you straight back in, and <strong>/dreamscape leave</strong>
+                            is refused until your blood cools.
+                        </p>
+                        <p>
+                            <strong>Duels</strong> are one-on-one, in their own private colosseum away from the
+                            free-for-all. Type the duel command on someone's name to offer; they answer with the
+                            same command on yours, and an unanswered offer lapses after 30 seconds. The two of you
+                            are placed at opposite ends of the sand, so nobody starts in reach. There are
+                            <strong>8 duelling grounds</strong>, so "every duelling ground is taken" means exactly
+                            that, wait for one. Duels are also deliberately weightless in the records:
+                            <strong>a duel result never touches the leaderboard</strong>, precisely so two friends
+                            can't trade deaths in private and own the standings.
+                        </p>
+                        <p>
+                            The board itself ranks the <strong>top 10 by kill/death ratio</strong> from the public
+                            free-for-all only. It shows up on the side of your screen while you're in the realm and
+                            disappears when you leave, nobody outside the Dreamscape ever has it on their screen.
+                        </p>
+                        <p class="recipe-note">
+                            Colosseums are raised the first time they're needed, so "still rising, 40% complete"
+                            just means try again in a moment. Duels don't survive a disconnect or a restart, and
+                            leaving mid-duel forfeits it. If you log out inside the Dreamscape and the server
+                            restarts before you're back, you'll wake at your overworld respawn rather than exactly
+                            where you left, so don't treat the stands as a place to log off.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="rule-item" id="betachat">
+                    <div class="num-box">8</div>
+                    <div class="rule-content">
+                        <h2>From the Beta Chat</h2>
+                        <p>
+                            A running log of the questions testers actually keep asking that don't fit neatly
+                            anywhere above. Updated as new ones come up.
+                        </p>
+                        <div class="qa-list">
+                            <div class="qa-item">
+                                <h3>How often will the server fully reset?</h3>
+                                <p>There's no fixed timer. A full wipe happens when a major progression change lands that genuinely needs a clean slate, not on a schedule.</p>
+                            </div>
+                            <div class="qa-item">
+                                <h3>Is Aspect rarity guaranteed by anything, or completely random?</h3>
+                                <p>Not flat random. The better you clear your trial, the more your odds skew toward a rarer Aspect, and past a certain point the lowest rarity stops being possible at all. Exactly where those lines sit is part of what the trial is testing.</p>
+                            </div>
+                            <div class="qa-item">
+                                <h3>Will there be a fully playable singleplayer experience?</h3>
+                                <p>N/A for now, that's not something we're locking in details on yet.</p>
+                            </div>
+                            <div class="qa-item">
+                                <h3>Is enemy AI or power level going to be tuned? Some fights feel too strong, others too easy to cheese.</h3>
+                                <p>Yes. Difficulty tuning is being driven directly by beta feedback, expect fights to get adjusted up, down, or fixed outright as testing continues.</p>
+                            </div>
+                            <div class="qa-item">
+                                <h3>Do you have bigger plans for the mod now that it's gotten so big, or are you sticking to the original scope?</h3>
+                                <p>Going with the flow. No grand roadmap promises, what gets built next is shaped by what beta testing actually turns up.</p>
+                            </div>
+                            <div class="qa-item">
+                                <h3>Will self-hosted servers, to play with friends, ever be officially supported?</h3>
+                                <p>No info to share on that yet.</p>
+                            </div>
+                            <div class="qa-item">
+                                <h3>Will there ever be a way to wipe your own character or reset your Aspect?</h3>
+                                <p>Not ruled out, but not something to expect any time soon, if it happens at all it'll be a rare, hard-to-reach option rather than a button you can hit whenever.</p>
+                            </div>
+                            <div class="qa-item">
+                                <h3>What are the drop rates for Memories and Echoes?</h3>
+                                <p>Not published. They scale with rarity, rarer ones are meaningfully harder to come by, but exact numbers aren't something we're putting out.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="rule-item" id="quick">
+                    <div class="num-box">9</div>
+                    <div class="rule-content">
+                        <h2>Quick Answers</h2>
+                        <div class="qa-list">
+                            <div class="qa-item">
+                                <h3>I can't find the Sleeping Pod recipe anywhere, is that normal?</h3>
+                                <p>Yes, for now. It isn't surfaced in the vanilla recipe book. Use §3 above, 6 Iron Blocks, 2 Glass, 1 Wool, arranged in a ring.</p>
+                            </div>
+                            <div class="qa-item">
+                                <h3>Can I reroll my Aspect if I don't like what I got?</h3>
+                                <p>No. Whatever Aspect the First Nightmare grants you is permanent, there is currently no reroll and no way to switch to a different one later. Choose your trial type with that in mind.</p>
+                            </div>
+                            <div class="qa-item">
+                                <h3>What actually happens when I die?</h3>
+                                <p>A death in the Dream Realm sends you back to the waking world, costs a real chunk of your banked Soul Core shards, and locks you out of re-entering for a short while. The catastrophic full-reset outcome only happens if your body was destroyed <em>and</em> you die again while exposed, which a Sleeping Pod prevents outright.</p>
+                            </div>
+                            <div class="qa-item">
+                                <h3>Dream Realm, Dreamscape, what's the difference?</h3>
+                                <p>Two completely separate dimensions with unhelpfully similar names. The <strong>Dream Realm</strong> is where you progress: corpses, Outposts, Citadels, and PvP that costs you shards. The <strong>Dreamscape</strong> is the colosseum realm where PvP costs nothing at all. See §6 and §7.</p>
+                            </div>
+                            <div class="qa-item">
+                                <h3>/dreamscape enter says my soul is Dormant.</h3>
+                                <p>You're still below Awakened rank. The Dreamscape doesn't open until you've ranked up at least once, keep saturating Soul Cores and it'll let you in.</p>
+                            </div>
+                            <div class="qa-item">
+                                <h3>How do I bind my keys again? I skipped the popup.</h3>
+                                <p>Run <strong>/shadow controls</strong> to reopen the same first-join guide any time.</p>
+                            </div>
+                            <div class="qa-item">
+                                <h3>None of my controls are doing anything.</h3>
+                                <p>That's expected until you bind them, every VoidSpell keybind ships unbound by default. Head to Options &rarr; Controls &rarr; VoidSpell.</p>
+                            </div>
+                            <div class="qa-item">
+                                <h3>Where do I ask something this page doesn't cover?</h3>
+                                <p>Drop it in the Discord, that's also where bugs and exploits should get reported, not sat on.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </section>
+        </div>
+    </main>
+    </div>
+
+    <script>
+        document.querySelectorAll('.toc-list a').forEach(function (link) {
+            link.addEventListener('click', function (e) {
+                e.preventDefault();
+                var target = document.getElementById(link.getAttribute('href').slice(1));
+                if (!target) return;
+                document.querySelectorAll('.toc-list a').forEach(function (a) { a.classList.remove('active'); });
+                link.classList.add('active');
+                target.scrollIntoView({ block: 'start', behavior: 'smooth' });
+            });
+        });
+    </script>
+
+    <footer class="site-footer">
+        <div class="footer-container">
+
+            <div class="footer-col footer-brand">
+                <div class="wiki-logo">
+                    <img src="images/website.logo.png" alt="ShadowCraft Logo">
+                    <span>ShadowCraft</span>
+                </div>
+                <p class="footer-desc">
+                    An unofficial fan project inspired by the Nightmare Spell. Awaken your soul, face your flaw, and explore the Dream Realm.
+                </p>
+            </div>
+
+            <div class="footer-col">
+                <h4>Legal &amp; Policies</h4>
+                <ul>
+                    <li><a href="../legal/service.terms.html">Terms of Service</a></li>
+                    <li><a href="../legal/privacy.html">Privacy Policy</a></li>
+                    <li><a href="../legal/sla.html">Service Level Agreement (SLA)</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-col">
+                <h4>Community</h4>
+                <ul>
+                    <li><a href="https://discord.gg/shadowcraft" target="_blank" rel="noopener noreferrer">Discord Server</a></li>
+                    <li><a href="https://buymeacoffee.com/yet3keozej" target="_blank" rel="noopener noreferrer">Support Us</a></li>
+                    <li><a href="../legal/laucher.html" target="_blank" rel="noopener noreferrer">Official launcher</a></li>
+                    <li><a href="changelog.html">Changelog</a></li>
+                </ul>
+            </div>
+
+        </div>
+
+        <div class="footer-bottom">
+            <p>&copy; 2026 ShadowCraft. Unofficial Fan Project.</p>
+            <p class="disclaimer">Not an official Minecraft product. Not approved by or associated with Mojang, Microsoft, or original copyright holders.</p>
+        </div>
+    </footer>
+
+</body>
+</html>
