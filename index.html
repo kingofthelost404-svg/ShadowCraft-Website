@@ -15,7 +15,7 @@
     <meta property="og:url" content="https://nightmarespell.org/">
     <meta property="og:type" content="website">
 
-    <meta name="theme-color" content="#1a002c">
+    <meta name="theme-color" content="#0b0e17">
     <link rel="icon" type="image/x-icon" href="images/website.logo.png">
 
     <link rel="stylesheet" href="style.css">
@@ -38,7 +38,7 @@
                                 <span class="ip-btn-icon">⧉</span>
                             </button>
 
-                            <a href="https://discord.gg/shadowcraft" target="_blank" rel="noopener noreferrer" class="btn border-btn discord-btn">
+                            <a href="https://discord.com/invite/voidspell" target="_blank" rel="noopener noreferrer" class="btn border-btn discord-btn">
                                 Join Discord
                             </a>
                         </div>
@@ -57,7 +57,7 @@
                 </div>
 
                 <div class="core-panel-col">
-                    <a href="https://buymeacoffee.com/yet3keozej" target="_blank" rel="noopener noreferrer" class="btn border-btn hero-support-btn">Support Us</a>
+                    <a href="https://buymeacoffee.com/voidspell" target="_blank" rel="noopener noreferrer" class="btn border-btn hero-support-btn">Support Us</a>
 
                     <div class="core-panel">
                         <span class="corner-tick tl">+</span>
@@ -94,7 +94,7 @@
             <a class="quick-tile" href="dream-realm.html"><span class="quick-glyph">&#9672;</span><span class="quick-label">Dream Realm</span></a>
             <a class="quick-tile" href="rules.html"><span class="quick-glyph">!</span><span class="quick-label">Rules</span></a>
             <a class="quick-tile" href="shop.html"><span class="quick-glyph">$</span><span class="quick-label">Shop</span></a>
-            <a class="quick-tile" href="https://discord.gg/shadowcraft" target="_blank" rel="noopener noreferrer"><span class="quick-glyph">@</span><span class="quick-label">Discord</span></a>
+            <a class="quick-tile" href="https://discord.com/invite/voidspell" target="_blank" rel="noopener noreferrer"><span class="quick-glyph">@</span><span class="quick-label">Discord</span></a>
         </div>
     </section>
 
@@ -123,8 +123,8 @@
             <div class="footer-col">
                 <h4>Community</h4>
                 <ul>
-                    <li><a href="https://discord.gg/shadowcraft" target="_blank" rel="noopener noreferrer">Discord Server</a></li>
-                    <li><a href="https://buymeacoffee.com/yet3keozej" target="_blank" rel="noopener noreferrer">Support Us</a></li>
+                    <li><a href="https://discord.com/invite/voidspell" target="_blank" rel="noopener noreferrer">Discord Server</a></li>
+                    <li><a href="https://buymeacoffee.com/voidspell" target="_blank" rel="noopener noreferrer">Support Us</a></li>
                     <li><a href="/legal/laucher.html">Official Launcher</a></li>
                     <li><a href="changelog.html">Changelog</a></li>
                 </ul>
@@ -178,7 +178,7 @@
             const discordStat = document.getElementById('discord-stat');
             const discordDot = document.getElementById('discord-dot');
             try {
-                const res = await fetch('https://discord.com/api/v10/invites/shadowcraft?with_counts=true');
+                const res = await fetch('https://discord.com/api/v10/invites/voidspell?with_counts=true');
                 const data = await res.json();
                 discordStat.textContent = data.approximate_presence_count + " Online · " + data.approximate_member_count + " Members";
                 discordDot.classList.add('online');
