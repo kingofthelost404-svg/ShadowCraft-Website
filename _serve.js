@@ -56,19 +56,44 @@ const RELOAD_SCRIPT = `
 
 // ------------------------------------------------------------------ resolving
 // Mirrors the .htaccess rules so dev and production behave identically.
-function resolve(urlPath) {
-  const target = path.join(root, urlPath);
-  if (!target.startsWith(root)) return null; // no escaping the project dir
+function isFile(p) { try { return fs.statSync(p).isFile(); } catch (_) { return false; } }
+function isDir(p)  { try { return fs.statSync(p).isDirectory(); } catch (_) { return false; } }
 
+function inRoot(urlPath) {
+  const target = path.join(root, urlPath);
+  return target.startsWith(root) ? target : null;
+}
+
+// Returns a redirect target, or null. Keeps dev honest about the two cases
+// Apache handles outside our rewrite rules.
+function redirectFor(urlPath) {
+  const target = inRoot(urlPath);
+  if (!target) return null;
+
+  // /memories/ -> /memories, because memories.html beats the memories/ folder
+  if (urlPath.length > 1 && urlPath.endsWith('/')) {
+    const bare = urlPath.slice(0, -1);
+    if (isFile(path.join(root, bare) + '.html')) return bare;
+    return null;
+  }
+  // /map -> /map/, the way mod_dir does, so relative links inside resolve.
+  // The site root already ends in a slash and must never be rewritten to "//".
+  if (urlPath !== '/' && isDir(target) && !isFile(target + '.html') && isFile(path.join(target, 'index.html'))) {
+    return urlPath + '/';
+  }
+  return null;
+}
+
+function resolve(urlPath) {
+  const target = inRoot(urlPath);
+  if (!target) return null; // no escaping the project dir
+
+  // Order matters: a same-named .html always wins over a directory.
   const candidates = urlPath.endsWith('/')
     ? [path.join(target, 'index.html')]
     : [target, target + '.html', path.join(target, 'index.html')];
 
-  for (const c of candidates) {
-    try {
-      if (fs.statSync(c).isFile()) return c;
-    } catch (_) { /* next candidate */ }
-  }
+  for (const c of candidates) if (isFile(c)) return c;
   return null;
 }
 
@@ -96,8 +121,25 @@ http.createServer((req, res) => {
     return res.end();
   }
 
+  const redirect = redirectFor(urlPath);
+  if (redirect) {
+    res.writeHead(302, { Location: redirect, 'Cache-Control': 'no-store' });
+    return res.end();
+  }
+
   const file = resolve(urlPath);
   const noCache = { 'Cache-Control': 'no-store, must-revalidate', 'Pragma': 'no-cache' };
+
+  // A folder with no index and no matching .html is a 403 in production
+  // (Options -Indexes), served as the themed page via ErrorDocument 403.
+  if (!file && isDir(path.join(root, urlPath))) {
+    console.log(`  403 ${urlPath} - directory with no index.html`);
+    const body = fs.existsSync(path.join(root, '404.html'))
+      ? fs.readFileSync(path.join(root, '404.html'), 'utf8')
+      : '403';
+    res.writeHead(403, { 'Content-Type': 'text/html; charset=utf-8', ...noCache });
+    return res.end(body + RELOAD_SCRIPT);
+  }
 
   if (!file) {
     const notFound = path.join(root, '404.html');

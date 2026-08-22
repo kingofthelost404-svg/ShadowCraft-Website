@@ -3,6 +3,9 @@
 # ============================================================
 
 ErrorDocument 404 /404.html
+# Folders with no index (/images/, /legal/) would otherwise show Apache's bare
+# 403. Directory listing stays off; visitors just get the themed page.
+ErrorDocument 403 /404.html
 
 # Let mod_rewrite (not Apache's own content negotiation) resolve
 # extensionless URLs — MultiViews interferes with the rules below.
@@ -29,13 +32,23 @@ DirectoryIndex index.html
   RewriteCond %{THE_REQUEST} \s/+(.+?)\.html[\s?] [NC]
   RewriteRule ^ /%1 [R=301,L]
 
+  # A page file beats a same-named folder.
+  #
+  # /memories is BOTH memories.html and the memories/ folder that holds the
+  # item pages. Without this, Apache resolves /memories to the directory, finds
+  # no index inside it, and -Indexes turns that into a 403. So: whenever
+  # <name>.html exists, the folder never gets a look in.
+  RewriteCond %{DOCUMENT_ROOT}/$1.html -f
+  RewriteRule ^(.+?)/$ /$1 [R=301,L]
+
   # /page/ -> /page       (a trailing slash would break relative links)
   RewriteCond %{REQUEST_FILENAME} !-d
   RewriteRule ^(.+?)/$ /$1 [R=301,L]
 
-  # /page -> page.html    (internal rewrite, URL stays clean)
+  # /page -> page.html    (internal rewrite, URL stays clean).
+  # Deliberately no !-d test here, see the collision note above. A real folder
+  # with no matching .html (/map/, /images/) still falls through to mod_dir.
   RewriteCond %{REQUEST_FILENAME} !-f
-  RewriteCond %{REQUEST_FILENAME} !-d
   RewriteCond %{DOCUMENT_ROOT}/$1.html -f
   RewriteRule ^(.+?)$ $1.html [L]
 </IfModule>
