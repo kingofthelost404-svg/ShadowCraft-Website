@@ -1,1 +1,61 @@
+# ============================================================
+#  ShadowCraft — Apache config
+# ============================================================
+
 ErrorDocument 404 /404.html
+
+# Let mod_rewrite (not Apache's own content negotiation) resolve
+# extensionless URLs — MultiViews interferes with the rules below.
+Options -MultiViews -Indexes
+
+DirectoryIndex index.html
+
+# ------------------------------------------------------------
+#  Clean URLs:  /wiki.html  ->  /wiki
+# ------------------------------------------------------------
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteBase /
+
+  # /index.html -> /
+  RewriteCond %{THE_REQUEST} \s/+index\.html[\s?] [NC]
+  RewriteRule ^ / [R=301,L]
+
+  # /dir/index.html -> /dir/
+  RewriteCond %{THE_REQUEST} \s/+(.+?)/index\.html[\s?] [NC]
+  RewriteRule ^ /%1/ [R=301,L]
+
+  # /page.html -> /page   (canonical redirect for anything still linking the old URL)
+  RewriteCond %{THE_REQUEST} \s/+(.+?)\.html[\s?] [NC]
+  RewriteRule ^ /%1 [R=301,L]
+
+  # /page/ -> /page       (a trailing slash would break relative links)
+  RewriteCond %{REQUEST_FILENAME} !-d
+  RewriteRule ^(.+?)/$ /$1 [R=301,L]
+
+  # /page -> page.html    (internal rewrite, URL stays clean)
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteCond %{REQUEST_FILENAME} !-d
+  RewriteCond %{DOCUMENT_ROOT}/$1.html -f
+  RewriteRule ^(.+?)$ $1.html [L]
+</IfModule>
+
+# ------------------------------------------------------------
+#  Caching — pages and stylesheets must never go stale
+# ------------------------------------------------------------
+<IfModule mod_headers.c>
+  # HTML / CSS / JS: cached, but always revalidated with the server.
+  # A changed file is picked up on a normal load — no hard refresh.
+  <FilesMatch "\.(html|css|js)$">
+    Header set Cache-Control "no-cache, must-revalidate"
+  </FilesMatch>
+
+  # Images, video, fonts: rarely change, cache them for a week.
+  <FilesMatch "\.(png|jpe?g|gif|webp|svg|ico|mp4|webm|woff2?|ttf)$">
+    Header set Cache-Control "public, max-age=604800"
+  </FilesMatch>
+</IfModule>
+
+<IfModule mod_deflate.c>
+  AddOutputFilterByType DEFLATE text/html text/css application/javascript application/json image/svg+xml
+</IfModule>

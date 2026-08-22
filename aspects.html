@@ -3,28 +3,44 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="72 obtainable Aspects, from Dormant through Divine, filterable by rank and type.">
     <title>Aspects - ShadowCraft Wiki</title>
-    <link rel="stylesheet" href="style.css">
-    <link rel="icon" type="image/x-icon" href="images/website.logo.png">
+    <meta property="og:site_name" content="ShadowCraft">
+    <meta property="og:title" content="Aspects - ShadowCraft">
+    <meta property="og:description" content="72 obtainable Aspects, from Dormant through Divine, filterable by rank and type.">
+    <meta property="og:image" content="https://nightmarespell.org/images/embed.banner.jpg">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:alt" content="Five dreamers on a ridge, facing the mountain across the grey">
+    <meta property="og:url" content="https://nightmarespell.org/aspects">
+    <meta property="og:type" content="website">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Aspects - ShadowCraft">
+    <meta name="twitter:description" content="72 obtainable Aspects, from Dormant through Divine, filterable by rank and type.">
+    <meta name="twitter:image" content="https://nightmarespell.org/images/embed.banner.jpg">
+
+    <link rel="stylesheet" href="/style.css">
+    <link rel="icon" type="image/x-icon" href="/images/website.logo.png">
 </head>
 <body>
 
     <header class="wiki-navbar">
         <div class="wiki-logo">
-            <a href="wiki.html">
-                <img src="images/website.logo.png" alt="ShadowCraft Logo">
+            <a href="/wiki">
+                <img src="/images/website.logo.png" alt="ShadowCraft Logo">
                 <span>ShadowCraft Wiki</span>
             </a>
         </div>
         <nav class="wiki-nav-menu">
             <ul>
-                 <li><a href="index.html">Home</a></li>
-                <li><a href="aspects.html" class="active">Aspects</a></li>
-                <li><a href="memories.html">Memories</a></li>
-                <li><a href="nightmares.html">Nightmares</a></li>
-                <li><a href="creatures.html">Nightmare Creatures</a></li>
-                <li><a href="dream-realm.html">Dream Realm</a></li>
-                <li><a href="faq.html">FAQ</a></li>
+                 <li><a href="/">Home</a></li>
+                <li><a href="/aspects" class="active">Aspects</a></li>
+                <li><a href="/memories">Memories</a></li>
+                <li><a href="/nightmares">Nightmares</a></li>
+                <li><a href="/creatures">Nightmare Creatures</a></li>
+                <li><a href="/dream-realm">Dream Realm</a></li>
+                <li><a href="/faq">FAQ</a></li>
+                <li><a href="/progression">Progression</a></li>
             </ul>
         </nav>
 
@@ -34,20 +50,21 @@
     <aside class="wiki-sidebar">
         <div class="wiki-sidebar-content">
             <div class="wiki-sidebar-home">
-                <a href="index.html">← Return Home</a>
+                <a href="/">← Return Home</a>
             </div>
             <nav>
                 <ul class="wiki-sidebar-menu">
-                    <li><a href="wiki.html">Wiki Overview</a></li>
-                    <li><a href="aspects.html" class="active">Aspects</a></li>
-                    <li><a href="memories.html">Memories</a></li>
-                    <li><a href="nightmares.html">Nightmares</a></li>
-                    <li><a href="creatures.html">Nightmare Creatures</a></li>
-                    <li><a href="dream-realm.html">Dream Realm</a></li>
-                    <li><a href="faq.html">FAQ</a></li>
-                    <li><a href="rules.html">Rules</a></li>
-                    <li><a href="shop.html">Shop</a></li>
-                    <li><a href="changelog.html">Changelog</a></li>
+                    <li><a href="/wiki">Wiki Overview</a></li>
+                    <li><a href="/aspects" class="active">Aspects</a></li>
+                    <li><a href="/memories">Memories</a></li>
+                    <li><a href="/nightmares">Nightmares</a></li>
+                    <li><a href="/creatures">Nightmare Creatures</a></li>
+                    <li><a href="/dream-realm">Dream Realm</a></li>
+                    <li><a href="/faq">FAQ</a></li>
+                    <li><a href="/progression">Progression</a></li>
+                    <li><a href="/rules">Rules</a></li>
+                    <li><a href="/shop">Shop</a></li>
+                    <li><a href="/changelog">Changelog</a></li>
                 </ul>
             </nav>
         </div>
@@ -56,7 +73,7 @@
     <div class="wiki-main-content">
     <main class="wiki-container">
         <h1 class="article-title">Aspects Archive</h1>
-        <p class="intro-text">Explore soul abilities categorized by Rank and Type. 64 obtainable Aspects, unholy, corruption-locked Aspects are not listed here.</p>
+        <p class="intro-text">Explore soul abilities categorized by Rank and Type. 72 obtainable Aspects. Unholy Aspects are not listed here.</p>
 
         <div class="search-shell">
             <span class="glyph">&#9670;</span>
@@ -72,7 +89,9 @@
                 <button class="filter-btn" data-rank="Ascended">Ascended</button>
                 <button class="filter-btn" data-rank="Transcendent">Transcendent</button>
                 <button class="filter-btn" data-rank="Supreme">Supreme</button>
+                <button class="filter-btn" data-rank="Sacred">Sacred</button>
                 <button class="filter-btn" data-rank="Divine">Divine</button>
+                <button class="filter-btn" data-rank="Cursed">Cursed</button>
                 <button class="filter-btn" data-rank="Below Mundane">Below Mundane</button>
             </div>
         </div>
@@ -86,81 +105,89 @@
                 <button class="filter-btn" data-type="Support">Support</button>
                 <button class="filter-btn" data-type="Divine">Divine</button>
                 <button class="filter-btn" data-type="Anti-Utility">Anti-Utility</button>
+                <button class="filter-btn" data-type="Unclassed">Unclassed</button>
             </div>
         </div>
 
         <p class="archive-count" id="aspect-count"></p>
         <div class="entry-grid" id="aspect-grid"></div>
-        </div>
     </main>
     </div>
 
     <script>
         var ASPECTS = [
-            ['Nightingale','Ascended','Utility','A bird sings and the whole forest goes quiet: nothing below the bearer stays hidden, and nothing that hears them argues.'],
-            ['Arrow That Knows','Ascended','Combat','A warrior-seer whose shots never miss, its power drawn from preparation and information rather than raw force.'],
-            ['Shadow Slave','Divine','Divine','An aspect of adaptation, growth, imitation, and stealth, pushing its bearer toward eventual mastery over shadows itself.'],
-            ['Valor','Transcendent','Combat','An aspect of metal and war that turns the bearer’s body into a living weapon, hard to break and ruinous to touch.'],
-            ['Nightborn','Awakened','Combat','A blood-and-night aspect whose hunger is measured in a blood meter instead of food, growing stronger in darkness.'],
-            ['Fay Spirit','Ascended','Support','A fae-light-and-song aspect built around auras, shields, and cleansing pillars that favor allies over the self.'],
-            ['Light Bringer','Divine','Divine','A radiant soul-fire aspect, a banished creature of light that brings warmth wherever it goes, and longing with it.'],
-            ['Fourth Wall Reader','Transcendent','Combat','Reads the world like a page, turning hidden stats and literary tricks into power.'],
-            ['Concealed','Ascended','Utility','A concealment aspect that dominates from the shadows but is dangerously exposed in open combat.'],
-            ['Wave Finder','Awakened','Utility','Reads the world through vibration and current, drawing on sonic waves, temperature shifts, and healing.'],
-            ['Cloud','Awakened','Utility','A weather-and-altitude aspect that rides storms and turns frost on attackers, but is nearly powerless underground.'],
-            ['Bubble','Dormant','Utility','A sea aspect built on protective bubble shields, crowd-control traps, and a literal bubble-person transformation.'],
-            ['On the Clock','Ascended','Utility','A time aspect governed by a personal gauge that ticks down with every use, hitting zero is fatal.'],
-            ['Healer of Life','Awakened','Support','Every ability moves Health from one place to another, whether into an ally or out of the bearer’s own body.'],
-            ['Informant of Hermes','Awakened','Support','A free-roaming spirit aspect granting unmatched speed afoot and remarkable finesse of hand.'],
-            ['Water-Horse','Awakened','Support','An ocean-and-travel aspect that gallops across water and heals allies, culminating in a mythical hippocampus form.'],
-            ['Star','Awakened','Combat','Starlight condenses into weapons and detonates in devastating bursts as the bearer becomes a blinding star.'],
-            ['Depths','Awakened','Utility','A deep-sea aspect that lets its bearer swim through solid ground and drag enemies down into the dark.'],
-            ['Knight of the Hearth','Awakened','Combat','A heat-and-knighthood aspect granting cold immunity, a warming aura for allies, and the power to steal flame itself.'],
-            ['Blood Pact','Awakened','Support','The bearer’s blood can mend life, but every miracle worked demands a sacrifice of their own vitality.'],
-            ['Lightbound','Awakened','Support','Carries light for those it protects, bottled into draughts, shards, and soul bonds.'],
-            ['Chilling','Awakened','Combat','Every strike builds a Frostbite meter on the target, cashed in once it’s full.'],
-            ['Regrowth','Awakened','Support','Ever-regrowing flesh, carved into healing for others, hardened into shields, and finally bloomed into an axolotl.'],
-            ['Groupy','Awakened','Utility','Summons manifested friends to fight alongside the bearer, capable of a final explosive sacrifice.'],
-            ['Cinderwake','Transcendent','Utility','A smoke-and-ash aspect that thickens the air into a sensing veil, banking embers as fuel.'],
-            ['Heavenly Cut','Transcendent','Combat','Gathers Edge from every landed blow to forge blades sharp enough to bite through armor.'],
-            ['Windbreaker','Awakened','Combat','A speedblitz ranger’s kit, closing gaps in a burst, striking from afar, and clapping foes out of position.'],
-            ['Return to Start','Ascended','Support','Winds a living thing’s body back seven seconds, restoring exactly what was, for better or worse.'],
-            ['Spider Kin','Awakened','Utility','Inherited spider traits: sticky hands on any wall, venom, and self-spun webs.'],
-            ['Weapons Maniac','Awakened','Combat','Holds every weapon close to the heart, reading, boosting, and copying them.'],
-            ['Chainbound','Awakened','Combat','Manifests spectral chains that slow, drag, and bind those who oppose the bearer.'],
-            ['Lifebringer','Awakened','Utility','Healing hands and a blessing domain, but the bearer’s own body pays for every grace given away.'],
-            ['Titan of the Stars','Awakened','Combat','Every step carries the weight of a titan, anchoring the ground into a weapon of impact.'],
-            ['Graviton','Ascended','Combat','Every force seeks balance, and the bearer decides where that balance lies, where a thing falls is their call and not the world’s.'],
-            ['Behind the Scenes','Awakened','Support','Dirty tricks, dread for foes, quiet strength for friends, and an exit when the knives come out.'],
-            ['Nomad','Awakened','Utility','Born of a painful, wandering life in the cold, fighting to prove it still exists.'],
-            ['Disciple of Charon','Awakened','Support','A ferryman’s kit, boatcraft, a temper for unruly souls, and a hoarder’s greed spent on allies.'],
-            ['Soul Reaper','Supreme','Combat','Feeds on death and severs the soul beneath physical defenses, ultimately abandoning the body as a Wraith.'],
-            ['Dead','Supreme','Combat','Commands death itself to punish enemies.'],
-            ['Darkness','Ascended','Utility','Unrivaled dominance in the dark, able to dissolve into it, but torn apart the instant light touches it.'],
-            ['Mirrorborn','Divine','Divine','A mirror-and-reflection aspect: forges loyal Reflections from stolen Soul Cores and steps through glass, water, and rain.'],
-            ['Home Cook','Dormant','Support','Seasons food at a conjured campfire, handing out buffs to anyone willing to sit down and eat.'],
-            ['Little King','Transcendent','Utility','Soul and body run on rules nobody else has: still enough to ignore a blow, loose enough to come apart into gray haze.'],
-            ['Second Life','Awakened','Support','Nothing stays broken forever and nothing stays pristine, the bearer walks matter back toward what it was or drives it forward into rot.'],
-            ['Devotee of Demeter','Dormant','Utility','The whole myth in one kit: the mother who makes things grow, shelters what she loves, and salts the earth when it is taken from her.'],
-            ['The Blue Nosed Reindeer','Dormant','Utility','Plainly, being a reindeer: built for the cold, built to run, and lit by a nose nothing else has.'],
-            ['Battery','Dormant','Support','A vessel for soul essence with no attack anywhere in it, every tier another way of moving power to where it is needed.'],
-            ['Restaurant Manager','Awakened','Support','A manager keeping everyone fed, the whole kit is logistics: cook it, deliver it, warehouse it, and finally become the kitchen.'],
-            ['Pitiful','Dormant','Combat','A difficult life whose only reward is relief at its end, every power here is bought with the bearer’s own suffering.'],
-            ['Prideful','Transcendent','Utility','Body and killing power rise and fall with the sun, until at the peak the bearer hangs a private one overhead.'],
-            ['Iron Sovereign','Supreme','Combat','Conquest made permanent: kills feed lasting growth, the beaten can be bound as thralls, and the last word is a colossus.'],
-            ['Rootweaver','Awakened','Utility','An aspect built on rewriting living code. It starts with seeds and it ends with people.'],
-            ['Raised by Wolves','Transcendent','Combat','A wolf-pack childhood that hardened flesh into weapon and shield long before any spell ever touched it.'],
-            ['Firesmith','Awakened','Utility','For this bearer fire is not a force but a material, something to be worked, quenched, and forged like any other.'],
-            ['Rabbit Embodiment','Dormant','Utility','Quick, twitchy, and aware of everything, built entirely around leaving before the thing that wants them arrives.'],
-            ['Red Wolf','Transcendent','Combat','A wolf gone mad with hunger, harder to stop the closer it comes to dying, and quiet the moment the bearer stops.'],
-            ['Dread Assembler','Ascended','Combat','Harvests the life force of the slain to tear demons into the world, paying for every one with a piece of the bearer’s mind.'],
-            ['Holy Templar','Ascended','Combat','Holy fire turned on what should not exist, and no help at all against anything that merely stands in the bearer’s way.'],
-            ['The Lucky Devil','Awakened','Utility','Every meaningful action becomes a wager: fortune tips the bearer’s way, provided they will risk an equally devastating loss.'],
-            ['Blizzard Beast','Transcendent','Combat','Patience and cold, waiting alone behind a curtain of ice, every power built around a beat of stillness before it lands.'],
-            ['Lumen Keeper','Dormant','Support','Small standing wards of shared light that cost almost nothing to keep lit and never strike anything at all.'],
-            ['Dull','Ascended','Utility','Refuses to accept that the world’s stranger harms are happening, and so is very hard to hurt with anything cleverer than a stick.'],
-            ['The Jester','Ascended','Utility','The Joker in a deck of a million cards, a bearer who can lie to the acknowledged masters of any craft, and finally to themselves.'],
-            ['Wretch','Below Mundane','Anti-Utility','Not a power but a punishment, a kit that is pure liability to its bearer and to anyone unlucky enough to stand near them.']
+            ['Battery','Dormant','Support','A Support Aspect of Soul Essence itself, you are the vessel that restores, stores and redistributes the power of souls. There is no attack anywhere in it; every tier is another way of moving essence from where it is to where it is needed.'],
+            ['Bubble','Dormant','Utility','A Utility Aspect of the membrane: a bubble is a wall, and a wall decides who is inside it. A sealed sphere nothing can cross, a bubble that carries one enemy out of the fight entirely, and a gun that shoves or mends but never wounds. Nothing on this ladder deals a single point of damage.'],
+            ['Devotee of Demeter','Dormant','Utility','A Utility Aspect of Seasons, Plants and Life, the ancient myth of Demeter fills you with life. Things grow faster where you walk, your herb-lore closes wounds, and what you love can be sealed away safe. Take from you what you love, and the ground itself will be forbidden to grow.'],
+            ['Home Cook','Dormant','Support','A Dormant Support Aspect built around seasoning food items that buff whoever eats them, plant a campfire, season a food item you\'re carrying, and share the results.'],
+            ['Lumen Keeper','Dormant','Support','A Support Aspect of steady, shared light. Nothing it does can strike a blow, every tier is a small standing ward that costs almost nothing to keep lit, and asks nothing of anyone standing near it except to stay close.'],
+            ['Pitiful','Dormant','Combat','A Combat Aspect of Suffering Builds Character: your life is a difficult one, the only possible reward is relief at its conclusion.'],
+            ['Rabbit Embodiment','Dormant','Utility','A Utility Aspect of not being caught. You take on a rabbit\'s qualities, quick, twitchy, aware of everything around you, and every part of it is built around leaving before the thing that wants you arrives. The senses that keep you alive are the same ones that make you worth hunting.'],
+            ['The Blue Nosed Reindeer','Dormant','Combat','A Combat Aspect of being, plainly, a reindeer: built for the cold, built to endure, and lit by a nose nothing else has. You are the one who keeps going when the weather stops everyone else, and the nose that lets your people follow you is the nose that makes you a target.'],
+            ['Behind the Scenes','Awakened','Support','A Support Aspect of dirty tricks: use every trick in the book to get the advantage. Dread for whoever looks at you, quiet strength for your friends, and a way out when the knives come.'],
+            ['Blood Pact','Awakened','Support','An Awakened Support Aspect of Blood: the bearer\'s blood carries the power to mend life, but every miracle demands a sacrifice of their own vitality, and only a fraction of its power ever works on themselves.'],
+            ['Chainbound','Awakened','Combat','A Combat Aspect of Chains: a mysterious aspect that manifests spectral chains capable of restricting those who oppose you. Slow them, drag them, bind them, the chains never let go willingly.'],
+            ['Chilling','Awakened','Combat','A Combat Aspect of Freezing: command the chilling frost around you. Every strike and shape builds your victim\'s Frostbite bar, and a filled bar is yours to cash in.'],
+            ['Cloud','Awakened','Utility','An Awakened Utility Aspect of weather and altitude. Calls a cloud to ride, turns storm and frost against whoever comes close, and in its Transcendent form stops being solid at all. Underground, it is nearly powerless.'],
+            ['Depths','Awakened','Utility','An Awakened Utility Aspect of the deep sea: channel the darkness only born from the depths. The ground is the bearer\'s ocean, they swim through it, chain their enemies in darkness, drag them under, and finally become the massive whale that lives below the world.'],
+            ['Disciple of Charon','Awakened','Support','A Support Aspect of the stygian boatman: leading souls over the river Styx was not just your job but also your destiny. A ferryman\'s kit, boatcraft and the paddle, a temper for unruly souls, and a hoarder\'s greed spent on allies.'],
+            ['Firesmith','Awakened','Utility','An Awakened Utility Aspect for whom fire is not a force but a material. You cannot make fire, you find it, and you work it. Metallic Flame condenses existing flame into real, still-molten metal; Volcanic Storm lays down fuel that something else must light, and burns long enough afterward to feed the forge; the Flaming Anvil makes your best work permanent and forges the eternal flame\'s own enchantments into it; and at your peak the Magma Sentinel makes your own body the furnace.'],
+            ['Groupy','Awakened','Utility','A Utility Aspect of Teaming and Grouping, with yourself or others: become your own team. Friends splash into being at your side, fight for you, and when asked, go out with a bang.'],
+            ['Healer of Life','Awakened','Support','An Awakened Support Aspect: you are chosen by healing. Every ability moves Health from one place to another, into an ally, out of your own body, or indiscriminately into anything standing in the wrong (or right) place.'],
+            ['Informant of Hermes','Awakened','Support','Your spirit is unique in nature and roams as free as a bird. Your legs have carried you further than ever before and as such ancient myth has come to aid you. Not only your legs but also your hands have earned incredible finesse.'],
+            ['Knight of the Hearth','Awakened','Combat','A Combat Aspect of heat, knighthood, and temperature: the heat of the myth of divine flows through you, you shall never fear the cold again. A warming hug that gifts fire, honor that armors you, and the power to steal the very flame from the world.'],
+            ['Lifebringer','Awakened','Utility','A Utility Aspect of blessing: healing hands, a soothing voice, and a domain none of your allies escape unblessed, while your own body pays for every grace it gives away.'],
+            ['Lightbound','Awakened','Support','A Support Aspect of Light: you carry light to bless those you choose to protect, bottled as curative draughts, condensed into shards and Beacons, forged into soul bonds, and finally become light itself.'],
+            ['Nomad','Awakened','Utility','A Utility Aspect of cold, traveling, and survival: you have lived a life of pain and fled from all that surrounds you, now you wander the cold of a world that has forgotten you exist. Show them you still exist.'],
+            ['Regrowth','Awakened','Support','A Support Aspect of Re/Growing: your body is that of an ever-regrowing piece of flesh, carved into healing for others, hardened into shields, deadly to touch, and finally bloomed into the axolotl that regrows everything.'],
+            ['Restaurant Manager','Awakened','Support','A Support Aspect of food and getting it to people quickly. A manager tries his best to keep everyone and anyone fed, cook it out of nightmare flesh, deliver it across the field, warehouse it, and finally become the kitchen. Nothing this aspect does is for you alone.'],
+            ['Second Life','Awakened','Support','A Support Aspect of Restoration and Decay: nothing remains broken forever, and nothing remains pristine forever. Channel essence into a thing to walk it back toward what it was, or carry the rot on your strikes to walk it forward into ruin, and at the height of either, hold it there until it sets.'],
+            ['Spider Kin','Awakened','Utility','A Utility Aspect of spider descent: you inherited some of their traits. Sticky hands up any wall, a predator\'s eyes and venom, and webs of your own making.'],
+            ['Star','Awakened','Combat','An Awakened Combat Aspect of starlight: become a blinding star. Starlight condenses into weapons, plants searing Overheat in everything it touches, and detonates it in devastating bursts once awakened.'],
+            ['The Lucky Devil','Awakened','Utility','Your soul is intertwined with the concept of chance. Every meaningful action becomes a wager, and fortune tips your way, provided you are willing to risk an equally devastating loss. The longer you lose, the better your next odds; the moment you win, the house settles up and you start over.'],
+            ['Titan Of The Stars','Awakened','Combat','A Combat Aspect of gravity, strength, impact, and area control: every step carries the weight of a titan, and you grow into that weight, standing taller with every rank you climb until you tower over ordinary men. Anchor yourself into unshakeable armour, become the mountain nothing nearby can look away from, and press the world flat around you.'],
+            ['Water-Horse','Awakened','Support','A Support Aspect of the ocean and of travelling: gallop across the waters of the Dream Realm, wash healing over your allies, and carry them on your back as the mythical hippocampus in its Transcendent form.'],
+            ['Wave Finder','Awakened','Utility','An Awakened Utility Aspect of sonic waves, magnetic heat and cold, and radiant healing. Reads the world through vibration and current, and can travel at the speed of light in its Transcendent form.'],
+            ['Weapons Maniac','Awakened','Combat','A Combat Aspect of the armory: you hold all forms of weapons close to your heart, to the point of looking crazy to others. Read them, boost them, copy them, and never, ever betray the one you\'re bound to.'],
+            ['Windbreaker','Awakened','Combat','A Combat Aspect of the rushing wind: ride like the wind. A speedblitz ranger\'s kit, close the gap in a burst, cut and bind from afar, and clap every foe out of your space.'],
+            ['Arrow That Knows','Ascended','Combat','A warrior-seer Aspect. Its shots do not miss, but the only thing it guarantees is hitting. Power comes from preparation and information.'],
+            ['Catastrophe','Ascended','Combat','Become a being of destruction, and pour vast, impartial chaos onto all who approach.'],
+            ['Concealed','Ascended','Utility','An Ascended utility Aspect of concealment and darkness: become one with the dark, hiding your intentions and actions as a hidden threat, but avoid frontal combat and prolonged exposure, for they place you at a great disadvantage.'],
+            ['Darkness','Ascended','Utility','An Ascended Utility Aspect of darkness and peace. In the dark you hold unrivaled dominance, able to dissolve into the black itself and drown the world in it, but step into the light and it tears through the darkness and your very being.'],
+            ['Dread Assembler','Ascended','Combat','Channel the grotesque rituals of an eldritch cult, sacrificing harvested stocks of life force to tear open reality and summon bloodbound thralls to overwhelm your enemies. A Combat Aspect of blood and conjuration. Nothing it does is free, and the price is always your own body or your own mind.'],
+            ['Dull','Ascended','Utility','Blind to the flaws of the World. Nothing clever reaches you, only something honest and heavy will do.'],
+            ['Fay Spirit','Ascended','Support','An Ascended support Aspect of fae light and song: auras that quicken allies\' souls, conjured pixie dusts, shields of light, and cleansing pillars, all dimmer when turned on yourself.'],
+            ['Graviton','Ascended','Combat','A Combat Aspect of force and balance: every force seeks balance, and you decide where that balance lies. Haul the world in or throw it out, hang an anomaly in the air that bends whatever crosses it, and become a pulsar that swallows blows and hurls them back.'],
+            ['Holy Templar','Ascended','Combat','A holy warrior\'s fire, turned wholly against what should not exist. A Combat Aspect built to hunt corruption and nothing else, every ember it lights, every ward it raises, and every bolt it throws answers only to what has already shown itself hostile.'],
+            ['Nightingale','Ascended','Utility','An Aspect of freedom, height, and impossible movement through open air.'],
+            ['On the Clock','Ascended','Utility','An Ascended Utility Aspect of Time. A bearer-only Time Gauge ticks away in the background, spent by every ability, refilled by the passage of time and by kills, and hitting exactly zero is instant death.'],
+            ['Return to Start','Ascended','Support','A Support Aspect of the Unchanging: you often find yourself starting things over again from the beginning. Wind a living thing\'s body back seven seconds, its health, its afflictions, even its soul and stomach, restoring exactly what was, for better or worse.'],
+            ['Rootweaver','Ascended','Utility','You read living things the way other people read writing, and you cannot help correcting them. It starts with seeds, a handful of wheat becomes a wall you can eat, a sapling becomes cover that grows where you tell it. Later it is meat, then it is people. Everything you touch comes out of your hands as something else.'],
+            ['The Jester','Ascended','Utility','The Joker in a deck of a million cards. You can trick the people they call masters of their craft, and, in the end, yourself.'],
+            ['Blizzard Beast','Transcendent','Combat','Patience, and the coldness to wait for it. A Combat Aspect built around stillness, every ability holds its breath before it lands, and every debt it collects is paid to the enemy in frost rather than blood.'],
+            ['Cinderwake','Transcendent','Utility','An Ascended utility Aspect of smoke and ash: thicken the air around you into a sensing veil, banking the embers it leaves behind as Ash to fuel what you shape from it.'],
+            ['Fortification','Transcendent','Unclassed','A body-strengthening Aspect that hardens the bearer through rank-based enhancements.'],
+            ['Fourth Wall Reader','Transcendent','Combat','A Transcendent combat Aspect that reads the world like a page, hidden stats laid bare, soul shards invested into permanent power, and literary tricks pulled from a library only you can see.'],
+            ['Heavenly Cut','Transcendent','Combat','A Transcendent Combat Aspect of Wind and Tempest: you carry the promise to cut the heavens, gathering Edge from every landed blow and spending it on blades sharp enough to bite through armor other weapons bounce off.'],
+            ['Iron Heart','Transcendent','Utility','A Transcendent Utility Aspect of metal and blade. Your weapons answer your will, swinging without a hand to guide them, shielding you when drawn close, and mending when held still. At Awakened you forge new weapons from raw iron and monster parts, each one a true Memory. At Ascended, a wounded creature can be unmade into a blade outright. At your peak you become the weapon itself, a storm of every blade you own or a titan of living iron.'],
+            ['Little King','Transcendent','Utility','A Transcendent Utility Aspect of body control: your soul and body work differently from everyone else\'s. Go perfectly still and untouchable, cut the air itself into slashing gusts, bank your body\'s condition against the moment you need it most, and become an intangible gray haze.'],
+            ['Nightborn','Transcendent','Combat','A Transcendent combat Aspect of blood and night. You are a creature of the night, feasting only on the blood of the living and fearing the harsh daylight.'],
+            ['Prideful','Transcendent','Combat','A Transcendent Combat Aspect of You: you are a god given gift upon the world, and all exist to bow at your feet. Your body and your power rise with the sun and fall with it, and you may never, ever lose.'],
+            ['Raised by Wolves','Transcendent','Combat','A Transcendent Combat Aspect built entirely from the body: a wolf-pack childhood hardened into permanent Strength, Speed, Agility, Resilience, and Endurance, a durability package that turns your skin into armor, a presence that rallies every ally who can see you into a fighting stance, and at your peak the giant steel-warrior War Maiden.'],
+            ['Red Wolf','Transcendent','Combat','In a dark forest there was a wolf, gone mad with hunger, attacking everything in sight, and the closer it came to dying, the harder it was to stop. A Combat Aspect of aggression. Everything it gives you is paid for in blood, and all of it goes quiet the moment you stop fighting.'],
+            ['Valor','Transcendent','Combat','A Transcendent Aspect of metal, sharpness, and war. Your body becomes a living weapon: hard to break, ruinous to touch, and capable of engraving sacrificed powers into itself.'],
+            ['Dead','Supreme','Combat','A Supreme Combat Aspect of Dying: command death itself to punish your enemies.'],
+            ['Iron Sovereign','Supreme','Combat','A Supreme Combat Aspect of conquest: every kill permanently hardens your body, a defeated foe can be destroyed or bound as a thrall, your mere presence weakens all who stand near you, and at your peak you tower as a colossus of steel and will.'],
+            ['Soul Reaper','Supreme','Combat','You are meant to reap. A Supreme Combat Aspect that feeds on death, severs the soul beneath physical defenses, grows a fractured core from what it breaks, and ultimately abandons the body as a Wraith.'],
+            ['Planeswalker','Sacred','Utility','A Sacred Utility Aspect of movement and distance. A road that gathers underfoot wherever you walk, fire immunity from the moment it takes hold, an out-of-body scout, a shortcut to remembered places, and a Transcendent form that scatters the bearer across the sky as walking stars.'],
+            ['The Penitent','Sacred','Support','The burden of sin is too heavy for many to carry. It is your place to intercede, to take the crushing weight from your allies\' shoulders and bear it yourself, that they may go free.'],
+            ['The Script Writer','Sacred','Utility','Fate is a manuscript, and you hold the pen. Write a name into your Book and the world obliges - but an author never walks onto his own stage.'],
+            ['Devil\'s Pact','Divine','Divine','A Divine aspect of infernal transformation. Bargain a sliver of sanity for monstrous power, the more the mind frays, the deadlier the bearer becomes.'],
+            ['Light Bringer','Divine','Divine','A Divine aspect of radiant soul-fire. You are a creature of light that was banished and doomed to exist in the darkness, you bring radiance and warmth wherever you go, but with it comes indescribable longing.'],
+            ['Mirrorborn','Divine','Divine','A Divine Utility Aspect of mirrors and reflection. Forge loyal Reflections from stolen Soul Cores, step through glass and still water and rain itself, steal the bodies of the unwary, and stash yourself away in a realm that exists only behind the glass.'],
+            ['Shadow Slave','Divine','Divine','A Divine aspect of adaptation, growth, imitation, stealth, and eventually authority over shadows. Every advancement pushes the bearer closer to becoming a true Divine Shadow: control shadows, travel through shadows, create shadows, then become shadow itself.'],
+            ['The Last Colossi','Cursed','Combat','You are the last living thing of a kind the world has already finished with. It has no more use for you, and you have none for its rules: harm feeds you, mercy wounds you, and the wounds you leave only ever get worse.'],
+            ['Wretch','Below Mundane','Anti-Utility','You are so wretched that the gods themselves woke up specifically to ruin you. Nothing here helps you. Nothing here was ever going to.']
         ];
 
         function esc(s) { return s.replace(/&/g,'&amp;').replace(/</g,'&lt;'); }
@@ -218,7 +245,7 @@
             
             <div class="footer-col footer-brand">
                 <div class="wiki-logo">
-                    <img src="images/website.logo.png" alt="ShadowCraft Logo">
+                    <img src="/images/website.logo.png" alt="ShadowCraft Logo">
                     <span>ShadowCraft</span>
                 </div>
                 <p class="footer-desc">
@@ -229,9 +256,9 @@
             <div class="footer-col">
                 <h4>Legal & Policies</h4>
                 <ul>
-                    <li><a href="../legal/service.terms.html">Terms of Service</a></li>
-                    <li><a href="../legal/privacy.html">Privacy Policy</a></li>
-                    <li><a href="../legal/sla.html">Service Level Agreement (SLA)</a></li>
+                    <li><a href="/legal/service.terms">Terms of Service</a></li>
+                    <li><a href="/legal/privacy">Privacy Policy</a></li>
+                    <li><a href="/legal/sla">Service Level Agreement (SLA)</a></li>
                 </ul>
             </div>
 
@@ -240,7 +267,7 @@
                 <ul>
                     <li><a href="https://discord.com/invite/voidspell" target="_blank" rel="noopener noreferrer">Discord Server</a></li>
                     <li><a href="https://buymeacoffee.com/voidspell" target="_blank" rel="noopener noreferrer">Support Us</a></li>
-                    <li><a href="../legal/laucher.html" target="_blank" rel="noopener noreferrer">Official launcher</a></li>
+                    <li><a href="/legal/laucher" target="_blank" rel="noopener noreferrer">Official launcher</a></li>
                 </ul>
             </div>
 

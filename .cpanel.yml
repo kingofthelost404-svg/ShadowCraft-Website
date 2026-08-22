@@ -2,11 +2,33 @@
 deployment:
   tasks:
     - export DEPLOYPATH=/home/nighguaq/public_html/
+
+    # Apache config — clean URLs and cache headers live here.
+    # Without this file the site falls back to /page.html URLs.
+    - /bin/cp .htaccess $DEPLOYPATH
+
+    # Pages
     - /bin/cp index.html $DEPLOYPATH
+    - /bin/cp 404.html $DEPLOYPATH
+    - /bin/cp aspects.html $DEPLOYPATH
+    - /bin/cp changelog.html $DEPLOYPATH
+    - /bin/cp creatures.html $DEPLOYPATH
+    - /bin/cp dream-realm.html $DEPLOYPATH
+    - /bin/cp faq.html $DEPLOYPATH
+    - /bin/cp memories.html $DEPLOYPATH
+    - /bin/cp progression.html $DEPLOYPATH
+    - /bin/cp nightmares.html $DEPLOYPATH
     - /bin/cp rules.html $DEPLOYPATH
-    - /bin/cp wiki.html $DEPLOYPATH
     - /bin/cp shop.html $DEPLOYPATH
-    - /bin/cp launcher.html $DEPLOYPATH
+    - /bin/cp wiki.html $DEPLOYPATH
+
+    # Styles and assets
     - /bin/cp style.css $DEPLOYPATH
     - /bin/cp -R images $DEPLOYPATH
     - /bin/cp -R legal $DEPLOYPATH
+    - /bin/cp -R memories $DEPLOYPATH
+
+    # Not deployed on purpose:
+    #   test.html  - scratch page
+    #   map/       - 91 MB of generated map tiles, upload manually when regenerated
+    #   Videos/    - not referenced by any page

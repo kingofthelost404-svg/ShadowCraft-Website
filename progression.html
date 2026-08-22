@@ -1,0 +1,2173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Progression - ShadowCraft Wiki</title>
+
+    <meta name="description" content="How power works in ShadowCraft: soul ranks, soul cores, stat allocation, the Soul Sea and Memories. With the real in-game screens, playable in your browser.">
+    <meta name="keywords" content="ShadowCraft, Nightmare Spell, progression, soul rank, soul core, stats, Soul Sea, Memories, Aspects">
+    <meta name="author" content="ShadowCraft Team">
+
+    <meta property="og:site_name" content="ShadowCraft">
+    <meta property="og:title" content="Progression - ShadowCraft">
+    <meta property="og:description" content="Soul ranks, soul cores and stat allocation, explained with the real in-game screens you can actually use.">
+    <meta property="og:image" content="https://nightmarespell.org/images/embed.banner.jpg">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:alt" content="Five dreamers on a ridge, facing the mountain across the grey">
+    <meta property="og:url" content="https://nightmarespell.org/progression">
+    <meta property="og:type" content="article">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Progression - ShadowCraft">
+    <meta name="twitter:description" content="Soul ranks, soul cores and stat allocation, explained with the real in-game screens you can actually use.">
+    <meta name="twitter:image" content="https://nightmarespell.org/images/embed.banner.jpg">
+    <meta name="theme-color" content="#0b0e17">
+
+    <link rel="stylesheet" href="/style.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@400;500;700&display=swap">
+    <link rel="icon" type="image/x-icon" href="/images/website.logo.png">
+
+<style>
+/* ============================================================
+   PROGRESSION PAGE - layout for the five in-game screen recreations
+   ============================================================ */
+.sec { margin: 0 auto 56px; max-width: 1000px; text-align: left; }
+.sec-head { text-align: center; margin-bottom: 22px; }
+.sec-eyebrow {
+    font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.22em;
+    text-transform: uppercase; color: var(--label); display: block; margin-bottom: 8px;
+}
+.sec-head h2 { font-family: var(--font-display); color: var(--gold); font-size: 22px; }
+.sec-head p { color: #a9b4cc; font-size: 13.5px; line-height: 1.6; max-width: 62ch; margin: 10px auto 0; }
+
+/* The screen sections: game panel beside its explanation.
+   The notes column has a hard floor. Without it a wide panel (the Soul Sea is
+   500 native px, so 1000 at 2x) takes the whole row and squeezes the prose to
+   one word per line. fitPanels() in the script scales each panel to whatever
+   the stage column actually gets. */
+.screen-row { display: grid; grid-template-columns: minmax(0, auto) minmax(300px, 1fr); gap: 38px; align-items: start; }
+.screen-stage { position: sticky; top: 24px; min-width: 0; }
+
+/* Panels too wide to sit beside text get the full row, prose underneath. */
+.screen-row.stacked { grid-template-columns: 1fr; gap: 26px; }
+.screen-row.stacked .screen-stage { position: static; display: flex; justify-content: center; }
+.screen-row.stacked .screen-notes { max-width: 74ch; margin: 0 auto; }
+.screen-notes { text-align: left; padding-top: 4px; }
+.screen-notes h3 { font-family: var(--font-display); color: var(--gold); font-size: 17px; margin-bottom: 8px; }
+.screen-notes p { font-size: 13.5px; color: #bdc5d9; line-height: 1.65; margin-bottom: 12px; }
+.screen-notes p strong { color: var(--value); font-weight: 400; border-bottom: 1px dotted var(--border); }
+.note-list { list-style: none; display: flex; flex-direction: column; gap: 9px; margin: 14px 0 16px; }
+/* NB: this list must NOT be a grid. Inline children such as a bold tag each become
+   their own grid item, which throws the trailing text into the marker column
+   and breaks it to one word per line. Absolute marker, normal flow. */
+.note-list li { position: relative; padding-left: 26px; font-size: 13px; color: #a9b4cc; line-height: 1.6; }
+.note-list li::before {
+    content: '\25C6'; position: absolute; left: 5px; top: 0;
+    color: var(--glow); font-size: 9px; line-height: 2.1; opacity: 0.8;
+}
+.note-list b { color: var(--value); font-weight: 400; }
+.open-with {
+    display: inline-flex; align-items: center; gap: 10px; margin-top: 4px;
+    font-family: var(--font-mono); font-size: 10.5px; letter-spacing: 0.1em;
+    text-transform: uppercase; color: var(--label);
+    border: 1px solid var(--border-in); border-radius: 2px; padding: 7px 12px;
+    background: rgba(var(--panel), 0.5);
+}
+.open-with kbd {
+    font-family: var(--font-mono); font-size: 11px; color: var(--gold);
+    border: 1px solid var(--gold); border-radius: 2px; padding: 1px 7px;
+    background: rgba(201,174,106,0.08);
+}
+.try-hint {
+    font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.12em;
+    text-transform: uppercase; color: var(--glow); margin-top: 14px;
+    display: flex; align-items: center; gap: 8px;
+}
+.try-hint::before { content: ''; width: 18px; height: 1px; background: var(--glow); opacity: 0.6; }
+
+/* ============================================================
+   PART 3 - the in-game panels. Every dimension below is taken
+   from the mod source; the whole panel is authored at native
+   game-pixel scale and then scaled up as one block.
+   ============================================================ */
+.gs-wrap {
+    --zoom: 2;
+    width: calc(var(--pw) * var(--zoom) * 1px);
+    height: calc(var(--ph) * var(--zoom) * 1px);
+    flex-shrink: 0;
+}
+.gs {
+    width: calc(var(--pw) * 1px);
+    height: calc(var(--ph) * 1px);
+    transform: scale(var(--zoom));
+    transform-origin: top left;
+    position: relative;
+    font-family: 'Pixelify Sans', 'Courier New', monospace;
+    font-size: 8px;
+    line-height: 9px;
+    -webkit-font-smoothing: none;
+    user-select: none;
+}
+/* SpellDraw.border(): 2px outer #2D0A52 + 1px inner line inset 2px */
+.gs-panel {
+    position: absolute; inset: 0;
+    background: rgba(10, 0, 30, 0.816);
+    border: 2px solid #2D0A52;
+    box-shadow: inset 0 0 0 1px rgba(45, 10, 82, 0.251);
+}
+.gs-scrim { position: absolute; inset: -10px; background: rgba(3, 0, 8, 0.5); z-index: -1; }
+
+/* drawGlowingTitle - "≈  Title  ≈", 4 offset purple copies + gold on top */
+.gs-title {
+    position: absolute; left: 0; right: 0; top: 10px; text-align: center;
+    color: #D4AF37; letter-spacing: 0.5px;
+    animation: sp-titleglow 5.655s ease-in-out infinite;
+}
+@keyframes sp-titleglow {
+    0%, 100% { text-shadow: -1px 0 rgba(168,85,247,0.16), 1px 0 rgba(168,85,247,0.16), 0 -1px rgba(168,85,247,0.16), 0 1px rgba(168,85,247,0.16); }
+    50%      { text-shadow: -1px 0 rgba(168,85,247,0.55), 1px 0 rgba(168,85,247,0.55), 0 -1px rgba(168,85,247,0.55), 0 1px rgba(168,85,247,0.55); }
+}
+/* drawCornerRunes - four ◆ inset 4px, alpha 55..255 on the same pulse */
+.gs-rune {
+    position: absolute; color: #A855F7; font-size: 7px; line-height: 7px;
+    animation: sp-pulse 5.655s ease-in-out infinite;
+}
+.gs-rune.tl { top: 4px; left: 4px; } .gs-rune.tr { top: 4px; right: 4px; }
+.gs-rune.bl { bottom: 4px; left: 4px; } .gs-rune.br { bottom: 4px; right: 4px; }
+@keyframes sp-pulse { 0%, 100% { opacity: 0.216; } 50% { opacity: 1; } }
+
+.gs-rule { position: absolute; height: 1px; background: #2D0A52; }
+.gs-div { position: absolute; height: 1px; background: rgba(168, 85, 247, 0.314); }
+.gs-lbl { color: #9575CD; }
+.gs-val { color: #EDE9FE; }
+.gs-gold { color: #D4AF37; }
+.gs-hint { color: #60A5FA; }
+.gs-dim { color: #6B6B8A; }
+.gs-warn { color: #EF5350; }
+.gs-row { position: absolute; white-space: nowrap; }
+
+/* buttons - drawButton() lerps bg #0A001E→#2D0A52 and border #2D0A52→#D4AF37 */
+.gs-btn {
+    position: absolute; display: flex; align-items: center; justify-content: center;
+    background: rgba(10, 0, 30, 0.816); border: 1px solid #2D0A52; color: #D4AF37;
+    cursor: pointer; font: inherit; padding: 0;
+    transition: background-color 0.15s cubic-bezier(.4,0,.6,1), border-color 0.15s cubic-bezier(.4,0,.6,1);
+}
+.gs-btn:hover:not(:disabled) { background: #2D0A52; border-color: #D4AF37; }
+.gs-btn:disabled { color: #6B6B8A; border-color: #3A3A3A; cursor: default; }
+.gs-btn:focus-visible { outline: none; box-shadow: 0 0 0 1px #D4AF37; }
+
+/* nudge chips ‹ › - 12×12, bg #1B0738, hover #2D0A52 */
+.gs-nudge {
+    position: absolute; width: 12px; height: 12px; background: #1B0738;
+    border: 0; color: #D4AF37; cursor: pointer; font: inherit;
+    display: flex; align-items: center; justify-content: center;
+    transition: background-color 0.15s cubic-bezier(.4,0,.6,1);
+}
+.gs-nudge:hover { background: #2D0A52; }
+.gs-nudge:focus-visible { outline: none; box-shadow: 0 0 0 1px #D4AF37; }
+
+.gs-bar-bg { position: absolute; background: #0F0020; }
+.gs-bar-fill { position: absolute; background: #7C3AED; transition: width 0.28s cubic-bezier(.22,.61,.36,1); }
+
+/* tooltip - 270 wide, pad 8, line pitch 11, halo rgba(45,10,82,.376) */
+.gs-tip {
+    position: absolute; width: 270px; padding: 8px;
+    background: rgba(10, 0, 30, 0.816);
+    border: 2px solid #2D0A52;
+    box-shadow: 0 0 0 2px rgba(45, 10, 82, 0.376), inset 0 0 0 1px rgba(45, 10, 82, 0.251);
+    z-index: 40; pointer-events: none;
+    animation: sp-tip 0.14s cubic-bezier(.22,.61,.36,1);
+}
+@keyframes sp-tip { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+.gs-tip .t-line { line-height: 11px; }
+.gs-tip .t-gap { height: 5px; }
+
+.gs-hit { position: absolute; cursor: default; }
+.gs-hit.link { cursor: pointer; }
+
+/* --- Soul Sea specifics --- */
+.gs-sea-canvas { position: absolute; left: 0; top: 0; width: 500px; height: 320px; }
+.gs-sea-row {
+    position: absolute; height: 20px; cursor: pointer;
+    background: rgba(17, 37, 64, 0.333);
+    box-shadow: inset 0 1px 0 rgba(56,189,248,0.33);
+    transition: background-color 0.15s cubic-bezier(.4,0,.6,1);
+}
+.gs-sea-row:hover { background: rgba(56, 189, 248, 0.29); }
+.gs-sea-row.sel { background: rgba(56, 189, 248, 0.47); box-shadow: inset 0 1px 0 #D4AF37; }
+.gs-sea-row .r-name { position: absolute; left: 24px; top: 6px; color: #EDE9FE; transition: left 0.15s cubic-bezier(.4,0,.6,1); }
+.gs-sea-row:hover .r-name { left: 27px; }
+.gs-sea-row .r-info { position: absolute; right: 12px; top: 6px; color: #9575CD; }
+.gs-sea-row .r-glyph { position: absolute; left: 6px; top: 5px; font-size: 9px; }
+@keyframes sea-reveal { from { opacity: 0; transform: translateX(-10px); } to { opacity: 1; transform: none; } }
+.gs-slot {
+    position: absolute; height: 26px; background: rgba(17, 37, 64, 0.35);
+    box-shadow: inset 0 1px 0 #38BDF8; cursor: pointer;
+    transition: background-color 0.15s cubic-bezier(.4,0,.6,1);
+}
+.gs-slot:hover { background: rgba(56,189,248,0.22); }
+.gs-slot.bound { box-shadow: inset 0 1px 0 #A78BFA; }
+.gs-slot.target { background: rgba(212,175,55,0.28); box-shadow: inset 0 1px 0 #D4AF37; }
+.gs-slot .s-key { position: absolute; left: 4px; top: 4px; color: #EDE9FE; }
+.gs-slot .s-name { position: absolute; left: 4px; top: 15px; color: #9575CD; }
+
+/* --- Memories grid specifics --- */
+.gs-cell {
+    position: absolute; width: 68px; height: 78px;
+    border: 1px solid rgba(168, 85, 247, 0.5); cursor: pointer;
+    transition: background-color 0.15s cubic-bezier(.4,0,.6,1);
+}
+.gs-cell:hover { background: rgba(255,255,255,0.188); }
+.gs-cell .c-icon { position: absolute; left: 26px; top: 4px; font-size: 14px; line-height: 16px; }
+.gs-cell .c-tier { position: absolute; left: 0; right: 0; top: 26px; text-align: center; }
+.gs-cell .c-name { position: absolute; left: 2px; right: 2px; top: 38px; text-align: center; color: #EDE9FE; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+.gs-cell .c-mast { position: absolute; left: 0; right: 0; top: 50px; text-align: center; }
+.gs-cell .c-dur { position: absolute; left: 4px; top: 64px; width: 60px; height: 3px; background: #0F0020; }
+.gs-cell .c-dur i { display: block; height: 3px; background: #7C3AED; }
+.gs-cell .c-dur.fragile i { background: #EF4444; }
+.gs-tab {
+    position: absolute; height: 14px; background: rgba(6,0,24,0.816);
+    border: 1px solid rgba(45,10,82,0.251); color: #9575CD; cursor: pointer;
+    display: flex; align-items: center; justify-content: center; font: inherit;
+    transition: background-color 0.15s cubic-bezier(.4,0,.6,1), color 0.15s cubic-bezier(.4,0,.6,1);
+}
+.gs-tab:hover { background: rgba(255,255,255,0.1); }
+.gs-tab.active { background: rgba(212,175,55,0.314); border-color: #D4AF37; color: #D4AF37; }
+.gs-search {
+    position: absolute; background: rgba(6,0,24,0.816); border: 1px solid rgba(45,10,82,0.251);
+    color: #EDE9FE; font: inherit; padding: 0 5px; outline: none;
+}
+.gs-search::placeholder { color: #9575CD; }
+.gs-search:focus { border-color: #00E5CC; }
+
+/* --- Pathway specifics --- */
+.gs-track { position: absolute; overflow: hidden; }
+.gs-track-inner { position: absolute; inset: 0; transition: transform 0.3s cubic-bezier(.22,.61,.36,1); }
+.gs-card {
+    position: absolute; width: 76px; height: 104px; top: 0;
+    border: 1px solid rgba(45,10,82,0.6);
+    transition: background-color 0.2s cubic-bezier(.4,0,.6,1), border-color 0.2s cubic-bezier(.4,0,.6,1);
+}
+.gs-card.locked { background: rgba(16, 24, 40, 0.267); }
+.gs-card.ready { background: rgba(20, 83, 45, 0.333); border-color: #4ADE80; cursor: pointer; }
+.gs-card.ready:hover { background: rgba(20, 83, 45, 0.55); border-color: #D4AF37; }
+.gs-card.claimed { background: rgba(32, 32, 32, 0.2); }
+.gs-card .k-stage { position: absolute; left: 0; right: 0; top: 5px; text-align: center; }
+.gs-card .k-cred { position: absolute; left: 0; right: 0; top: 18px; text-align: center; color: #FBBF24; }
+.gs-card .k-rew { position: absolute; left: 4px; right: 4px; top: 34px; text-align: center; color: #9575CD; line-height: 10px; }
+.gs-card .k-state { position: absolute; left: 0; right: 0; top: 92px; text-align: center; }
+
+/* --- simulator control strip (page chrome, not game UI) --- */
+.sim-bar {
+    display: flex; flex-wrap: wrap; align-items: center; gap: 14px;
+    background: rgba(var(--panel), 0.55); border: 1px solid var(--border-in);
+    border-radius: 2px; padding: 13px 16px; margin-bottom: 18px;
+}
+.sim-bar .sim-label { font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--label); }
+.sim-bar select {
+    font-family: var(--font-mono); font-size: 11px; color: var(--gold);
+    background: rgba(var(--panel), 0.9); border: 1px solid var(--border);
+    border-radius: 2px; padding: 6px 10px; cursor: pointer;
+}
+.sim-bar select:focus-visible { outline: none; box-shadow: 0 0 0 3px rgba(163,174,222,0.15); }
+.sim-bar input[type=range] { accent-color: var(--gold); width: 150px; cursor: pointer; }
+.sim-read { font-family: var(--font-mono); font-size: 11px; color: var(--value); font-variant-numeric: tabular-nums; }
+
+.stat-readout { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 8px; margin-top: 16px; }
+.stat-readout div {
+    background: rgba(var(--panel), 0.5); border: 1px solid var(--border-in);
+    border-radius: 2px; padding: 9px 12px;
+    font-family: var(--font-mono); font-size: 11px; color: var(--label);
+    display: flex; justify-content: space-between; gap: 10px;
+}
+.stat-readout b { color: var(--gold); font-weight: 400; font-variant-numeric: tabular-nums; }
+
+.econ-table { width: 100%; border-collapse: collapse; font-size: 13px; text-align: left; margin-top: 8px; }
+.econ-table th, .econ-table td { padding: 9px 12px; border-bottom: 1px solid var(--border-in); font-variant-numeric: tabular-nums; }
+.econ-table th { font-family: var(--font-mono); font-size: 10.5px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--label); }
+.econ-table td:first-child { color: var(--value); }
+.econ-table td { color: #a9b4cc; }
+.table-scroll { overflow-x: auto; }
+
+.cta-block { text-align: center; margin: 10px auto 0; }
+.cta-block .cta-copy { font-size: 15px; color: var(--gold-soft); line-height: 1.7; max-width: 60ch; margin: 0 auto 22px; }
+.cta-actions { display: flex; flex-wrap: wrap; justify-content: center; gap: 14px; }
+.cta-actions .btn.donate { border-color: var(--gold); color: var(--gold); }
+.cta-actions .btn.donate:hover { background-color: rgba(201,174,106,0.14); color: var(--gold-soft); }
+
+.badge-soon {
+    font-family: var(--font-mono); font-size: 9px; letter-spacing: 0.08em;
+    text-transform: uppercase; color: var(--label); border: 1px solid var(--border);
+    border-radius: 10px; padding: 2px 8px; white-space: nowrap;
+}
+
+a:focus-visible, button:focus-visible, select:focus-visible, input:focus-visible {
+    outline: none; box-shadow: 0 0 0 3px rgba(163, 174, 222, 0.15);
+}
+
+@media (max-width: 1180px) {
+    .screen-row { grid-template-columns: 1fr; gap: 26px; }
+    .screen-stage { position: static; display: flex; justify-content: center; }
+    .screen-notes { max-width: 74ch; margin: 0 auto; }
+}
+@media (max-width: 760px) { .footer-container { grid-template-columns: 1fr; gap: 25px; } }
+
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation-duration: 0.001ms !important; animation-iteration-count: 1 !important; transition-duration: 0.001ms !important; }
+}
+</style>
+</head>
+<body>
+
+    <header class="wiki-navbar">
+        <div class="wiki-logo">
+            <a href="/wiki">
+                <img src="/images/website.logo.png" alt="ShadowCraft Logo">
+                <span>ShadowCraft Wiki</span>
+            </a>
+        </div>
+        <nav class="wiki-nav-menu">
+            <ul>
+                <li><a href="/">Home</a></li>
+                <li><a href="/aspects">Aspects</a></li>
+                <li><a href="/memories">Memories</a></li>
+                <li><a href="/nightmares">Nightmares</a></li>
+                <li><a href="/creatures">Nightmare Creatures</a></li>
+                <li><a href="/dream-realm">Dream Realm</a></li>
+                <li><a href="/faq">FAQ</a></li>
+                <li><a href="/progression" class="active">Progression</a></li>
+            </ul>
+        </nav>
+
+        <a href="https://buymeacoffee.com/voidspell" target="_blank" rel="noopener noreferrer" class="btn nav-support-btn">Support Us</a>
+    </header>
+
+    <aside class="wiki-sidebar">
+        <div class="wiki-sidebar-content">
+            <div class="wiki-sidebar-home">
+                <a href="/">← Return Home</a>
+            </div>
+            <nav>
+                <ul class="wiki-sidebar-menu">
+                    <li><a href="/wiki">Wiki Overview</a></li>
+                    <li><a href="/aspects">Aspects</a></li>
+                    <li><a href="/memories">Memories</a></li>
+                    <li><a href="/nightmares">Nightmares</a></li>
+                    <li><a href="/creatures">Nightmare Creatures</a></li>
+                    <li><a href="/dream-realm">Dream Realm</a></li>
+                    <li><a href="/faq">FAQ</a></li>
+                    <li><a href="/progression" class="active">Progression</a></li>
+                    <li><a href="/rules">Rules</a></li>
+                    <li><a href="/shop">Shop</a></li>
+                    <li><a href="/changelog">Changelog</a></li>
+                </ul>
+            </nav>
+        </div>
+    </aside>
+
+    <div class="wiki-main-content" id="top">
+    <main class="wiki-container">
+
+    <h1 class="article-title">Progression</h1>
+    <p class="intro-text">
+        Everything you become is measured in one place: a soul core you fill by killing things stronger
+        than you. This page walks the whole climb, and lets you use the real screens.
+    </p>
+
+    <!-- ===================== 1. THE LOOP ===================== -->
+    <section class="sec" id="loop">
+        <div class="sec-head">
+            <span class="sec-eyebrow">Section One</span>
+            <h2>The Climb</h2>
+            <p>Eight steps from infection to Ascended. Every number on this page is read straight out of the mod.</p>
+        </div>
+        <div class="loop-flow">
+            <div class="loop-step"><div class="step-num">1</div><div class="step-body">
+                <h3>Infection</h3>
+                <p>You log in and the Spell finds you. <em>&ldquo;You are Infected. Your first nightmare begins in 3 days.&rdquo;</em> Sleep is blocked until it does. Use the three days to arm yourself.</p>
+            </div></div>
+            <div class="loop-step"><div class="step-num">2</div><div class="step-body">
+                <h3>The First Nightmare</h3>
+                <p>You choose a trial (Combat, Utility or Support) and are taken to the mountain. How well you perform is graded as a tier from 0 to 5: Spared, Survivor, Proven, Distinguished, Exemplary, Transcendent.</p>
+            </div></div>
+            <div class="loop-step"><div class="step-num">3</div><div class="step-body">
+                <h3>Dreamer, and an Aspect</h3>
+                <p>Clearing the trial is what makes you a Dreamer. Even a failed run releases you as one. Your performance tier decides which pool your Aspect is drawn from, and you are bound to that Aspect permanently.</p>
+            </div></div>
+            <div class="loop-step"><div class="step-num">4</div><div class="step-body">
+                <h3>The Summons</h3>
+                <p>On a server-wide clock, <b>every Dreamer is pulled into the Dream Realm at once.</b> Once under you must stay a set number of days before any gate will let you out.</p>
+            </div></div>
+            <div class="loop-step"><div class="step-num">5</div><div class="step-body">
+                <h3>Saturate the core</h3>
+                <p>Kill things at or above your rank. Each kill pays soul fragments; fragments fill your core. You collect <b>75% of the gap to the next rank</b> just by saturating. You earn most of a rank before you are given it.</p>
+            </div></div>
+            <div class="loop-step"><div class="step-num">6</div><div class="step-body">
+                <h3>Awaken</h3>
+                <p>Walk out through a conquered Citadel gate with your core at <b>75% or better</b> and you Awaken. Under-saturated Dreamers still get out. They just stay Dreamers, and the summons keeps its hold on them.</p>
+            </div></div>
+            <div class="loop-step"><div class="step-num">7</div><div class="step-body">
+                <h3>The Second Nightmare</h3>
+                <p>A cohort of at least five, all <em>exactly</em> Awakened and all at 75% saturation, accepts inside a 45-second window. It is the only door of its kind.</p>
+            </div></div>
+            <div class="loop-step"><div class="step-num">8</div><div class="step-body">
+                <h3>Ascended</h3>
+                <p><em>&ldquo;Something in you gives way, and settles higher.&rdquo;</em> Survivors are promoted, their Aspect climbs a rung, and they walk out with a rebirth charge to redistribute everything they are.</p>
+            </div></div>
+        </div>
+    </section>
+
+    <!-- ===================== 2. THE LADDER ===================== -->
+    <section class="sec" id="ladder">
+        <div class="sec-head">
+            <span class="sec-eyebrow">Section Two</span>
+            <h2>The Soul Rank Ladder</h2>
+            <p>Eight rungs. Each one is a hard set of numbers, not a title. There is no &ldquo;Sleeper&rdquo; rank; before the First Nightmare you have no rank at all.</p>
+        </div>
+        <div class="info-block" style="text-align:left; padding: 24px 26px;">
+            <div class="table-scroll">
+            <table class="rank-table">
+                <thead><tr>
+                    <th>Rank</th><th>Max Essence</th><th>Regen/s</th><th>Max Health</th><th>Soul HP</th><th>Reached by</th>
+                </tr></thead>
+                <tbody id="ladder-body"></tbody>
+            </table>
+            </div>
+            <p style="font-size:12.5px;color:#79839f;font-family:var(--font-mono);line-height:1.6;margin-top:6px;max-width:none;">
+                Nightmare creatures use different names on the very same rungs: Dormant, Awakened, Fallen,
+                Corrupted, Great, Cursed, Unholy. That is why the bestiary reads differently from your status page.
+            </p>
+        </div>
+    </section>
+
+    <!-- ===================== 3. STATUS PAGE ===================== -->
+    <section class="sec" id="status">
+        <div class="sec-head">
+            <span class="sec-eyebrow">Screen One</span>
+            <h2>The Status Page</h2>
+            <p>Everything the Spell will admit about you, on one sheet. Hover any row to read what the game tells you about it.</p>
+        </div>
+        <div class="sim-bar">
+            <span class="sim-label">Bound Aspect</span>
+            <select id="aspect-select" aria-label="Which Aspect the simulated player holds"></select>
+            <button class="filter-btn" id="aspect-random" type="button">Roll one</button>
+            <span class="sim-read" id="aspect-read"></span>
+        </div>
+
+        <div class="screen-row">
+            <div class="screen-stage">
+                <div class="gs-wrap" style="--pw:320; --ph:310;" id="status-wrap">
+                    <div class="gs" id="status-screen"></div>
+                </div>
+            </div>
+            <div class="screen-notes">
+                <h3>What you are looking at</h3>
+                <p>This is the spine of the whole mod. Your <strong>rank</strong>, your <strong>core</strong>, your
+                   <strong>Aspect</strong> and the Flaw that came with it, and every Memory, Echo and ability you hold,
+                   all read from one page.</p>
+                <ul class="note-list">
+                    <li><b>Soul Fragments</b> is the bar that matters. It is your current core's saturation, and it resets to zero every time you rank up.</li>
+                    <li><b>Soul Essence</b> is what abilities spend. Its ceiling is set by your rank and then stretched by how saturated your core is.</li>
+                    <li><b>Soul HP</b> is a second, separate health pool that only soul-damage touches. Reaching zero there kills you outright.</li>
+                    <li><b>Class</b> only appears for souls that can form more than one core. It is read purely off the core count: Beast, Monster, Demon, Devil, Tyrant, Terror, Titan.</li>
+                    <li>The three lines at the bottom are doors. They are how you reach every other screen on this page.</li>
+                </ul>
+                <p class="lore-quote" style="font-size:13px;">&ldquo;The Spell has not revealed this yet.&rdquo; is what a row says before you have earned it.</p>
+                <div class="try-hint">Hover the rows &middot; scroll inside the panel &middot; click Expand &middot; click a door line</div>
+                <div style="margin-top:14px;"><span class="open-with">In game <kbd>P</kbd></span></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===================== 4. STATS ===================== -->
+    <section class="sec" id="stats">
+        <div class="sec-head">
+            <span class="sec-eyebrow">Screen Two</span>
+            <h2>Stat Allocation</h2>
+            <p>Six stats, a budget you earn a fifth of a core at a time, and caps that stop you outrunning your own rank. This one is live. Spend the points.</p>
+        </div>
+
+        <div class="sim-bar">
+            <span class="sim-label">Simulate rank</span>
+            <select id="rank-select" aria-label="Simulated soul rank"></select>
+            <span class="sim-label">Core saturation</span>
+            <input type="range" id="sat-slider" min="0" max="100" value="60" aria-label="Core saturation percent">
+            <span class="sim-read" id="sat-read">60%</span>
+            <span class="sim-read" id="budget-read" style="margin-left:auto;"></span>
+        </div>
+
+        <div class="screen-row">
+            <div class="screen-stage">
+                <div class="gs-wrap" style="--pw:320; --ph:424;" id="stats-wrap">
+                    <div class="gs" id="stats-screen"></div>
+                </div>
+            </div>
+            <div class="screen-notes">
+                <h3>How the points work</h3>
+                <p>Your total is never banked and never accrued. It is <strong>recomputed from what you are</strong>,
+                   every ten ticks: five points per rank you have earned, plus everything you banked at previous ranks,
+                   plus one point for every completed fifth of your current core.</p>
+                <p>That last part is the sharp edge. The live portion <strong>can be taken back</strong>. Lose fragments to a
+                   PvP death and saturation slips, and the game tells you so: <em>&ldquo;The Soul Thins.&rdquo;</em></p>
+                <ul class="note-list">
+                    <li><b>Growing stats</b> (Vitality, Strength, Essence Regeneration, Endurance) pay a flat 2.5% of your base per point.</li>
+                    <li><b>Shrinking stats</b> (Resistance and Cooldown Reduction) take 2.5% of <em>what is left</em> each time. They narrow for ever and never close, so no amount of investment buys immunity.</li>
+                    <li><b>Caps are half the step to the next rank.</b> Investment can close half the distance the next rank would have given you anyway, never more.</li>
+                    <li>Caps are <b>not monotonic</b>. Vitality's cap falls from 20 to 5 at Supreme because raw health has stopped doubling, and the excess is refunded, not lost.</li>
+                    <li><b>Be Born Anew</b> clears every point at once. Charges come from clearing a Nightmare.</li>
+                </ul>
+                <div class="stat-readout" id="stat-readout"></div>
+                <div class="try-hint">Click a stat, then &lsaquo; &rsaquo; &middot; arrow keys work &middot; hold Shift for 5</div>
+                <div style="margin-top:14px;"><span class="open-with">In game <kbd>K</kbd></span></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===================== 5. SOUL SEA ===================== -->
+    <section class="sec" id="soulsea">
+        <div class="sec-head">
+            <span class="sec-eyebrow">Screen Three</span>
+            <h2>The Soul Sea</h2>
+            <p>Not your soul core, but the room it keeps. Two bubbles hang in the dark: everything you can summon, and everything you can cast.</p>
+        </div>
+        <div class="screen-row stacked">
+            <div class="screen-stage">
+                <div class="gs-wrap" style="--pw:500; --ph:320;" id="sea-wrap">
+                    <div class="gs" id="sea-screen">
+                        <canvas class="gs-sea-canvas" id="sea-canvas" width="1000" height="640"></canvas>
+                    </div>
+                </div>
+            </div>
+            <div class="screen-notes">
+                <h3>What it holds</h3>
+                <p>The site has used &ldquo;soul core&rdquo; and &ldquo;Soul Sea&rdquo; interchangeably, and they are not the
+                   same thing. The <strong>core</strong> is the vessel you saturate to rank up. The <strong>Soul Sea</strong>
+                   is where your Memories rest, where your Echoes wait, and where abilities get bound to keys.</p>
+                <ul class="note-list">
+                    <li><b>Echoes</b> are the things you can call up. Each row shows its health and what it costs in essence to summon.</li>
+                    <li><b>Abilities</b> are your Aspect's kit. They unlock off your <em>soul</em> rank, not your Aspect's. A Dormant-tier Aspect held by an Ascended player is a far bigger thing than the same Aspect on a Dreamer.</li>
+                    <li>Colour is information: cyan is active, violet passive, and borrowed, stolen or inherited abilities each get their own hue and a tag.</li>
+                    <li>Memories left in the Sea <b>mend on their own</b>. That is the quiet reason to come back here between runs.</li>
+                </ul>
+                <div class="try-hint">Click a bubble &middot; switch pages &middot; click an ability, then a slot</div>
+                <div style="margin-top:14px;"><span class="open-with">In game <kbd>O</kbd></span></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===================== 6. MEMORIES ===================== -->
+    <section class="sec" id="memories">
+        <div class="sec-head">
+            <span class="sec-eyebrow">Screen Four</span>
+            <h2>Memories</h2>
+            <p>Soulbound, breakable, and the only gear that matters. Fifteen cells at a time, and a card that tells you exactly how close each one is to shattering.</p>
+        </div>
+        <div class="screen-row stacked">
+            <div class="screen-stage">
+                <div class="gs-wrap" style="--pw:370; --ph:372;" id="mem-wrap">
+                    <div class="gs" id="mem-screen"></div>
+                </div>
+            </div>
+            <div class="screen-notes">
+                <h3>Durability is the whole game</h3>
+                <p>A Memory has 100 durability and loses it by being used. At <strong>25% or below</strong> it turns
+                   Fragile, and from then on every single use rolls to destroy it permanently. The curve is gentle
+                   at first and then not: roughly 0.2% at the threshold, 1.5% at 15%, 10% at 5%, and certain at zero.</p>
+                <ul class="note-list">
+                    <li><b>Seven tiers</b>, and their value doubles each step: 1, 2, 4, 8, 16, 32, 64 fragments when converted.</li>
+                    <li><b>Mastery is per copy.</b> Five stars, earned by using that exact Memory, and wiped the moment you sell it. Your mastery does not transfer to a replacement.</li>
+                    <li><b>Death resets held Memories to 1 durability</b>. They survive, but you cannot immediately swing them again.</li>
+                    <li>Converting a Memory in the Soul Sea turns it into fragments. It is deliberately a poor rate, a place to dump commons rather than an income.</li>
+                </ul>
+                <div class="try-hint">Hover a cell for the full card &middot; search &middot; switch tabs</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===================== 7. PATHWAY ===================== -->
+    <section class="sec" id="pathway">
+        <div class="sec-head">
+            <span class="sec-eyebrow">Screen Five</span>
+            <h2>Pathway of the Spell</h2>
+            <p>The long track that runs alongside everything else. Fifty stages, a hundred Challenge Points each.</p>
+        </div>
+        <div class="screen-row">
+            <div class="screen-stage">
+                <div class="gs-wrap" style="--pw:340; --ph:220;" id="path-wrap">
+                    <div class="gs" id="path-screen"></div>
+                </div>
+            </div>
+            <div class="screen-notes">
+                <h3>Two different numbers</h3>
+                <p><strong>Challenge Points</strong> only ever go up. They are your position on the track.
+                   <strong>Credits</strong> are a balance: claiming a stage pays them out, and Sunny's Brilliant Emporium
+                   draws them back down. Finishing the track grants the <b>[Persistent]</b> Attribute.</p>
+                <ul class="note-list">
+                    <li>Green means claimable, grey means locked, and a claimed stage stays on the track behind you.</li>
+                    <li>It is the one progression track that does not care about your rank, which makes it the reliable one.</li>
+                </ul>
+                <div class="try-hint">Drag the track &middot; claim a green stage</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===================== 8. ECONOMY ===================== -->
+    <section class="sec" id="economy">
+        <div class="sec-head">
+            <span class="sec-eyebrow">Section Eight</span>
+            <h2>Why You Punch Up</h2>
+            <p>The fragment economy has one rule, and every other design decision falls out of it.</p>
+        </div>
+        <div class="info-block" style="text-align:left; padding: 24px 26px;">
+            <p style="max-width:none; margin-bottom:16px;">
+                A kill pays according to the gap between your rank and the creature's. Match its rank and you get the
+                base rate. Kill something <b>above</b> you and the rate climbs, up to double. Kill something
+                <b>below</b> you and it collapses: one rank down pays half, two ranks down a third.
+            </p>
+            <div class="table-scroll">
+            <table class="econ-table">
+                <thead><tr><th>Your rank</th><th>Same-rank kill pays</th><th>Kills to fill the core</th><th>A rank-1 creature pays</th></tr></thead>
+                <tbody id="econ-body"></tbody>
+            </table>
+            </div>
+            <p style="max-width:none; margin-top:16px; color:#a9b4cc; font-size:13.5px; line-height:1.65;">
+                Filling every core on the ladder is roughly <b>3,368 same-rank kills</b>. Grinding creatures beneath you
+                is not slow. It is worthless. And in the Dream Realm a PvP death hands 10 to 15% of everything
+                you were carrying straight to whoever killed you.
+            </p>
+        </div>
+    </section>
+
+    <!-- ===================== 9. ASPECTS & FLAWS ===================== -->
+    <section class="sec" id="aspects">
+        <div class="sec-head">
+            <span class="sec-eyebrow">Section Nine</span>
+            <h2>Aspects &amp; Flaws</h2>
+            <p>What you are given at the end of the First Nightmare, and what it costs you.</p>
+        </div>
+        <div class="info-block" style="text-align:left; padding: 24px 26px;">
+            <p style="max-width:none;margin-bottom:18px;">
+                There are <b>72 obtainable Aspects</b>, from Dormant up through Divine, plus the
+                Cursed and Below Mundane shelves that sit off the ordinary ladder. Every one of them is on the
+                <a href="#status" style="color:var(--glow);">Status Page</a> above: pick any Aspect from the dropdown
+                and the sheet redraws with its real rank, class, Flaw name and the abilities your soul rank would
+                have unlocked. The full archive with descriptions lives on the
+                <a href="#top" style="color:var(--glow);">Aspects</a> page.
+            </p>
+            <h3 style="font-family:var(--font-display);color:var(--gold);font-size:16px;margin-bottom:10px;">The roll</h3>
+            <p style="max-width:none;margin-bottom:14px;">
+                Your performance tier decides the pool. Fail, and it is Dormant with certainty. Clear it well, and the
+                shelf moves up. The top of the table is not reachable through the ordinary trials at all. It needs
+                the hidden ordeal, and it is capped at a single holder on the whole server.
+            </p>
+            <div class="table-scroll">
+            <table class="econ-table">
+                <thead><tr><th>Performance tier</th><th>What the pool looks like</th></tr></thead>
+                <tbody>
+                    <tr><td>0: Spared</td><td>100% Dormant</td></tr>
+                    <tr><td>1: Survivor</td><td>100% Dormant</td></tr>
+                    <tr><td>2: Proven</td><td>30% Dormant &middot; 60% Awakened &middot; 10% Ascended</td></tr>
+                    <tr><td>3: Distinguished</td><td>40% Awakened &middot; 30% Ascended &middot; 30% Transcendent</td></tr>
+                    <tr><td>4: Exemplary</td><td>30% Transcendent &middot; 40% Supreme &middot; 30% Sacred</td></tr>
+                    <tr><td>5: Transcendent <span class="badge-soon">hidden ordeal only</span></td><td>100% Divine</td></tr>
+                </tbody>
+            </table>
+            </div>
+            <div class="core-panel-divider" style="margin:22px 0;"></div>
+            <h3 style="font-family:var(--font-display);color:var(--gold);font-size:16px;margin-bottom:10px;">On Flaws</h3>
+            <p style="max-width:none;">
+                Every Aspect arrives with one, and you do not get to choose it. A Flaw is permanent, it is part of the
+                bargain, and under very particular circumstances it can be suppressed, or turned around entirely.
+            </p>
+            <p style="max-width:none;margin-top:12px;">
+                We are not going to tell you what yours does. The mod ships without that code on your machine at all,
+                deliberately. Finding out is the point.
+            </p>
+        </div>
+    </section>
+
+    <!-- ===================== 10. KEYS ===================== -->
+    <section class="sec" id="keys">
+        <div class="sec-head">
+            <span class="sec-eyebrow">Section Ten</span>
+            <h2>Getting There</h2>
+        </div>
+        <div class="info-block" style="text-align:left; padding: 22px 26px;">
+            <div class="key-grid">
+                <div class="key-row"><span class="k-name">Status Page</span><span class="k-hint">P</span></div>
+                <div class="key-row"><span class="k-name">Soul Sea</span><span class="k-hint">O</span></div>
+                <div class="key-row"><span class="k-name">Stat Allocation</span><span class="k-hint">K</span></div>
+                <div class="key-row"><span class="k-name">Weapon Mastery</span><span class="k-hint">J</span></div>
+                <div class="key-row"><span class="k-name">Memories</span><span class="k-hint">/shadow memories</span></div>
+                <div class="key-row"><span class="k-name">Soul readout</span><span class="k-hint">/shadow soul</span></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===================== 11. CTA ===================== -->
+    <section class="sec" id="beta" style="max-width:820px;">
+        <div class="info-block" style="padding: 34px 30px;">
+            <div class="cta-block">
+                <span class="sec-eyebrow">Closed Beta</span>
+                <p class="cta-copy">
+                    Interested in Closed Beta? Donate 10$ and make a ticket to recieve early access, or wait for second
+                    wave of applications. Either ways support us now! :D
+                </p>
+                <div class="cta-actions">
+                    <a class="btn donate" href="https://buymeacoffee.com/voidspell" target="_blank" rel="noopener noreferrer">Donate Here</a>
+                    <a class="btn discord-btn" href="https://discord.com/invite/voidspell" target="_blank" rel="noopener noreferrer">Open a Ticket</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+</main>
+    </div>
+
+<script>
+(function () {
+'use strict';
+
+/* ============================================================
+   Data - all of it lifted from the mod source.
+   SoulRank.java: index, name, maxEssence, regen/s, maxHealth, maxSoulHp
+   ============================================================ */
+var RANKS = [
+    { i: 0, name: 'None',         ess: 0,     regen: 0,   hp: 20,   shp: 100, cls: 'r-none',         via: 'Not yet infected', reachable: true },
+    { i: 1, name: 'Dreamer',      ess: 100,   regen: 2,   hp: 50,   shp: 120, cls: 'r-dreamer',      via: 'Completing the First Nightmare', reachable: true },
+    { i: 2, name: 'Awakened',     ess: 1000,  regen: 5,   hp: 100,  shp: 150, cls: 'r-awakened',     via: 'Leaving a conquered Citadel gate at 75% saturation', reachable: true },
+    { i: 3, name: 'Ascended',     ess: 2500,  regen: 25,  hp: 200,  shp: 190, cls: 'r-ascended',     via: 'Surviving the Second Nightmare', reachable: true },
+    { i: 4, name: 'Transcendent', ess: 5000,  regen: 45,  hp: 400,  shp: 240, cls: 'r-transcendent', via: '', reachable: false },
+    { i: 5, name: 'Supreme',      ess: 8000,  regen: 65,  hp: 800,  shp: 300, cls: 'r-supreme',      via: '', reachable: false },
+    { i: 6, name: 'Sacred',       ess: 10000, regen: 100, hp: 1000, shp: 370, cls: 'r-sacred',       via: '', reachable: false },
+    { i: 7, name: 'Divine',       ess: 20000, regen: 300, hp: 1250, shp: 450, cls: 'r-divine',       via: '', reachable: false }
+];
+
+/* PlayerStat.java - id, display name, shape, and the in-game description */
+var STATS = [
+    { id: 'vitality',   name: 'Vitality',             shape: 'grow',   desc: "The body's whole reserve. Every point widens how much you can take before the world takes you." },
+    { id: 'strength',   name: 'Strength',             shape: 'grow',   desc: 'What your blows are worth, whether they come from a blade or an Aspect.' },
+    { id: 'resistance', name: 'Resistance',           shape: 'shrink', desc: 'How little of a blow reaches you. Each point takes a share of what was left, so it narrows for ever and never closes.' },
+    { id: 'essence',    name: 'Essence Regeneration', shape: 'grow',   desc: 'How fast the soul refills what it spends.' },
+    { id: 'endurance',  name: 'Endurance',            shape: 'grow',   desc: 'Your footing behind a guard, and how quickly it returns once the pressure lifts.' },
+    { id: 'cooldown',   name: 'Cooldown Reduction',   shape: 'shrink', desc: 'How soon an Aspect answers you a second time. Memories keep their own timing.' }
+];
+
+/* AspectType.Catalogue.register() - all 77 player-facing Aspects, with the
+   rank and class each one declares and the name of the Flaw it carries.
+   name, rank, class, flaw */
+var ASPECT_ROSTER = [
+    ['Battery','Dormant','Support','Open Soul'],
+    ['Bubble','Dormant','Utility','Bouncy'],
+    ['Devotee of Demeter','Dormant','Utility','Mother\'s Bond'],
+    ['Home Cook','Dormant','Support','Epicure'],
+    ['Lumen Keeper','Dormant','Support','Unlit'],
+    ['Pitiful','Dormant','Combat','The Pity of the Spell'],
+    ['Rabbit Embodiment','Dormant','Utility','Prey Scent'],
+    ['The Blue Nosed Reindeer','Dormant','Combat','Outcast'],
+    ['Behind the Scenes','Awakened','Support','Price Of Secrecy'],
+    ['Blood Pact','Awakened','Support','Penitent Soul'],
+    ['Chainbound','Awakened','Combat','Heavy Shackles'],
+    ['Chilling','Awakened','Combat','Cold'],
+    ['Cloud','Awakened','Utility','Grounded'],
+    ['Depths','Awakened','Utility','Pressure'],
+    ['Disciple of Charon','Awakened','Support','Hubris of Coin'],
+    ['Firesmith','Awakened','Utility','Coldforge'],
+    ['Groupy','Awakened','Utility','Alone'],
+    ['Healer of Life','Awakened','Support','The Chosen Medic'],
+    ['Informant of Hermes','Awakened','Support','Beautiful Dream'],
+    ['Knight of the Hearth','Awakened','Combat','Virgins Law'],
+    ['Lifebringer','Awakened','Utility','Heavy Burden'],
+    ['Lightbound','Awakened','Support','Borrowed Light'],
+    ['Nomad','Awakened','Utility','Curse of Knowledge'],
+    ['Regrowth','Awakened','Support','Weak Body'],
+    ['Restaurant Manager','Awakened','Support','A Never-Ending Hunger'],
+    ['Second Life','Awakened','Support','Fragile Craft'],
+    ['Spider Kin','Awakened','Utility','Fragile Body'],
+    ['Star','Awakened','Combat','Weaker Star'],
+    ['The Lucky Devil','Awakened','Utility','Gambling Addict'],
+    ['Titan Of The Stars','Awakened','Combat','Heavy Burden'],
+    ['Water-Horse','Awakened','Support','Free'],
+    ['Wave Finder','Awakened','Utility','Heart of a Mountain'],
+    ['Weapons Maniac','Awakened','Combat','Weapon Bound'],
+    ['Windbreaker','Awakened','Combat','Heavenly Tribulation'],
+    ['Arrow That Knows','Ascended','Combat','Blind Spot'],
+    ['Catastrophe','Ascended','Combat','At Nature\'s Mercy'],
+    ['Concealed','Ascended','Utility','Lethal Exposure'],
+    ['Darkness','Ascended','Utility','The Bane of Light'],
+    ['Dread Assembler','Ascended','Combat','Lunatical Being'],
+    ['Dull','Ascended','Utility','Not so Bright'],
+    ['Fay Spirit','Ascended','Support','Self Sufficient'],
+    ['Graviton','Ascended','Combat','Accretion'],
+    ['Holy Templar','Ascended','Combat','Sacred Vow'],
+    ['Nightingale','Ascended','Utility','Truthdetector'],
+    ['On the Clock','Ascended','Utility','Out of Time'],
+    ['Return to Start','Ascended','Support','Stillborn'],
+    ['Rootweaver','Ascended','Utility','Living Tumor'],
+    ['The Jester','Ascended','Utility','Center of Attention'],
+    ['Blizzard Beast','Transcendent','Combat','Frozen Heart'],
+    ['Cinderwake','Transcendent','Utility','Ashbound'],
+    ['Fortification','Transcendent','Unclassed','Unrevealed'],
+    ['Fourth Wall Reader','Transcendent','Combat','Broken Reader'],
+    ['Heavenly Cut','Transcendent','Combat','Feather Weight'],
+    ['Iron Heart','Transcendent','Utility','Cherished One'],
+    ['Little King','Transcendent','Utility','Glass Bones'],
+    ['Nightborn','Transcendent','Combat','Creature of the Night'],
+    ['Prideful','Transcendent','Combat','Pride Comes Before The Fall'],
+    ['Raised by Wolves','Transcendent','Combat','Endless Appetite'],
+    ['Red Wolf','Transcendent','Combat','Feast Before Rest'],
+    ['Valor','Transcendent','Combat','Ruinous Touch'],
+    ['Dead','Supreme','Combat','No Family'],
+    ['Iron Sovereign','Supreme','Combat','Conqueror\'s Curse'],
+    ['Soul Reaper','Supreme','Combat','Zombie'],
+    ['Planeswalker','Sacred','Utility','No Destination'],
+    ['The Penitent','Sacred','Support','Worthy Bearer'],
+    ['The Script Writer','Sacred','Utility','[False Being of Fate]'],
+    ['Devil\'s Pact','Divine','Divine','Unrevealed'],
+    ['Light Bringer','Divine','Divine','Pristine Soul'],
+    ['Mirrorborn','Divine','Divine','Shattered Self'],
+    ['Shadow Slave','Divine','Divine','Anti-Social'],
+    ['The Last Colossi','Cursed','Combat','The Last of a Dead Kind'],
+    ['Wretch','Below Mundane','Anti-Utility','I said GGS Five Times']
+];
+
+/* StatLadders.capPoints(), computed per rank - vit, str, res, ess, end, cdr */
+var CAPS = {
+    0: [0, 0, 0, 0, 0, 0],
+    1: [20, 10, 20, 30, 5, 5],
+    2: [20, 10, 10, 80, 5, 5],
+    3: [20, 10, 6, 16, 5, 5],
+    4: [20, 10, 5, 8, 5, 5],
+    5: [5, 10, 4, 10, 4, 4],
+    6: [5, 10, 3, 40, 4, 4],
+    7: [4, 6, 2, 13, 3, 3]
+};
+
+var PERCENT_PER_POINT = 0.025;
+function growFactor(n)   { return 1 + PERCENT_PER_POINT * n; }
+function shrinkFactor(n) { return Math.pow(1 - PERCENT_PER_POINT, n); }
+
+function esc(s) { return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;'); }
+function el(tag, cls, css, html) {
+    var n = document.createElement(tag);
+    if (cls) n.className = cls;
+    if (css) n.setAttribute('style', css);
+    if (html != null) n.innerHTML = html;
+    return n;
+}
+function at(x, y) { return 'left:' + x + 'px;top:' + y + 'px;'; }
+
+/* ============================================================
+   Shared panel chrome: title, runes, header rule
+   ============================================================ */
+function buildPanel(host, w, h, title) {
+    host.innerHTML = '';
+    host.appendChild(el('div', 'gs-scrim'));
+    host.appendChild(el('div', 'gs-panel'));
+    host.appendChild(el('div', 'gs-title', '', '≈&nbsp;&nbsp;' + esc(title) + '&nbsp;&nbsp;≈'));
+    ['tl', 'tr', 'bl', 'br'].forEach(function (c) {
+        host.appendChild(el('div', 'gs-rune ' + c, '', '◆'));
+    });
+}
+
+/* ============================================================
+   SECTION 2 - the ladder table
+   ============================================================ */
+(function ladder() {
+    var body = document.getElementById('ladder-body');
+    body.innerHTML = RANKS.map(function (r) {
+        var via = r.reachable
+            ? esc(r.via)
+            : '<span class="badge-soon">Not yet reachable</span>';
+        return '<tr>' +
+            '<td class="rank-name ' + r.cls + '">' + esc(r.name) + '</td>' +
+            '<td>' + r.ess.toLocaleString() + '</td>' +
+            '<td>' + r.regen + '</td>' +
+            '<td>' + r.hp.toLocaleString() + '</td>' +
+            '<td>' + r.shp + '</td>' +
+            '<td>' + via + '</td></tr>';
+    }).join('');
+}());
+
+/* ============================================================
+   SECTION 8 - the kill economy table (ShardYield.java)
+   shardBaseByMobRank = {8,11,14,16,18,19,20}; yield multiplier 0.5
+   ============================================================ */
+(function economy() {
+    var BASE = [8, 11, 14, 16, 18, 19, 20];
+    function payout(killer, creature) {
+        var diff = killer - creature, mult;
+        if (diff === 0) mult = 1.0;
+        else if (diff < 0) mult = Math.min(2.0, 1 + 0.25 * Math.abs(diff));
+        else mult = 1 / (1 + diff);
+        return Math.max(1, Math.round(BASE[creature - 1] * mult * 0.5));
+    }
+    var rows = '';
+    for (var i = 1; i <= 7; i++) {
+        var same = payout(i, i);
+        var need = i * 1000;
+        var low = payout(i, 1);
+        rows += '<tr><td>' + esc(RANKS[i].name) + '</td>' +
+                '<td>' + same + ' fragments</td>' +
+                '<td>' + Math.ceil(need / same).toLocaleString() + '</td>' +
+                '<td>' + low + (low === 1 ? ' fragment' : ' fragments') + '</td></tr>';
+    }
+    document.getElementById('econ-body').innerHTML = rows;
+}());
+
+/* ============================================================
+   SCREEN 1 - Status page (SpellStatusScreen.java)
+   ============================================================ */
+var statusState = { expanded: false, rank: 2, aspect: 0, scroll: 0 };
+
+/* Aspect abilities unlock off SOUL rank, never the Aspect's own rank.
+   AspectTemplate maps dormant->Dreamer, awakened->Awakened, ascended->Ascended,
+   partial/full form->Transcendent. */
+function abilityLine(rank) {
+    var tiers = [];
+    if (rank >= 1) tiers.push('Dormant');
+    if (rank >= 2) tiers.push('Awakened');
+    if (rank >= 3) tiers.push('Ascended');
+    if (rank >= 4) tiers.push('Full Form');
+    if (!tiers.length) return '-';
+    return tiers.map(function (t, i) { return t + ' [' + (i + 1) + ']'; }).join(', ');
+}
+
+function statusRows(rank) {
+    var r = RANKS[rank];
+    var frag = Math.round(r.i * 1000 * 0.6);
+    var asp = ASPECT_ROSTER[statusState.aspect];
+    var aspectName = asp[0], aspectRank = asp[1], aspectType = asp[2], flawName = asp[3];
+    var divine = aspectRank === 'Divine';
+    var cores = divine ? Math.max(1, Math.min(7, Math.floor(rank / 1.2))) : 1;
+    var CLASSES = ['-', 'Beast', 'Monster', 'Demon', 'Devil', 'Tyrant', 'Terror', 'Titan'];
+    return [
+        { l: 'Name',            v: 'Sunny',              t: ['Your name in the waking world.'] },
+        { l: 'True Name',       v: '-',                  t: ['True Name', '', 'The secret name of your soul. Whoever speaks it in your presence becomes your master through the Shadow Bond.'] },
+        { l: 'Rank',            v: r.name,               t: [r.name, '', 'Your soul rank. It sets your essence pool, your health, and how much of your Aspect answers to you.'] },
+        divine ? { l: 'Class', v: CLASSES[cores],        t: ['Class', '', 'Read purely off how many soul cores you have formed. Only a Divine Aspect can form more than one.'] } : null,
+        { d: 1 },
+        divine ? { l: 'Soul Cores', v: '[' + cores + '/7]', t: ['Soul Cores', '', 'A Divine Aspect opens the seven core track. Filling all seven takes 28,000 fragments.'] } : null,
+        { l: 'Soul Fragments',  v: '[' + frag + '/' + (r.i * 1000) + ']', t: ['Soul Fragments', '', 'Saturation of your current core. Fills from kills above your weight class. Resets to zero when you rank up.'] },
+        { l: 'Soul Essence',    v: '[' + Math.round(r.ess * 0.72) + '/' + r.ess + ']', t: ['Soul Essence', '', 'What abilities spend. Regenerates ' + r.regen + ' per second at this rank.'] },
+        { l: 'Soul HP',         v: '[' + r.shp + '/' + r.shp + ']', t: ['Soul HP', '', 'A second pool only soul damage touches. Reaching zero is lethal.'] },
+        { d: 1 },
+        { l: 'Memories',        v: 'Azure Blade, Dented Helm, ...', t: ['Memories', '', 'Everything resting in your Soul Sea. Soulbound; they cannot be taken from you.'] },
+        { l: 'Echoes',          v: '-',                  t: ['Echoes', '', 'Vessels you can summon. Each costs essence and carries its own health.'] },
+        { d: 1 },
+        { l: 'Aspect',          v: aspectName,           t: [aspectName, '', 'A ' + aspectRank + ' ' + aspectType + ' Aspect. You are bound to it permanently and can never gain abilities from another.'] },
+        divine ? { l: 'Innate Ability', v: 'Present from infection', t: ['Innate Ability', '', 'Only a Divine Aspect carries one. It is there from the moment the Spell takes you and is never gained by ranking up.'] } : null,
+        { l: 'Aspect Rank',     v: aspectRank,           t: ['Aspect Rank', '', 'The shelf this Aspect was drawn from, decided by how well you cleared the First Nightmare. Its abilities still unlock off your soul rank, not this.'] },
+        { l: 'Attributes',      v: '[Persistent]',       t: ['Attributes', '', 'Permanent marks earned from milestones. [Persistent] halves hunger drain and adds movement speed.'] },
+        { l: 'Aspect Abilities', v: abilityLine(rank),   t: ['Aspect Abilities', '', 'Unlocked by soul rank, not by the rank of the Aspect. Advancing reveals the next tier of the same Aspect.'] },
+        { l: 'Flaw',            v: '[' + flawName + ']', t: ['Flaw', '', 'Every Aspect carries one, permanently. What it does is something you find out by living with it.'] }
+    ].filter(Boolean);
+}
+
+function buildStatus() {
+    var host = document.getElementById('status-screen');
+    var wrap = document.getElementById('status-wrap');
+    var W = statusState.expanded ? 430 : 320;
+    var H = statusState.expanded ? 420 : 310;
+    wrap.style.setProperty('--pw', W);
+    wrap.style.setProperty('--ph', H);
+
+    buildPanel(host, W, H, 'Status Page');
+
+    /* header rule at panelY + 26, x from +8 to +panelW-8 */
+    host.appendChild(el('div', 'gs-rule', at(8, 26) + 'width:' + (W - 16) + 'px;'));
+
+    /* expand button: 58x14 at panelX + panelW - 70, panelY + 8 */
+    var expBtn = el('button', 'gs-btn', at(W - 70, 8) + 'width:58px;height:14px;', statusState.expanded ? 'Collapse' : 'Expand');
+    expBtn.addEventListener('click', function () {
+        statusState.expanded = !statusState.expanded;
+        statusState.scroll = 0;
+        buildStatus();
+    });
+    host.appendChild(expBtn);
+
+    var labelX = 12, rightEdge = W - 14, LINE_H = 14;
+    var contentTop = 34;
+    var rows = statusRows(statusState.rank);
+    var doorsTop = H - 8 - 3 * LINE_H;
+    var contentBottom = doorsTop - 6;
+
+    /* A Divine Aspect adds Class, Soul Cores and Innate Ability, which is more
+       than the collapsed panel can hold. The real screen scrolls rather than
+       dropping rows, so this does too. */
+    var visibleLines = Math.floor((contentBottom - contentTop) / LINE_H);
+    var maxScroll = Math.max(0, rows.length - visibleLines);
+    statusState.scroll = Math.max(0, Math.min(statusState.scroll, maxScroll));
+
+    var y = contentTop - statusState.scroll * LINE_H;
+    rows.forEach(function (row) {
+        var rowY = y;
+        y += LINE_H;
+        if (rowY < contentTop || rowY + LINE_H > contentBottom) return;
+
+        if (row.d) {
+            host.appendChild(el('div', 'gs-div', at(10, rowY + 6) + 'width:' + (W - 20) + 'px;'));
+            return;
+        }
+        var line = el('div', 'gs-row', at(labelX, rowY),
+            '<span class="gs-lbl">' + esc(row.l) + ':</span> <span class="gs-val">' + esc(row.v) + '</span>');
+        line.style.maxWidth = (rightEdge - labelX - 8) + 'px';
+        line.style.overflow = 'hidden';
+        line.style.textOverflow = 'ellipsis';
+        host.appendChild(line);
+
+        var hit = el('div', 'gs-hit', at(labelX - 2, rowY - 1) + 'width:' + (rightEdge - labelX + 4) + 'px;height:' + LINE_H + 'px;');
+        attachTip(host, hit, row.t, W, H);
+        host.appendChild(hit);
+    });
+
+    /* drawScrollIndicator(): 2px track, 4px gold thumb, minimum height 12 */
+    if (maxScroll > 0) {
+        var trackX = W - 8, trackY = contentTop, trackH = contentBottom - contentTop;
+        host.appendChild(el('div', '', 'position:absolute;left:' + trackX + 'px;top:' + trackY +
+            'px;width:2px;height:' + trackH + 'px;background:rgba(45,10,82,0.251);'));
+        var thumbH = Math.max(12, Math.round(trackH * visibleLines / rows.length));
+        var thumbY = trackY + Math.round((trackH - thumbH) * statusState.scroll / maxScroll);
+        host.appendChild(el('div', '', 'position:absolute;left:' + (trackX - 1) + 'px;top:' + thumbY +
+            'px;width:4px;height:' + thumbH + 'px;background:#D4AF37;'));
+
+        if (!host.dataset.wheelBound) {
+            host.dataset.wheelBound = '1';
+        }
+    }
+
+    /* wheel scroll, 2 lines per notch, as the screen does it. Only swallow the
+       event while the panel still has somewhere to go, so reaching either end
+       hands the scroll back to the page instead of trapping it. */
+    host.onwheel = function (e) {
+        if (maxScroll <= 0) return;
+        var next = Math.max(0, Math.min(maxScroll, statusState.scroll + (e.deltaY > 0 ? 2 : -2)));
+        if (next === statusState.scroll) return;
+        e.preventDefault();
+        statusState.scroll = next;
+        buildStatus();
+    };
+
+    /* three door lines */
+    var doors = [
+        ['Soul Sea', '[Press O]', 'soulsea'],
+        ['Stats', '[Press K]', 'stats'],
+        ['Mastery', '[Press J]', null]
+    ];
+    doors.forEach(function (d, i) {
+        var dy = doorsTop + i * LINE_H;
+        var node = el('div', 'gs-row', at(labelX, dy),
+            '<span class="gs-lbl">' + esc(d[0]) + ':</span> <span class="gs-hint">' + esc(d[1]) + '</span>');
+        host.appendChild(node);
+        if (d[2]) {
+            var hit = el('div', 'gs-hit link', at(labelX - 2, dy - 1) + 'width:' + (rightEdge - labelX + 4) + 'px;height:' + LINE_H + 'px;');
+            hit.addEventListener('click', function () {
+                var t = document.getElementById(d[2]);
+                if (t) t.scrollIntoView({ block: 'start', behavior: 'smooth' });
+            });
+            host.appendChild(hit);
+        }
+    });
+
+    /* the panel changes size when expanded, so refit it */
+    if (typeof fitPanels === 'function') fitPanels();
+}
+
+(function aspectControls() {
+    var sel = document.getElementById('aspect-select');
+    var read = document.getElementById('aspect-read');
+
+    /* grouped by the shelf the First Nightmare draws them from */
+    var groups = [];
+    ASPECT_ROSTER.forEach(function (a, i) {
+        var g = groups.filter(function (x) { return x.rank === a[1]; })[0];
+        if (!g) { g = { rank: a[1], items: [] }; groups.push(g); }
+        g.items.push({ i: i, name: a[0] });
+    });
+    sel.innerHTML = groups.map(function (g) {
+        return '<optgroup label="' + esc(g.rank) + '">' + g.items.map(function (it) {
+            return '<option value="' + it.i + '">' + esc(it.name) + '</option>';
+        }).join('') + '</optgroup>';
+    }).join('');
+
+    function sync() {
+        var a = ASPECT_ROSTER[statusState.aspect];
+        sel.value = String(statusState.aspect);
+        read.textContent = a[1] + ' · ' + a[2] + ' · Flaw: [' + a[3] + ']';
+        buildStatus();
+    }
+    sel.addEventListener('change', function () {
+        statusState.aspect = parseInt(this.value, 10);
+        statusState.scroll = 0;
+        sync();
+    });
+    document.getElementById('aspect-random').addEventListener('click', function () {
+        statusState.aspect = Math.floor(Math.random() * ASPECT_ROSTER.length);
+        sync();
+    });
+    sync();
+}());
+
+/* tooltip: 270 wide, pad 8, line pitch 11, flips when it would overflow */
+function attachTip(host, hit, lines, W, H) {
+    if (!lines || !lines.length) return;
+    var tip = null;
+    hit.addEventListener('mouseenter', function (e) {
+        tip = el('div', 'gs-tip');
+        lines.forEach(function (ln, i) {
+            if (ln === '') { tip.appendChild(el('div', 't-gap')); return; }
+            var cls = i === 0 ? 'gs-gold' : 'gs-val';
+            tip.appendChild(el('div', 't-line ' + cls, '', esc(ln)));
+        });
+        host.appendChild(tip);
+        position(e);
+    });
+    hit.addEventListener('mousemove', position);
+    hit.addEventListener('mouseleave', function () { if (tip) { tip.remove(); tip = null; } });
+
+    function position(e) {
+        if (!tip) return;
+        var rect = host.getBoundingClientRect();
+        var zoom = rect.width / W;
+        var mx = (e.clientX - rect.left) / zoom;
+        var my = (e.clientY - rect.top) / zoom;
+        var th = tip.offsetHeight;
+        var tx = mx + 14, ty = my - 8;
+        if (tx + 270 > W - 4) tx = mx - 270 - 10;
+        if (tx < 4) tx = 4;
+        if (ty + th > H - 4) ty = H - th - 4;
+        if (ty < 4) ty = 4;
+        tip.style.left = tx + 'px';
+        tip.style.top = ty + 'px';
+    }
+}
+
+/* ============================================================
+   SCREEN 2 - Stat Allocation (StatsScreen.java)
+   ============================================================ */
+var sim = { rank: 2, sat: 60, focus: 0, draft: [0, 0, 0, 0, 0, 0], committed: [0, 0, 0, 0, 0, 0] };
+
+function budget() {
+    var i = sim.rank;
+    if (i === 0) return 0;
+    var awarded = 5 * i;                       // POINTS_PER_ASCENSION per rank earned
+    var banked = 5 * (i - 1);                  // fifths banked at previous ranks
+    var live = Math.floor(sim.sat / 100 * 5);  // POINTS_PER_SATURATION, current core only
+    return awarded + banked + live;
+}
+function draftCost() {
+    return sim.draft.reduce(function (a, b) { return a + b; }, 0);
+}
+function capFor(idx) { return CAPS[sim.rank][idx]; }
+
+function effectText(idx, points) {
+    if (points <= 0) return '-';
+    var s = STATS[idx];
+    if (s.id === 'vitality') {
+        var base = RANKS[sim.rank].hp;
+        return '+' + Math.round(base * PERCENT_PER_POINT * points) + ' HP';
+    }
+    var pct = s.shape === 'grow'
+        ? (growFactor(points) - 1) * 100
+        : (1 - shrinkFactor(points)) * 100;
+    var r = Math.round(pct * 10) / 10;
+    return '+' + (r % 1 === 0 ? r.toFixed(0) : r.toFixed(1)) + '%';
+}
+
+function buildStats() {
+    var host = document.getElementById('stats-screen');
+    var W = 320, H = 424, PAD = 14;
+    buildPanel(host, W, H, 'Stat Allocation');
+
+    var labelX = PAD, rightEdge = W - PAD;
+    var y = 30;
+
+    if (sim.rank === 0) {
+        host.appendChild(el('div', 'gs-row gs-lbl', at(labelX, y) + 'width:' + (rightEdge - labelX) + 'px;white-space:normal;line-height:11px;',
+            'Your soul has not woken. There is nothing to shape.'));
+        syncReadout();
+        return;
+    }
+
+    /* header: Rank / Stat Points / Points Spent */
+    function headRow(label, value, warn) {
+        host.appendChild(el('div', 'gs-row gs-lbl', at(labelX, y), esc(label)));
+        var v = el('div', 'gs-row ' + (warn ? 'gs-warn' : 'gs-val'), at(0, y) + 'right:' + PAD + 'px;text-align:right;', esc(value));
+        v.style.left = 'auto';
+        host.appendChild(v);
+        y += 16;
+    }
+    var total = budget(), spent = draftCost(), remaining = total - spent;
+    headRow('Rank', RANKS[sim.rank].name, false);
+    headRow('Stat Points', total + '  →  ' + remaining, remaining < 0);
+    headRow('Points Spent', '(' + spent + ')', spent > total);
+    y -= 2;
+
+    if (total <= 0 && spent <= 0) {
+        host.appendChild(el('div', 'gs-row gs-dim', at(labelX, y), 'You have nothing to spend.'));
+        y += 14;
+    }
+
+    y += 8;
+    host.appendChild(el('div', 'gs-div', at(10, y) + 'width:' + (W - 20) + 'px;'));
+    y += 1 + 6;
+
+    host.appendChild(el('div', 'gs-row gs-gold', at(labelX, y), '✦ Attribute Points'));
+    y += 16;
+
+    /* the six rows - 18px pitch */
+    STATS.forEach(function (s, idx) {
+        var focused = sim.focus === idx;
+        var invested = sim.committed[idx];
+        var pending = invested + sim.draft[idx];
+        var rowTop = y;
+
+        host.appendChild(el('div', 'gs-row ' + (focused ? 'gs-gold' : 'gs-lbl'), at(labelX, y), esc(s.name)));
+
+        var valTxt = invested + '  →  ' + pending;
+        host.appendChild(el('div', 'gs-row ' + (pending === invested ? 'gs-lbl' : 'gs-gold'), at(labelX + 96, y), esc(valTxt)));
+
+        if (focused) {
+            var nx = labelX + 96 + 46;
+            var minus = el('button', 'gs-nudge', at(nx, y - 1), '‹');
+            minus.setAttribute('aria-label', 'Remove a point from ' + s.name);
+            minus.addEventListener('click', function (e) { adjust(idx, e.shiftKey ? -5 : -1); });
+            host.appendChild(minus);
+            var plus = el('button', 'gs-nudge', at(nx + 15, y - 1), '›');
+            plus.setAttribute('aria-label', 'Add a point to ' + s.name);
+            plus.addEventListener('click', function (e) { adjust(idx, e.shiftKey ? 5 : 1); });
+            host.appendChild(plus);
+        }
+
+        var eff = effectText(idx, pending);
+        var effNode = el('div', 'gs-row ' + (focused ? 'gs-gold' : 'gs-val'), at(0, y) + 'right:' + PAD + 'px;text-align:right;', esc(eff));
+        effNode.style.left = 'auto';
+        host.appendChild(effNode);
+
+        var hit = el('div', 'gs-hit link', at(labelX, rowTop - 1) + 'width:' + (W - 28) + 'px;height:16px;');
+        hit.addEventListener('click', function () { sim.focus = idx; buildStats(); });
+        host.appendChild(hit);
+
+        y += 18;
+    });
+
+    y += 6;
+    host.appendChild(el('div', 'gs-div', at(10, y) + 'width:' + (W - 20) + 'px;'));
+    y += 1 + 6;
+
+    /* detail block for the focused stat */
+    var fs = STATS[sim.focus];
+    var cap = capFor(sim.focus);
+    var pend = sim.committed[sim.focus] + sim.draft[sim.focus];
+    host.appendChild(el('div', 'gs-row gs-gold', at(labelX, y), esc(fs.name + ' · ' + pend + ' / ' + cap + ' invested')));
+    y += 16;
+    var nextRank = sim.rank < 7 ? RANKS[sim.rank + 1].name : null;
+    var capLine = nextRank
+        ? 'Capped at ' + cap + ', half the step to ' + nextRank + '.'
+        : 'Capped at ' + cap + '. There is no rank above yours to measure against.';
+    host.appendChild(el('div', 'gs-lbl', at(labelX, y) + 'position:absolute;width:' + (rightEdge - labelX) + 'px;white-space:normal;line-height:11px;', esc(capLine)));
+    y += 22;
+    if (pend >= cap && cap > 0) {
+        host.appendChild(el('div', 'gs-dim', at(labelX, y) + 'position:absolute;width:' + (rightEdge - labelX) + 'px;white-space:normal;line-height:11px;', 'This is as far as your rank will carry it.'));
+    }
+
+    /* footer */
+    var footerY = H - 80;
+    var confirmX = W - 90 - PAD, resetX = confirmX - 70 - 6;
+
+    var resetBtn = el('button', 'gs-btn', at(resetX, footerY) + 'width:70px;height:18px;', 'Reset');
+    resetBtn.disabled = spent === 0;
+    resetBtn.addEventListener('click', function () { sim.draft = [0, 0, 0, 0, 0, 0]; buildStats(); });
+    host.appendChild(resetBtn);
+
+    var confirmBtn = el('button', 'gs-btn', at(confirmX, footerY) + 'width:90px;height:18px;', 'Confirm');
+    confirmBtn.disabled = spent === 0 || remaining < 0;
+    confirmBtn.addEventListener('click', function () {
+        for (var i = 0; i < 6; i++) { sim.committed[i] += sim.draft[i]; sim.draft[i] = 0; }
+        buildStats();
+    });
+    host.appendChild(confirmBtn);
+
+    var respecY = footerY + 18 + 6;
+    var respecBtn = el('button', 'gs-btn', at(PAD, respecY) + 'width:160px;height:18px;', 'Be Born Anew');
+    respecBtn.addEventListener('click', function () {
+        sim.committed = [0, 0, 0, 0, 0, 0];
+        sim.draft = [0, 0, 0, 0, 0, 0];
+        buildStats();
+    });
+    host.appendChild(respecBtn);
+    host.appendChild(el('div', 'gs-row gs-val', at(PAD + 168, respecY + 5), 'Rebirths held: 1'));
+
+    host.appendChild(el('div', 'gs-dim', at(PAD, respecY + 22) + 'position:absolute;width:' + (W - 28) + 'px;white-space:normal;line-height:11px;',
+        'Clearing a Nightmare earns the right to redistribute everything you are.'));
+
+    syncReadout();
+}
+
+function adjust(idx, delta) {
+    var cap = capFor(idx);
+    var invested = sim.committed[idx];
+    var next = Math.max(0, Math.min(cap - invested, sim.draft[idx] + delta));
+    /* never let the draft exceed the budget */
+    var others = draftCost() - sim.draft[idx];
+    var room = budget() - others;
+    if (next > room) next = Math.max(0, room);
+    sim.draft[idx] = next;
+    buildStats();
+}
+
+function syncReadout() {
+    var out = document.getElementById('stat-readout');
+    var r = RANKS[sim.rank];
+    var pend = STATS.map(function (s, i) { return sim.committed[i] + sim.draft[i]; });
+    var hpBonus = Math.round(r.hp * PERCENT_PER_POINT * pend[0]);
+    var rows = [
+        ['Max health', (r.hp + hpBonus).toLocaleString() + (hpBonus ? ' (+' + hpBonus + ')' : '')],
+        ['Damage dealt', '×' + growFactor(pend[1]).toFixed(3)],
+        ['Damage taken', '×' + shrinkFactor(pend[2]).toFixed(3)],
+        ['Essence regen', (r.regen * growFactor(pend[3])).toFixed(1) + '/s'],
+        ['Cooldowns', '×' + shrinkFactor(pend[5]).toFixed(3)],
+        ['Points left', (budget() - draftCost())]
+    ];
+    out.innerHTML = rows.map(function (x) {
+        return '<div><span>' + esc(x[0]) + '</span><b>' + esc(x[1]) + '</b></div>';
+    }).join('');
+
+    document.getElementById('budget-read').textContent =
+        budget() + ' points · ' + draftCost() + ' allocated';
+}
+
+/* keyboard, exactly as the screen does it */
+document.getElementById('stats-wrap').addEventListener('keydown', function (e) {
+    var k = e.key;
+    if (k === 'ArrowUp')        { sim.focus = (sim.focus + 5) % 6; buildStats(); e.preventDefault(); }
+    else if (k === 'ArrowDown') { sim.focus = (sim.focus + 1) % 6; buildStats(); e.preventDefault(); }
+    else if (k === 'ArrowLeft') { adjust(sim.focus, e.shiftKey ? -5 : -1); e.preventDefault(); }
+    else if (k === 'ArrowRight'){ adjust(sim.focus, e.shiftKey ? 5 : 1); e.preventDefault(); }
+});
+document.getElementById('stats-wrap').setAttribute('tabindex', '0');
+
+(function simControls() {
+    var sel = document.getElementById('rank-select');
+    sel.innerHTML = RANKS.map(function (r) {
+        return '<option value="' + r.i + '"' + (r.i === sim.rank ? ' selected' : '') + '>' + esc(r.name) + '</option>';
+    }).join('');
+    sel.addEventListener('change', function () {
+        sim.rank = parseInt(this.value, 10);
+        /* Stats.reconcile refunds anything the new rank can no longer carry */
+        for (var i = 0; i < 6; i++) {
+            sim.committed[i] = Math.min(sim.committed[i], capFor(i));
+            sim.draft[i] = 0;
+        }
+        statusState.rank = sim.rank;
+        buildStats();
+        buildStatus();
+    });
+
+    var slider = document.getElementById('sat-slider');
+    slider.addEventListener('input', function () {
+        sim.sat = parseInt(this.value, 10);
+        document.getElementById('sat-read').textContent = sim.sat + '%';
+        buildStats();
+    });
+}());
+
+/* ============================================================
+   SCREEN 3 - Soul Sea (SoulSeaScreen.java)
+   The sea field, the bubbles and the frame runners are the mod's
+   own math, on a canvas. Rows and chrome are DOM on top.
+   ============================================================ */
+var sea = {
+    mode: 'HUB',          // HUB | DETAIL
+    page: 'ECHOES',
+    focus: 'ECHOES',
+    focusAmt: { ECHOES: 1, ABILITIES: 0 },
+    arrowHover: null,
+    arrowAmt: { L: 0, R: 0 },
+    t0: performance.now(),
+    transitionAt: 0,
+    binding: null,
+    slots: [null, 'Ice Shape', null, null, null, null, null]
+};
+/* Easing.smoothstep over HOVER_FADE_MS = 150, stepped per frame */
+function approach(cur, target) {
+    var step = 1 / 9;
+    if (cur < target) return Math.min(target, cur + step);
+    if (cur > target) return Math.max(target, cur - step);
+    return cur;
+}
+
+var SEA_ECHOES = [
+    ['Carapace Scavenger', 92, 40],
+    ['Starlight Sentinel', 61, 120],
+    ['Hollow Rider', 100, 260]
+];
+var SEA_ABILITIES = [
+    ['Ice Shape', 'active', 'Keybind'],
+    ['Freeze', 'active', 'Keybind'],
+    ['Frost Touch', 'passive', 'Passive'],
+    ['Ice Wraith Form', 'toggle', 'Toggle']
+];
+
+(function soulSea() {
+    var host = document.getElementById('sea-screen');
+    var canvas = document.getElementById('sea-canvas');
+    var ctx = canvas.getContext('2d');
+    var W = 500, H = 320, S = 2;
+    canvas.width = W * S;
+    canvas.height = H * S;
+    ctx.setTransform(S, 0, 0, S, 0, 0);
+
+    var overlay = el('div', '', 'position:absolute;inset:0;');
+    host.appendChild(overlay);
+
+    function rgba(hex, a) {
+        var n = parseInt(hex.slice(1), 16);
+        return 'rgba(' + ((n >> 16) & 255) + ',' + ((n >> 8) & 255) + ',' + (n & 255) + ',' + a + ')';
+    }
+    function lerpHex(a, b, t) {
+        var x = parseInt(a.slice(1), 16), y = parseInt(b.slice(1), 16);
+        var r = Math.round(((x >> 16) & 255) + (((y >> 16) & 255) - ((x >> 16) & 255)) * t);
+        var g = Math.round(((x >> 8) & 255) + (((y >> 8) & 255) - ((x >> 8) & 255)) * t);
+        var bl = Math.round((x & 255) + ((y & 255) - (x & 255)) * t);
+        return 'rgb(' + r + ',' + g + ',' + bl + ')';
+    }
+    var CYAN = '#38BDF8', VIOLET = '#A78BFA', GOLD = '#D4AF37';
+    var DEEP = '#031126', ABYSS = '#01040E';
+
+    function drawSea(time, intro) {
+        ctx.clearRect(0, 0, W, H);
+        ctx.fillStyle = 'rgba(4,7,20,' + (0.816 * intro) + ')';
+        ctx.fillRect(0, 0, W, H);
+
+        /* (a) 10 depth bands */
+        for (var i = 0; i < 10; i++) {
+            var top = i * H / 10, bottom = (i + 1) * H / 10;
+            var depth = i / 9;
+            var band = lerpHex(DEEP, ABYSS, depth);
+            ctx.fillStyle = band.replace('rgb(', 'rgba(').replace(')', ',' + ((60 + depth * 86) / 255 * intro) + ')');
+            ctx.fillRect(3, top, W - 6, bottom - top);
+        }
+
+        /* (b) 6 breathing light shafts */
+        for (i = 0; i < 6; i++) {
+            var shaftX = 42 + i * 83;
+            var sway = Math.round(Math.sin(time * 0.22 + i * 1.7) * 5);
+            var shaftW = 8 + ((i * 5) % 13);
+            var sTop = 24 + (i % 3) * 9;
+            var sBot = 300 - ((i + 1) % 3) * 11;
+            var a = Math.max(2, (7 + 4 * Math.sin(time * 0.4 + i))) * intro;
+            ctx.fillStyle = rgba(CYAN, a / 255);
+            ctx.fillRect(shaftX + sway, sTop, shaftW, sBot - sTop);
+        }
+
+        /* (c) 5 parallax currents, 18-segment sine polylines */
+        for (var layer = 0; layer < 5; layer++) {
+            var baseY = 68 + layer * 48;
+            var col = layer % 2 === 0 ? '#0D4C73' : '#102843';
+            var amp = 5 + layer, speed = 0.30 + layer * 0.08;
+            ctx.fillStyle = rgba(col, (18 - layer * 2) / 255 * intro);
+            for (var seg = 0; seg <= 18; seg++) {
+                var t = seg / 18;
+                var x = 18 + t * (482 - 18);
+                var phase = time * speed + t * 7.4 + baseY * 0.013;
+                var yy = baseY + Math.round(Math.sin(phase) * amp) + Math.round(Math.sin(phase * 0.47) * 2);
+                ctx.fillRect(x, yy, (482 - 18) / 18 + 1, 1);
+            }
+        }
+
+        /* (d) 34 rising motes */
+        for (i = 0; i < 34; i++) {
+            var travel = ((Math.round(time * (3 + i % 5)) + i * 73) % (H - 52) + (H - 52)) % (H - 52);
+            var mx = 18 + ((i * 137) % (W - 36));
+            var my = 300 - travel;
+            var tw = 24 + Math.sin(time * (1.3 + (i % 4) * 0.12) + i) * 18 + 18;
+            var mc = i % 7 === 0 ? GOLD : (i % 3 === 0 ? VIOLET : CYAN);
+            var size = i % 11 === 0 ? 2 : 1;
+            ctx.fillStyle = rgba(mc, tw / 255 * intro);
+            ctx.fillRect(mx, my, size, size);
+        }
+
+        /* (e) abyss frame with its two travelling runners */
+        ctx.fillStyle = rgba('#2D0A52', 235 / 255 * intro);
+        ctx.fillRect(0, 0, W, 2); ctx.fillRect(0, H - 2, W, 2);
+        ctx.fillRect(0, 0, 2, H); ctx.fillRect(W - 2, 0, 2, H);
+        ctx.fillStyle = rgba(VIOLET, 68 / 255 * intro);
+        ctx.fillRect(4, 4, W - 8, 1); ctx.fillRect(4, H - 5, W - 8, 1);
+        var run = (Math.round(time * 18) % (W - 84) + (W - 84)) % (W - 84);
+        ctx.fillStyle = rgba(CYAN, 95 / 255 * intro);
+        ctx.fillRect(42 + run, 3, 32, 1);
+        ctx.fillStyle = rgba(VIOLET, 82 / 255 * intro);
+        ctx.fillRect(Math.max(4, W - 74 - run), H - 4, 32, 1);
+    }
+
+    /* hubBubbleFrame(): spread = min(206, PANEL_W/2 - 48 - 22) = 180 */
+    function bubbleFrame(page, time, focus, intro) {
+        var baseX = page === 'ECHOES' ? 180 : 500 - 180;
+        var baseY = 178;
+        var seed = page === 'ECHOES' ? 0 : 1;
+        var lift = Math.round(6 - 13 * focus);
+        var y = baseY + lift
+            + Math.round(Math.sin(time * 1.25 + seed * 1.7) * 11)
+            + Math.round(Math.cos(time * 0.72 + seed) * 5);
+        return {
+            x: baseX + Math.round(Math.sin(time * 0.8 + seed * 2.1) * 13) + Math.round(Math.sin(time * 1.9 + seed) * 4),
+            y: y + Math.round((1 - intro) * 46),
+            r: Math.round((48 + Math.round(7 * focus)) * (0.78 + intro * 0.22))
+        };
+    }
+
+    function ellipse(cx, cy, rx, ry, style) {
+        ctx.beginPath();
+        ctx.ellipse(cx, cy, Math.max(0.5, rx), Math.max(0.5, ry), 0, 0, Math.PI * 2);
+        ctx.fillStyle = style;
+        ctx.fill();
+    }
+    function diamond(cx, cy, r, style) {
+        ctx.beginPath();
+        ctx.moveTo(cx, cy - r); ctx.lineTo(cx + r, cy); ctx.lineTo(cx, cy + r); ctx.lineTo(cx - r, cy);
+        ctx.closePath(); ctx.fillStyle = style; ctx.fill();
+    }
+
+    /* drawInternalCurrents() */
+    function internalCurrents(cx, cy, r, page, time, alpha) {
+        var accent = page === 'ECHOES' ? CYAN : VIOLET;
+        var seed = page === 'ECHOES' ? 0 : 1.8;
+        for (var i = 0; i < 8; i++) {
+            var phase = time * (0.78 + i * 0.035) + i * 0.84 + seed;
+            var y = cy - r / 2 + i * Math.max(3, r / 7);
+            var wave = Math.round(Math.sin(phase) * 7);
+            var ny = (y - cy) / r;
+            var available = Math.max(3, Math.round(Math.sqrt(Math.max(0, 1 - ny * ny)) * (r - 7)));
+            var half = Math.max(4, available - 7 - (i % 3) * 2);
+            var x = cx + wave;
+            var a = (27 + i * 3) * alpha;
+            ctx.fillStyle = rgba(accent, a / 255);
+            ctx.fillRect(x - half, y, half * 2, 1);
+            if (i % 2 === 0) {
+                var gh = Math.max(2, half / 3);
+                ctx.fillStyle = rgba('#EDE9FE', a * 0.55 / 255);
+                ctx.fillRect(x - gh, y - 1, gh * 2, 1);
+            }
+        }
+    }
+
+    /* drawVesselSigil() - a different mark per vessel */
+    function vesselSigil(cx, cy, r, page, time, alpha) {
+        var accent = page === 'ECHOES' ? CYAN : VIOLET;
+        var a = (145 + Math.sin(time * 2.2) * 28) * alpha / 255;
+        if (page === 'ECHOES') {
+            diamond(cx, cy + 3, Math.max(3, r / 10), rgba(GOLD, a));
+            diamond(cx - r / 5, cy - r / 8, 2, rgba(accent, a));
+            diamond(cx + r / 5, cy - r / 6, 2, rgba('#EDE9FE', a));
+            ctx.fillStyle = rgba(accent, a * 0.65);
+            ctx.fillRect(cx - 1, cy - r / 5, 1, r * 0.4);
+        } else {
+            var arm = Math.max(5, r / 6);
+            ctx.fillStyle = rgba('#EDE9FE', a);
+            ctx.fillRect(cx - arm, cy, arm * 2 + 1, 1);
+            ctx.fillRect(cx, cy - arm, 1, arm * 2 + 1);
+            diamond(cx, cy, 3, rgba(GOLD, a));
+            diamond(cx - arm, cy, 1, rgba(accent, a));
+            diamond(cx + arm, cy, 1, rgba(accent, a));
+        }
+    }
+
+    /* drawVesselClasps() - four bands and two diamonds holding the sphere */
+    function vesselClasps(cx, cy, r, color, alpha) {
+        var a = 220 * alpha / 255;
+        var sh = Math.max(4, r / 7);
+        ctx.fillStyle = rgba(color, a);
+        ctx.fillRect(cx - sh, cy - r - 2, sh * 2 + 1, 2);
+        ctx.fillRect(cx - sh, cy + r, sh * 2 + 1, 2);
+        ctx.fillRect(cx - r - 2, cy - sh, 2, sh * 2 + 1);
+        ctx.fillRect(cx + r, cy - sh, 2, sh * 2 + 1);
+        diamond(cx, cy - r - 2, 2, rgba(color, a));
+        diamond(cx, cy + r + 2, 2, rgba(color, a));
+    }
+
+    /* drawBubbleTrails() - 12 orbiting motes, every fifth gold and 2px */
+    function bubbleTrails(fr, page, time, alpha) {
+        var accent = page === 'ECHOES' ? CYAN : VIOLET;
+        var seed = page === 'ECHOES' ? 0 : 2.1;
+        for (var i = 0; i < 12; i++) {
+            var orbit = time * (0.34 + (i % 3) * 0.05) + seed + i * 0.53;
+            var rx = fr.r + 14 + (i % 4) * 5;
+            var ry = fr.r * 0.48 + (i % 3) * 3;
+            var gold = i % 5 === 0;
+            ctx.fillStyle = rgba(gold ? GOLD : accent, (35 + (i % 4) * 9) * alpha / 255);
+            ctx.fillRect(fr.x + Math.cos(orbit) * rx, fr.y + Math.sin(orbit) * ry, gold ? 2 : 1, gold ? 2 : 1);
+        }
+    }
+
+    function drawBubble(page, fr, time, alpha, selected) {
+        var accent = page === 'ECHOES' ? CYAN : VIOLET;
+        var deep = page === 'ECHOES' ? '#062B45' : '#211449';
+        var middle = page === 'ECHOES' ? '#0C5A7A' : '#4A3485';
+        var pulseGrow = Math.round(Math.sin(time * 1.65 + (page === 'ECHOES' ? 0 : 1.4)) * (selected ? 2 : 1));
+        var rr = fr.r + pulseGrow;
+
+        for (var i = 3; i >= 1; i--) {
+            ellipse(fr.x, fr.y, rr + i * 5, rr + i * 4, rgba(accent, alpha * (5 + (5 - i) * 5 + (selected ? 4 : 0)) / 255));
+        }
+        ellipse(fr.x, fr.y, rr + 4, rr + 4, rgba('#01040E', 218 / 255 * alpha));
+        ellipse(fr.x, fr.y, rr, rr, rgba(deep, Math.min(210, (selected ? 174 : 132) * alpha) / 255));
+        ellipse(fr.x, fr.y + rr / 8, rr - 5, rr - 8, rgba(middle, 108 / 255 * alpha));
+        ellipse(fr.x, fr.y + rr / 3, rr - 9, rr / 2, rgba(accent, 54 / 255 * alpha));
+        ellipse(fr.x - rr / 4, fr.y - rr / 3, Math.max(4, rr / 4), Math.max(3, rr / 8), rgba('#E0F2FE', 142 / 255 * alpha * 0.5));
+
+        internalCurrents(fr.x, fr.y, rr, page, time, alpha);
+        vesselSigil(fr.x, fr.y, rr, page, time, alpha);
+
+        ctx.strokeStyle = rgba(selected ? GOLD : accent, Math.min(255, (selected ? 245 : 160) * alpha) / 255);
+        ctx.lineWidth = 1;
+        ctx.beginPath();
+        ctx.ellipse(fr.x, fr.y, rr + 1, rr + 1, 0, 0, Math.PI * 2);
+        ctx.stroke();
+
+        vesselClasps(fr.x, fr.y, rr, selected ? GOLD : accent, alpha);
+
+        /* drawSparklesInBubble() */
+        var sseed = page === 'ECHOES' ? 3 : 11;
+        for (i = 0; i < 7; i++) {
+            var a = time * (0.8 + i * 0.07) + sseed + i * 1.4;
+            var sx = fr.x + Math.round(Math.sin(a) * (rr * (0.18 + (i % 3) * 0.12)));
+            var sy = fr.y + Math.round(Math.cos(a * 1.27) * (rr * (0.18 + (i % 2) * 0.16)));
+            var flick = Math.sin(time * 4.2 + i) * 55 + 135;
+            var col = rgba(i % 3 === 0 ? GOLD : '#EDE9FE', flick * alpha / 255);
+            if (i % 3 === 0) diamond(sx, sy, 2, col);
+            else { ctx.fillStyle = col; ctx.fillRect(sx, sy, 1, 1); }
+        }
+
+        /* label, with the two underline stubs either side */
+        ctx.font = '9px "Pixelify Sans", monospace';
+        ctx.textAlign = 'center';
+        var label = page === 'ECHOES' ? 'Echoes' : 'Abilities';
+        var labelY = fr.y + rr + 12;
+        ctx.fillStyle = rgba(selected ? GOLD : '#EDE9FE', alpha);
+        ctx.fillText(label, fr.x, labelY + 8);
+        var halfW = ctx.measureText(label).width / 2;
+        var lineHalf = Math.max(12, halfW + 9);
+        ctx.fillStyle = rgba(selected ? '#7A6320' : accent, 115 * alpha / 255);
+        ctx.fillRect(fr.x - lineHalf, labelY + 11, lineHalf - 5, 1);
+        ctx.fillRect(fr.x + 5, labelY + 11, lineHalf - 5, 1);
+        ctx.textAlign = 'left';
+    }
+
+    /* drawArrow() - a narrow rune gate with open sides, not a filled button */
+    function drawArrow(x, y, right, hover, alpha) {
+        var accent = lerpHex(CYAN, GOLD, hover);
+        var fg = lerpHex('#EDE9FE', GOLD, hover);
+        function ca(c, a) { return c.replace('rgb(', 'rgba(').replace(')', ',' + a + ')'); }
+        ctx.fillStyle = rgba('#020611', (74 + hover * 45) * alpha / 255);
+        ctx.fillRect(x + 4, y + 2, 22, 32);
+        ctx.fillStyle = ca(accent, 185 * alpha / 255); ctx.fillRect(x + 4, y + 2, 22, 1);
+        ctx.fillStyle = ca(accent, 130 * alpha / 255); ctx.fillRect(x + 4, y + 33, 22, 1);
+        ctx.fillStyle = ca(accent, 95 * alpha / 255);
+        ctx.fillRect(x + 3, y + 8, 1, 20); ctx.fillRect(x + 26, y + 8, 1, 20);
+        diamond(x + 4, y + 2, 2, ca(accent, 205 * alpha / 255));
+        diamond(x + 26, y + 34, 2, ca(accent, 155 * alpha / 255));
+        var midX = x + 15 + (right ? 1 : -1), midY = y + 18;
+        ctx.fillStyle = ca(fg, 240 * alpha / 255);
+        for (var i = 0; i < 5; i++) {
+            var px = right ? midX - 3 + i : midX + 3 - i;
+            ctx.fillRect(px, midY - 4 + i, 1, 1);
+            ctx.fillRect(px, midY + 4 - i, 1, 1);
+        }
+    }
+
+    function drawBridge(a, b, time, alpha) {
+        for (var i = 0; i <= 12; i++) {
+            var t = i / 12;
+            var x = a.x + (b.x - a.x) * t;
+            var y = a.y + (b.y - a.y) * t + Math.sin(time * 0.9 + t * 5.8) * 5;
+            ctx.fillStyle = lerpHex('#38BDF8', '#A78BFA', t).replace('rgb(', 'rgba(').replace(')', ',' + (44 / 255 * alpha) + ')');
+            ctx.fillRect(x, y, 3, 1);
+        }
+    }
+
+    function easeOutCubic(t) { return 1 - Math.pow(1 - t, 3); }
+
+    var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    function frame(now) {
+        var time = reduced ? 4 : (now - sea.t0) / 1000;
+        var intro = Math.min(1, (now - sea.t0) / 520);
+        drawSea(time, intro);
+
+        /* hoverAmount(): 150ms smoothstep, per focus target */
+        sea.focusAmt.ECHOES = approach(sea.focusAmt.ECHOES, sea.focus === 'ECHOES' ? 1 : 0);
+        sea.focusAmt.ABILITIES = approach(sea.focusAmt.ABILITIES, sea.focus === 'ABILITIES' ? 1 : 0);
+        sea.arrowAmt.L = approach(sea.arrowAmt.L, sea.arrowHover === 'L' ? 1 : 0);
+        sea.arrowAmt.R = approach(sea.arrowAmt.R, sea.arrowHover === 'R' ? 1 : 0);
+
+        var elapsed = now - sea.transitionAt;
+        if (sea.mode === 'HUB') {
+            var open = sea.transitionAt ? Math.min(1, elapsed / 420) : 1;
+            var hubAlpha = (1 - (1 - easeOutCubic(open)) * 0.55) * intro;
+            var centerY = 320 / 2 + 2;
+            drawArrow(54, centerY - 18, false, sea.arrowAmt.L, hubAlpha);
+            drawArrow(500 - 84, centerY - 18, true, sea.arrowAmt.R, hubAlpha);
+
+            var e = bubbleFrame('ECHOES', time, sea.focusAmt.ECHOES, intro);
+            var b = bubbleFrame('ABILITIES', time, sea.focusAmt.ABILITIES, intro);
+            drawBridge(e, b, time, hubAlpha);
+            bubbleTrails(e, 'ECHOES', time, hubAlpha);
+            bubbleTrails(b, 'ABILITIES', time, hubAlpha);
+            drawBubble('ECHOES', e, time, hubAlpha, sea.focus === 'ECHOES');
+            drawBubble('ABILITIES', b, time, hubAlpha, sea.focus === 'ABILITIES');
+
+            /* drawHubHint(): ink plate, gold-dim underline, then the text */
+            ctx.font = '9px "Pixelify Sans", monospace';
+            var hint = 'Click a soul bubble, use arrows, or press Enter.';
+            var hw = ctx.measureText(hint).width;
+            var tx = (500 - hw) / 2, ty = 320 - 37;
+            ctx.fillStyle = rgba('#020611', 116 * hubAlpha / 255);
+            ctx.fillRect(tx - 14, ty - 5, hw + 28, 9 + 10);
+            ctx.fillStyle = rgba('#7A6320', 95 * hubAlpha / 255);
+            ctx.fillRect(tx - 6, ty + 12, hw + 12, 1);
+            ctx.fillStyle = rgba('#9575CD', 180 * hubAlpha / 255);
+            ctx.fillText(hint, tx, ty + 8);
+        } else {
+            var t = Math.min(1, elapsed / 420), eased = easeOutCubic(t);
+            var fade = (1 - eased) * 0.45 * intro;
+            if (fade > 0.01) {
+                var hf = bubbleFrame('ECHOES', time, 0, intro), hb = bubbleFrame('ABILITIES', time, 0, intro);
+                drawBubble('ECHOES', hf, time, fade, false);
+                drawBubble('ABILITIES', hb, time, fade, false);
+            }
+            /* detailBubbleFrame(): panel centre, panelY + 52, r 30 growing in */
+            var small = {
+                x: 250 + Math.round(Math.sin(time * 0.9) * 5),
+                y: 52 + Math.round((1 - eased) * 74) + Math.round(Math.sin(time * 1.35) * 4),
+                r: Math.round(30 + (1 - eased) * 20)
+            };
+            drawBubble(sea.page, small, time, eased, true);
+        }
+        requestAnimationFrame(frame);
+    }
+    requestAnimationFrame(frame);
+
+    /* ---------- DOM overlay ---------- */
+    function renderOverlay() {
+        overlay.innerHTML = '';
+        overlay.appendChild(el('div', 'gs-title', '', '≈&nbsp;&nbsp;Soul Sea&nbsp;&nbsp;≈'));
+        ['tl', 'tr', 'bl', 'br'].forEach(function (c) { overlay.appendChild(el('div', 'gs-rune ' + c, '', '◆')); });
+
+        if (sea.mode === 'HUB') {
+            /* the hint is painted on the canvas with its ink plate; these are hit zones only */
+            [['ECHOES', 180], ['ABILITIES', 320]].forEach(function (p) {
+                var hit = el('div', 'gs-hit link', 'left:' + (p[1] - 58) + 'px;top:118px;width:116px;height:120px;');
+                hit.addEventListener('mouseenter', function () { sea.focus = p[0]; });
+                hit.addEventListener('click', function () {
+                    sea.page = p[0]; sea.mode = 'DETAIL'; sea.transitionAt = performance.now(); renderOverlay();
+                });
+                overlay.appendChild(hit);
+            });
+
+            /* the two rune gates, 22x32 at centerY - 18 */
+            [['L', 54, 'ECHOES'], ['R', 500 - 84, 'ABILITIES']].forEach(function (g) {
+                var gate = el('div', 'gs-hit link', 'left:' + (g[1] + 3) + 'px;top:' + (162 - 18 + 2) + 'px;width:25px;height:33px;');
+                gate.addEventListener('mouseenter', function () { sea.arrowHover = g[0]; });
+                gate.addEventListener('mouseleave', function () { sea.arrowHover = null; });
+                gate.addEventListener('click', function () { sea.focus = g[2]; });
+                overlay.appendChild(gate);
+            });
+            return;
+        }
+
+        /* detail chrome */
+        var back = el('button', 'gs-btn', 'left:24px;top:52px;width:52px;height:16px;', '‹ Back');
+        back.addEventListener('click', function () {
+            sea.mode = 'HUB'; sea.binding = null; sea.transitionAt = performance.now(); renderOverlay();
+        });
+        overlay.appendChild(back);
+
+        var other = sea.page === 'ECHOES' ? 'Abilities' : 'Echoes';
+        var sw = el('button', 'gs-btn', 'left:' + (500 - 158 + 5) + 'px;top:55px;width:116px;height:23px;', 'Switch to ' + other);
+        sw.addEventListener('click', function () {
+            sea.page = sea.page === 'ECHOES' ? 'ABILITIES' : 'ECHOES';
+            sea.binding = null;
+            sea.transitionAt = performance.now();
+            renderOverlay();
+        });
+        overlay.appendChild(sw);
+
+        var x = 32, y = 118, w = 500 - 64, h = 320 - 158;
+        var panel = el('div', '', 'position:absolute;left:' + x + 'px;top:' + y + 'px;width:' + w + 'px;height:' + h + 'px;background:rgba(6,16,40,0.83);');
+        overlay.appendChild(panel);
+
+        var accent = sea.page === 'ECHOES' ? '#38BDF8' : '#A78BFA';
+        panel.appendChild(el('div', '', 'position:absolute;left:10px;top:0;width:' + (w - 20) + 'px;height:1px;background:' + accent + ';opacity:.65;'));
+        panel.appendChild(el('div', '', 'position:absolute;left:10px;bottom:0;width:' + (w - 20) + 'px;height:1px;background:#7A6320;opacity:.57;'));
+
+        var list = sea.page === 'ECHOES' ? SEA_ECHOES : SEA_ABILITIES;
+        var title = (sea.page === 'ECHOES' ? 'Echoes' : 'Abilities') + ' [' + list.length + ']';
+        panel.appendChild(el('div', 'gs-gold', 'position:absolute;left:22px;top:10px;', esc(title)));
+        panel.appendChild(el('div', '', 'position:absolute;left:14px;top:14px;width:3px;height:3px;background:#D4AF37;transform:rotate(45deg);'));
+
+        var listY = 32, ROW_H = 24;
+        var visible = sea.page === 'ECHOES' ? 5 : 3;
+
+        list.slice(0, visible).forEach(function (row, i) {
+            var rowY = listY + i * ROW_H;
+            var node = el('div', 'gs-sea-row', 'left:12px;top:' + rowY + 'px;width:' + (w - 24) + 'px;');
+            node.style.animation = 'sea-reveal 0.22s cubic-bezier(.22,.61,.36,1) both';
+            node.style.animationDelay = (i * 48) + 'ms';
+
+            if (sea.page === 'ECHOES') {
+                node.innerHTML =
+                    '<span class="r-glyph" style="color:#38BDF8;">◆</span>' +
+                    '<span class="r-name">' + esc(row[0]) + '</span>' +
+                    '<span class="r-info">HP ' + row[1] + '% · ' + row[2] + ' essence</span>';
+            } else {
+                var col = row[1] === 'passive' ? '#B794F4' : '#67E8F9';
+                var bound = sea.slots.indexOf(row[0]);
+                node.innerHTML =
+                    '<span class="r-glyph" style="color:' + col + ';">◆</span>' +
+                    '<span class="r-name" style="color:' + col + ';">' + esc(row[0]) + '</span>' +
+                    '<span class="r-info">' + (bound >= 0 ? 'Slot ' + (bound + 1) : esc(row[2])) + '</span>';
+                if (sea.binding === row[0]) node.classList.add('sel');
+                if (row[1] !== 'passive') {
+                    node.addEventListener('click', function () {
+                        sea.binding = sea.binding === row[0] ? null : row[0];
+                        renderOverlay();
+                    });
+                }
+            }
+            panel.appendChild(node);
+        });
+
+        /* bind slot strip, abilities page only */
+        if (sea.page === 'ABILITIES') {
+            var stripY = h - 38, gutter = 11;
+            var stripW = w - gutter * 2, slotW = Math.floor(stripW / 7);
+            var prompt = sea.binding
+                ? 'Choose a slot for ' + sea.binding + '.'
+                : 'Click an active ability to bind it.';
+            panel.appendChild(el('div', sea.binding ? 'gs-hint' : 'gs-lbl',
+                'position:absolute;left:9px;top:' + (stripY - 13) + 'px;', esc(prompt)));
+
+            for (var s = 0; s < 7; s++) {
+                (function (idx) {
+                    var sx = gutter + idx * slotW;
+                    var slot = el('div', 'gs-slot' + (sea.slots[idx] ? ' bound' : '') + (sea.binding ? ' target' : ''),
+                        'left:' + sx + 'px;top:' + stripY + 'px;width:' + (slotW - 2) + 'px;');
+                    slot.innerHTML =
+                        '<span class="s-key">' + (idx + 1) + ': ' + String.fromCharCode(49 + idx) + '</span>' +
+                        '<span class="s-name">' + esc(sea.slots[idx] ? sea.slots[idx].slice(0, 7) : '-') + '</span>';
+                    slot.addEventListener('click', function () {
+                        if (!sea.binding) return;
+                        for (var j = 0; j < 7; j++) if (sea.slots[j] === sea.binding) sea.slots[j] = null;
+                        sea.slots[idx] = sea.binding;
+                        sea.binding = null;
+                        renderOverlay();
+                    });
+                    panel.appendChild(slot);
+                }(s));
+            }
+        }
+
+        overlay.appendChild(el('div', 'gs-lbl', 'position:absolute;right:28px;top:298px;', '[ESC]'));
+    }
+    renderOverlay();
+}());
+
+/* ============================================================
+   SCREEN 4 - Memories grid (AbstractMemoryGridScreen.java)
+   ============================================================ */
+var MEMORIES = [
+    ['Azure Blade', 'Awakened', 'Weapon', 88, 3, '⚔', 'On this forgotten shore, only steel remembers, patient, sharp, and impossible to forget.'],
+    ['Rusty Blade', 'Dormant', 'Weapon', 41, 1, '⚔', "An old soldier's sword, dulled by years of neglect."],
+    ['Dented Helm', 'Dormant', 'Armor', 19, 0, '⛨', 'A battered helm that has taken one too many blows and still holds its shape.'],
+    ['Carapace Buckler', 'Awakened', 'Utility', 73, 2, '◈', 'A sturdy shield fashioned from the armored plates of a Carapace Scavenger.'],
+    ['Starlight Legion Helmet', 'Awakened', 'Armor', 96, 4, '⛨', 'Relic of seven heroes who swore to return light to a cursed land; their names are gone, their oath is not.'],
+    ['Chipped Dagger', 'Dormant', 'Weapon', 12, 0, '†', 'A thin knife with a chipped point, kept more out of habit than hope.'],
+    ['Blackhorn Bow', 'Ascended', 'Weapon', 64, 2, '➹', 'The one lucky pull from an Awakened corpse.'],
+    ['Sharpening Stone', 'Dormant', 'Utility', 100, 0, '▪', 'A coarse stone for keeping an edge keen, humble but never idle.'],
+    ['Patched Tunic', 'Dormant', 'Armor', 55, 1, '▦', 'A cloth tunic mended over and over again by unskilled hands.'],
+    ['Carapace Centurion Breastplate', 'Awakened', 'Armor', 81, 3, '▦', "A robust breastplate formed from a Carapace Centurion's plating."],
+    ['First Nightmare Trophy', 'Dormant', 'Artifact', 100, 0, '✦', "A sliver of the mountain's cold, worn smooth by a dreamer's grip."],
+    ['Weaver’s Mask', 'Transcendent', 'Charm', 23, 5, '◇', 'It reverses what was written into you. Nobody agrees on the price.'],
+    ['Midnight Shard', 'Ascended', 'Artifact', 47, 1, '◆', 'A splinter of the hour that never ends.'],
+    ['Worn Greaves', 'Dormant', 'Armor', 33, 0, '▥', 'Leg wraps worn thin at the knees from long, weary roads.'],
+    ['Splintered Club', 'Dormant', 'Weapon', 8, 0, '▓', 'A heavy chunk of timber, split and worn from years of hard use.']
+];
+var TIER_COLOR = {
+    Dormant: '#AAAAAA', Awakened: '#55FF55', Ascended: '#55FFFF',
+    Transcendent: '#5555FF', Supreme: '#FF55FF', Sacred: '#FFAA00', Divine: '#FFFF55'
+};
+var TIER_VALUE = { Dormant: 1, Awakened: 2, Ascended: 4, Transcendent: 8, Supreme: 16, Sacred: 32, Divine: 64 };
+
+var memState = { tab: 0, query: '' };
+
+(function memories() {
+    var host = document.getElementById('mem-screen');
+    var W = 370, H = 372;
+
+    function shatterRisk(pct) {
+        if (pct > 25) return 0;
+        if (pct <= 0) return 100;
+        var t = (25 - pct) / 25;
+        return Math.round((0.2 + 19.8 * Math.pow(t, 3)) * 10) / 10;
+    }
+
+    function render() {
+        buildPanel(host, W, H, ['Memories', 'Cosmetics', 'Market', 'Bank'][memState.tab]);
+
+        var filtered = MEMORIES.filter(function (m) {
+            if (!memState.query) return true;
+            return m.join(' ').toLowerCase().indexOf(memState.query) !== -1;
+        });
+
+        host.appendChild(el('div', 'gs-lbl', 'position:absolute;left:9px;top:10px;',
+            memState.query ? filtered.length + ' of ' + MEMORIES.length + ' shown' : MEMORIES.length + ' stored'));
+
+        /* essence readout, right-aligned */
+        host.appendChild(el('div', 'gs-lbl', 'position:absolute;right:70px;top:10px;', 'Essence:'));
+        host.appendChild(el('div', '', 'position:absolute;right:9px;top:10px;color:#60A5FA;', '720 / 1000'));
+        host.appendChild(el('div', '', 'position:absolute;right:9px;top:21px;width:60px;height:2px;background:#0F0020;'));
+        host.appendChild(el('div', '', 'position:absolute;right:9px;top:21px;width:43px;height:2px;background:#60A5FA;'));
+
+        host.appendChild(el('div', 'gs-rule', 'left:8px;top:26px;width:' + (W - 16) + 'px;'));
+
+        /* search */
+        var search = el('input', 'gs-search', 'left:9px;top:37px;width:244px;height:16px;');
+        search.type = 'text';
+        search.placeholder = 'Click to search memories...';
+        search.value = memState.query;
+        search.setAttribute('aria-label', 'Search memories');
+        search.addEventListener('input', function () {
+            memState.query = this.value.toLowerCase().trim();
+            render();
+            var again = host.querySelector('.gs-search');
+            if (again) { again.focus(); again.setSelectionRange(again.value.length, again.value.length); }
+        });
+        host.appendChild(search);
+
+        /* safe mode toggle */
+        host.appendChild(el('div', '', 'position:absolute;left:257px;top:37px;width:104px;height:16px;background:rgba(212,175,55,0.314);border:1px solid #34D399;color:#34D399;display:flex;align-items:center;justify-content:center;', 'Safe Mode: ON'));
+
+        /* page tabs */
+        ['Memories', 'Cosmetics', 'Market', 'Bank'].forEach(function (name, i) {
+            var tw = Math.floor((W - 18) / 4);
+            var tab = el('button', 'gs-tab' + (memState.tab === i ? ' active' : ''),
+                'left:' + (9 + i * tw) + 'px;top:56px;width:' + tw + 'px;', esc(name));
+            tab.addEventListener('click', function () { memState.tab = i; render(); });
+            host.appendChild(tab);
+        });
+
+        if (memState.tab !== 0) {
+            host.appendChild(el('div', 'gs-lbl', 'position:absolute;left:0;right:0;top:180px;text-align:center;',
+                memState.tab === 1 ? 'You own no cosmetics.' : 'Nothing is listed right now.'));
+        } else if (!filtered.length) {
+            host.appendChild(el('div', 'gs-lbl', 'position:absolute;left:0;right:0;top:180px;text-align:center;', 'No results found.'));
+        } else {
+            /* 5 x 3 grid of 68 x 78 cells, starting at panelY + 72, inset GRID_PAD 9 */
+            filtered.slice(0, 15).forEach(function (m, i) {
+                var col = i % 5, row = Math.floor(i / 5);
+                var cx = 9 + col * 68, cy = 72 + row * 78;
+                var fragile = m[3] <= 25;
+                var cell = el('div', 'gs-cell', 'left:' + cx + 'px;top:' + cy + 'px;');
+                cell.innerHTML =
+                    '<span class="c-icon" style="color:' + TIER_COLOR[m[1]] + ';">' + m[5] + '</span>' +
+                    '<span class="c-tier" style="color:' + TIER_COLOR[m[1]] + ';">' + esc(m[1]) + '</span>' +
+                    '<span class="c-name">' + esc(m[0].length > 11 ? m[0].slice(0, 10) + '…' : m[0]) + '</span>' +
+                    '<span class="c-mast" style="color:' + (m[4] > 0 ? '#D4AF37' : '#9575CD') + ';">' + (m[4] > 0 ? '★' : '☆') + ' ' + m[4] + '/5</span>' +
+                    '<span class="c-dur' + (fragile ? ' fragile' : '') + '"><i style="width:' + Math.round(60 * m[3] / 100) + 'px;"></i></span>';
+
+                var tipLines = [
+                    m[0], '',
+                    'Tier            ' + m[1],
+                    'Type            ' + m[2],
+                    '',
+                    'Durability      ' + m[3] + ' / 100',
+                    'State           ' + (fragile ? 'Fragile' : 'Intact')
+                ];
+                if (fragile) {
+                    tipLines.push('May permanently shatter when used.');
+                    tipLines.push('Shatter Risk    ' + shatterRisk(m[3]) + '%');
+                }
+                tipLines.push('Convert value   ' + TIER_VALUE[m[1]] + ' fragments');
+                tipLines.push('Mastery         ' + (m[4] === 5 ? 'Mastered' : m[4] === 0 ? 'Unproven' : m[4] + ' / 5'));
+                tipLines.push('');
+                tipLines.push(m[6]);
+                attachTip(host, cell, tipLines, W, H);
+                host.appendChild(cell);
+            });
+        }
+
+        /* bind strip + hints */
+        host.appendChild(el('div', 'gs-rule', 'left:8px;top:308px;width:' + (W - 16) + 'px;'));
+        for (var s = 0; s < 5; s++) {
+            var sw = Math.floor((W - 18) / 5);
+            host.appendChild(el('div', '', 'position:absolute;left:' + (9 + s * sw) + 'px;top:312px;width:' + (sw - 2) + 'px;height:28px;background:rgba(6,0,24,0.816);border:1px solid ' + (s === 0 ? 'rgba(168,85,247,0.5)' : 'rgba(64,64,255,0.5)') + ';'));
+            host.appendChild(el('div', '', 'position:absolute;left:' + (12 + s * sw) + 'px;top:314px;color:' + (s === 0 ? '#D4AF37' : '#9575CD') + ';', String(s + 1)));
+        }
+        host.appendChild(el('div', 'gs-lbl', 'position:absolute;left:9px;top:352px;',
+            'Left: Summon  ·  Right: Convert/Discard  ·  [X] Select'));
+        host.appendChild(el('div', '', 'position:absolute;left:9px;top:362px;color:#00E5CC;', '[B] Binds'));
+        host.appendChild(el('div', '', 'position:absolute;left:70px;top:362px;color:#FFD54A;', '[T] Sell / Give'));
+        host.appendChild(el('div', 'gs-lbl', 'position:absolute;right:9px;top:362px;', '[ESC]'));
+    }
+    render();
+}());
+
+/* ============================================================
+   SCREEN 5 - Pathway of the Spell (PathwayScreen.java)
+   ============================================================ */
+var PATH_REWARDS = [
+    'Awakened Memory Credit', '2 Bonus Loot Keys', 'Dungeon Locator', 'Soul Fragment Cache',
+    'Ascended Memory Credit', 'Cosmetic: Ashen Cloak', 'Rebirth Charge', 'Emporium Discount',
+    '[Persistent] Attribute'
+];
+var pathState = { scroll: 0, credits: 340, stage: 4, claimed: [true, true, true, false, false, false, false, false, false] };
+
+(function pathway() {
+    var host = document.getElementById('path-screen');
+    var W = 340, H = 220, INSET = 14;
+
+    function render() {
+        buildPanel(host, W, H, 'Pathway of the Spell');
+
+        host.appendChild(el('div', '', 'position:absolute;left:' + INSET + 'px;top:26px;color:#FBBF24;', 'Credits: ' + pathState.credits));
+        host.appendChild(el('div', 'gs-lbl', 'position:absolute;right:' + INSET + 'px;top:26px;', 'Stage ' + pathState.stage));
+
+        host.appendChild(el('div', '', 'position:absolute;left:' + INSET + 'px;top:38px;width:312px;height:4px;background:#0F0020;'));
+        host.appendChild(el('div', '', 'position:absolute;left:' + INSET + 'px;top:38px;width:' + Math.round(312 * 0.62) + 'px;height:4px;background:#7C3AED;'));
+
+        var track = el('div', 'gs-track', 'left:' + INSET + 'px;top:52px;width:312px;height:104px;');
+        var inner = el('div', 'gs-track-inner');
+        inner.style.transform = 'translateX(' + (-pathState.scroll) + 'px)';
+        track.appendChild(inner);
+        host.appendChild(track);
+
+        PATH_REWARDS.forEach(function (rew, i) {
+            var claimed = pathState.claimed[i];
+            var ready = !claimed && i <= pathState.stage;
+            var cls = claimed ? 'claimed' : (ready ? 'ready' : 'locked');
+            var card = el('div', 'gs-card ' + cls, 'left:' + (i * 82) + 'px;');
+            var stateTxt = claimed ? 'Claimed' : (ready ? 'CLAIM' : 'Locked');
+            var stateCol = claimed ? '#6B7280' : (ready ? '#4ADE80' : '#6B7280');
+            card.innerHTML =
+                '<span class="k-stage" style="color:' + (ready ? '#4ADE80' : claimed ? '#6B7280' : '#EDE9FE') + ';">Stage ' + (i + 1) + '</span>' +
+                '<span class="k-cred">+50</span>' +
+                '<span class="k-rew">' + esc(rew) + '</span>' +
+                '<span class="k-state" style="color:' + stateCol + ';">' + stateTxt + '</span>';
+            if (ready) {
+                card.addEventListener('click', function () {
+                    pathState.claimed[i] = true;
+                    pathState.credits += 50;
+                    render();
+                });
+            }
+            inner.appendChild(card);
+        });
+
+        host.appendChild(el('div', 'gs-lbl', 'position:absolute;left:' + INSET + 'px;top:204px;', 'Scroll or use arrow keys'));
+        host.appendChild(el('div', 'gs-lbl', 'position:absolute;right:' + INSET + 'px;top:204px;', '[ESC]'));
+
+        var maxScroll = Math.max(0, PATH_REWARDS.length * 82 - 312);
+        track.addEventListener('wheel', function (e) {
+            e.preventDefault();
+            pathState.scroll = Math.max(0, Math.min(maxScroll, pathState.scroll + (e.deltaY > 0 ? 82 : -82)));
+            inner.style.transform = 'translateX(' + (-pathState.scroll) + 'px)';
+        }, { passive: false });
+
+        var dragging = false, startX = 0, startScroll = 0;
+        track.addEventListener('pointerdown', function (e) {
+            dragging = true; startX = e.clientX; startScroll = pathState.scroll;
+            track.setPointerCapture(e.pointerId);
+        });
+        track.addEventListener('pointermove', function (e) {
+            if (!dragging) return;
+            var rect = host.getBoundingClientRect();
+            var zoom = rect.width / W;
+            pathState.scroll = Math.max(0, Math.min(maxScroll, startScroll - (e.clientX - startX) / zoom));
+            inner.style.transform = 'translateX(' + (-pathState.scroll) + 'px)';
+        });
+        track.addEventListener('pointerup', function () { dragging = false; });
+    }
+    render();
+}());
+
+/* ============================================================
+   Scale each panel to the width its column actually gets, so a
+   wide panel can never crush the prose beside it.
+   ============================================================ */
+function fitPanels() {
+    var wraps = document.querySelectorAll('.gs-wrap');
+    for (var i = 0; i < wraps.length; i++) {
+        var w = wraps[i];
+        var pw = parseFloat(getComputedStyle(w).getPropertyValue('--pw'));
+        var ph = parseFloat(getComputedStyle(w).getPropertyValue('--ph'));
+        if (!pw) continue;
+        /* Measure the row, not the stage: the stage column is auto-sized by
+           this very element, so reading it back would be circular. */
+        var row = w.closest('.screen-row');
+        var rowW = row ? row.clientWidth : w.clientWidth;
+        var sideBySide = row && !row.classList.contains('stacked') && window.innerWidth > 1180;
+        var avail = sideBySide ? rowW - 300 - 38 : rowW;
+        var zoom = Math.min(2, Math.max(0.55, avail / pw));
+        w.style.setProperty('--zoom', String(Math.round(zoom * 100) / 100));
+        w.style.width = (pw * zoom) + 'px';
+        w.style.height = (ph * zoom) + 'px';
+    }
+}
+var fitTimer = null;
+window.addEventListener('resize', function () {
+    clearTimeout(fitTimer);
+    fitTimer = setTimeout(fitPanels, 90);
+});
+if (document.fonts && document.fonts.ready) document.fonts.ready.then(fitPanels);
+
+/* ---------- boot ---------- */
+buildStatus();
+buildStats();
+fitPanels();
+
+}());
+</script>
+
+<footer class="site-footer">
+        <div class="footer-container">
+            
+            <div class="footer-col footer-brand">
+                <div class="wiki-logo">
+                    <img src="/images/website.logo.png" alt="ShadowCraft Logo">
+                    <span>ShadowCraft</span>
+                </div>
+                <p class="footer-desc">
+                    An unofficial fan project inspired by the Nightmare Spell. Awaken your soul, face your flaw, and explore the Dream Realm.
+                </p>
+            </div>
+
+            <div class="footer-col">
+                <h4>Legal & Policies</h4>
+                <ul>
+                    <li><a href="/legal/service.terms">Terms of Service</a></li>
+                    <li><a href="/legal/privacy">Privacy Policy</a></li>
+                    <li><a href="/legal/sla">Service Level Agreement (SLA)</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-col">
+                <h4>Community</h4>
+                <ul>
+                    <li><a href="https://discord.com/invite/voidspell" target="_blank" rel="noopener noreferrer">Discord Server</a></li>
+                    <li><a href="https://buymeacoffee.com/voidspell" target="_blank" rel="noopener noreferrer">Support Us</a></li>
+                    <li><a href="/legal/laucher" target="_blank" rel="noopener noreferrer">Official launcher</a></li>
+                </ul>
+            </div>
+
+        </div>
+
+        <div class="footer-bottom">
+            <p>&copy; 2026 ShadowCraft. Unofficial Fan Project.</p>
+            <p class="disclaimer">Not an official Minecraft product. Not approved by or associated with Mojang, shadow slave, or original copyright holders.</p>
+        </div>
+    </footer>
+</body>
+</html>

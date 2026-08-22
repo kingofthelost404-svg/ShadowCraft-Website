@@ -1742,6 +1742,7 @@ body {
 .rank-pill.tier-sacred       { color: var(--tier-sacred); border-color: var(--tier-sacred); }
 .rank-pill.tier-divine       { color: var(--tier-divine); border-color: var(--tier-divine); box-shadow: 0 0 8px -2px rgba(201, 174, 106, 0.6); }
 .rank-pill.tier-below-mundane { color: var(--tier-below-mundane); border-color: var(--tier-below-mundane); }
+.rank-pill.tier-cursed       { color: var(--c-cursed); border-color: var(--c-cursed); }
 .rank-pill.c-dormant   { color: var(--c-dormant); border-color: var(--c-dormant); }
 .rank-pill.c-awakened  { color: var(--c-awakened); border-color: var(--c-awakened); }
 .rank-pill.c-fallen    { color: var(--c-fallen); border-color: var(--c-fallen); }
