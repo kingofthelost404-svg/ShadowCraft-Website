@@ -1,4 +1,4 @@
-// ShadowCraft dev server
+// Void Spell dev server
 //   - clean URLs, same as the production .htaccess (/wiki, not /wiki.html)
 //   - nothing is cached, so a plain refresh always shows your latest save
 //   - live reload: saving any file reloads every open tab automatically
@@ -163,6 +163,6 @@ http.createServer((req, res) => {
   res.writeHead(200, headers);
   fs.createReadStream(file).pipe(res);
 }).listen(port, () => {
-  console.log(`ShadowCraft serving at http://localhost:${port}`);
+  console.log(`Void Spell serving at http://localhost:${port}`);
   console.log('live reload on — save a file and every open tab refreshes itself');
 });

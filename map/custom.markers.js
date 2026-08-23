@@ -1,5 +1,5 @@
 /*
-Custom markers for the ShadowCraft Dream Realm map.
+Custom markers for the Void Spell Dream Realm map.
 Zone labels + completion status are hand-maintained; coordinates come from the mod:
 DreamRealmRegions (region layout), ForgottenShoreMath (crater rings), SchematicPlacements
 (Crimson Spire / Soul Tree), CitadelConfig + the server's placement logs (citadel gates,
