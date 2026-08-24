@@ -184,7 +184,6 @@ body {
 /* ================= NAVBAR SECTION ================= */
 
 .navbar {
-    display: none;
     width: 100%;
     height: 80px;
     padding: 0 50px;
@@ -213,9 +212,22 @@ body {
 }
 
 .nav-logo {
-    height: 45px;
+    height: 40px;
     width: auto;
     object-fit: contain;
+}
+
+.navbar .quicklinks-grid {
+    display: flex;
+    flex-direction: row;
+    gap: 8px;
+    margin: 0;
+}
+
+.navbar .quick-tile {
+    flex-direction: row;
+    padding: 6px 10px;
+    gap: 6px;
 }
 
 .logo-text {
@@ -255,9 +267,43 @@ body {
 .navbar ul li a.active {
     color: var(--gold);
     text-shadow:
-        0 0 8px rgba(163, 174, 222, 0.7),
-        0 0 16px rgba(163, 174, 222, 0.4);
+        0 0 8px rgba(168, 85, 247, 0.7),
+        0 0 16px rgba(168, 85, 247, 0.4);
 }
+
+.login-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 16px;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    font-weight: bold;
+    letter-spacing: 0.08em;
+    color: var(--value);
+    background-color: rgba(var(--panel), 0.85);
+    border: 1px solid #4a3a8a;
+    border-radius: 2px;
+    text-decoration: none;
+    transition: background-color 0.3s var(--ease), border-color 0.3s var(--ease), color 0.3s var(--ease);
+}
+
+.login-btn .discord-icon {
+    font-size: 14px;
+    color: var(--glow);
+    transition: color 0.3s var(--ease);
+}
+
+.login-btn:hover {
+    background-color: #2a1f4d;
+    border-color: #8577e0;
+    color: #cfc4ff;
+}
+
+.login-btn:hover .discord-icon {
+    color: var(--gold);
+}
+
 
 /* ================= MAIN HERO CONTENT ================= */
 
@@ -562,19 +608,17 @@ body {
 
 /* ================= QUICK LINKS (Conifer-style tile grid) ================= */
 
-.section-quicklinks {
+.quicklinks-grid {
     width: 100%;
-    padding: 44px 20px 6px;
-    position: relative;
-    z-index: 2;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); 
+    gap: 10px;
+    margin: 16px 0 24px 0;
 }
 
-.quicklinks-grid {
-    max-width: 1200px;
-    margin: 0 auto;
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-    gap: 12px;
+.title-quicklinks {
+    margin-top: 18px;
+    margin-bottom: 24px;
 }
 
 .quick-tile {
@@ -582,12 +626,13 @@ body {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 9px;
-    padding: 22px 10px;
+    gap: 6px;
+    padding: 12px 8px; 
     border: 1px solid var(--border-in);
     background: rgba(var(--panel), 0.4);
     text-decoration: none;
     font-family: var(--font-mono);
+    border-radius: 2px;
     transition: border-color 0.3s var(--ease), background-color 0.3s var(--ease), transform 0.3s var(--ease);
 }
 
@@ -598,22 +643,26 @@ body {
 }
 
 .quick-glyph {
-    font-size: 18px;
+    font-size: 16px;
     color: var(--glow);
     transition: color 0.3s var(--ease);
 }
 
-.quick-tile:hover .quick-glyph { color: var(--gold); }
+.quick-tile:hover .quick-glyph { 
+    color: var(--gold); 
+}
 
 .quick-label {
-    font-size: 10.5px;
-    letter-spacing: 0.12em;
+    font-size: 10px;
+    letter-spacing: 0.1em;
     text-transform: uppercase;
     color: var(--label);
     transition: color 0.3s var(--ease);
 }
 
-.quick-tile:hover .quick-label { color: var(--gold-soft); }
+.quick-tile:hover .quick-label { 
+    color: var(--gold-soft); 
+}
 
 /* ================= TRANSITION ================= */
 
