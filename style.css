@@ -2038,3 +2038,367 @@ body {
 .qa-item { background: rgba(163, 174, 222, 0.04); border-left: 3px solid var(--glow); border-radius: 0 4px 4px 0; padding: 14px 18px; }
 .qa-item h3 { font-size: 14px; color: var(--glow); margin-bottom: 5px; }
 .qa-item p { font-size: 13.5px; color: #c2cbdd; line-height: 1.6; }
+
+
+/* ================= ASPECT ABILITY ARCHIVE =================
+   /aspects/<slug> — one page per Aspect, its abilities laid out along the
+   soul-rank ladder from Dreamer to Transcended. Rank colour is carried by a
+   single --step custom property set on .ladder-step, so the spine node, the
+   rank heading and every ability card tint from one declaration. */
+
+/* The whole page reads down the ability column: heading, meta and blurb sit
+   flush-left with the ladder rather than centred over the full width. */
+.aspect-page { text-align: left; }
+.aspect-page .article-title {
+    text-align: left;
+    font-size: 27px;
+    margin-bottom: 12px;
+}
+/* The site-wide "≈ Title ≈" wrap only reads as a wrap when it is centred. */
+.aspect-page .article-title::before,
+.aspect-page .article-title::after { content: none; }
+.aspect-page .intro-text {
+    text-align: left;
+    max-width: 68ch;
+    margin: 0 0 26px;
+    line-height: 1.65;
+}
+
+.aspect-meta {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 16px;
+}
+.aspect-meta .rank-pill { position: static; top: auto; right: auto; }
+.aspect-meta-type {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--glow);
+}
+.aspect-meta-theme {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--label);
+}
+
+.aspect-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 290px;
+    gap: 26px;
+    align-items: start;
+    margin-top: 14px;
+}
+
+.ladder-title {
+    font-family: var(--font-display);
+    color: var(--gold);
+    font-size: 19px;
+    letter-spacing: 0.04em;
+    padding-top: 20px;
+    border-top: 1px solid var(--border-in);
+}
+.ladder-intro {
+    font-family: var(--font-mono);
+    font-size: 11.5px;
+    letter-spacing: 0.03em;
+    color: #79839f;
+    max-width: 62ch;
+    margin: 6px 0 22px;
+    line-height: 1.6;
+}
+
+/* A pre-template Aspect kept registered for existing bearers. */
+.aspect-note {
+    font-size: 12.5px;
+    line-height: 1.6;
+    color: #a9b4cc;
+    max-width: 68ch;
+    margin: 0 0 26px;
+    padding: 11px 14px;
+    background: rgba(201, 174, 106, 0.06);
+    border-left: 3px solid var(--gold);
+    border-radius: 0 3px 3px 0;
+}
+
+/* ---- innate abilities: Divine-only, held outside the rank ladder ---- */
+.innate-block {
+    --step: var(--gold);
+    margin-bottom: 30px;
+}
+.innate-title {
+    font-family: var(--font-display);
+    font-size: 17px;
+    letter-spacing: 0.08em;
+    color: var(--gold);
+    margin-bottom: 3px;
+}
+.innate-note {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--label);
+    margin-bottom: 13px;
+}
+
+/* ---- the ladder spine ---- */
+.ability-ladder { position: relative; }
+.ability-ladder::before {
+    content: '';
+    position: absolute;
+    left: 7px;
+    top: 8px;
+    bottom: 8px;
+    width: 2px;
+    background: linear-gradient(180deg,
+        var(--tier-dormant) 0%,
+        var(--tier-awakened) 33%,
+        var(--tier-ascended) 66%,
+        var(--tier-transcendent) 100%);
+    opacity: 0.45;
+}
+
+.ladder-step {
+    position: relative;
+    padding-left: 32px;
+    margin-bottom: 30px;
+    scroll-margin-top: 20px;
+}
+.ladder-step:last-child { margin-bottom: 0; }
+.ladder-step.t-dormant      { --step: var(--tier-dormant); }
+.ladder-step.t-awakened     { --step: var(--tier-awakened); }
+.ladder-step.t-ascended     { --step: var(--tier-ascended); }
+.ladder-step.t-transcendent { --step: var(--tier-transcendent); }
+
+.ladder-mark {
+    position: absolute;
+    left: 0;
+    top: 4px;
+    width: 16px;
+    height: 16px;
+    transform: rotate(45deg);
+    background: var(--void);
+    border: 2px solid var(--step);
+    box-shadow: 0 0 10px -3px var(--step);
+}
+
+.ladder-rank {
+    font-family: var(--font-display);
+    font-size: 17px;
+    letter-spacing: 0.08em;
+    color: var(--step);
+    margin-bottom: 3px;
+}
+.ladder-note {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--label);
+    margin-bottom: 13px;
+}
+.ladder-empty {
+    font-family: var(--font-mono);
+    font-size: 11.5px;
+    letter-spacing: 0.05em;
+    color: #666f88;
+    padding: 12px 0;
+}
+
+/* ---- one ability ---- */
+.ability-entry {
+    background: rgba(var(--panel), var(--panel-a));
+    border: 1px solid var(--border-in);
+    border-left: 3px solid var(--step);
+    border-radius: 0 3px 3px 0;
+    padding: 15px 17px;
+    margin-bottom: 11px;
+    transition: transform 0.35s var(--ease), border-color 0.35s var(--ease), box-shadow 0.35s var(--ease);
+}
+.ability-entry:last-child { margin-bottom: 0; }
+.ability-entry:hover {
+    transform: translateX(4px);
+    border-color: #4e5a80;
+    border-left-color: var(--step);
+    box-shadow: 0 14px 30px -18px rgba(163, 174, 222, 0.55);
+}
+.ability-entry h3 {
+    font-family: var(--font-display);
+    font-size: 15.5px;
+    color: var(--value);
+    line-height: 1.3;
+    margin-bottom: 7px;
+}
+.ability-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-bottom: 9px;
+}
+.ability-tag {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--label);
+    border: 1px solid var(--border-in);
+    border-radius: 2px;
+    padding: 2px 7px;
+    background: rgba(0, 0, 0, 0.25);
+}
+.ability-entry p {
+    font-size: 13px;
+    color: #a9b4cc;
+    line-height: 1.62;
+}
+.ability-evo {
+    margin-top: 9px;
+    font-family: var(--font-mono);
+    font-size: 10.5px !important;
+    letter-spacing: 0.04em;
+    color: var(--gold) !important;
+}
+
+/* ---- infobox ---- */
+.aspect-infobox {
+    position: sticky;
+    top: 20px;
+    border: 1px solid var(--border);
+    box-shadow: inset 0 0 0 3px var(--border-in);
+    padding: 18px;
+}
+.infobox-header {
+    border-bottom: 1px solid var(--border-in);
+    padding-bottom: 11px;
+    margin-bottom: 12px;
+}
+.infobox-header h3 {
+    font-family: var(--font-display);
+    color: var(--gold);
+    font-size: 16px;
+    line-height: 1.3;
+}
+.infobox-subtitle {
+    display: block;
+    margin-top: 3px;
+    font-family: var(--font-mono);
+    font-size: 9.5px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--label);
+}
+.infobox-table { width: 100%; border-collapse: collapse; }
+.infobox-table th {
+    text-align: left;
+    font-family: var(--font-mono);
+    font-size: 9.5px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    font-weight: 400;
+    color: var(--label);
+    padding: 8px 8px 8px 0;
+    width: 46%;
+    vertical-align: middle;
+}
+.infobox-table td {
+    text-align: right;
+    font-size: 12.5px;
+    color: var(--value);
+    padding: 8px 0;
+    vertical-align: middle;
+}
+.infobox-table td .rank-pill { position: static; top: auto; right: auto; }
+.infobox-table tr + tr th,
+.infobox-table tr + tr td { border-top: 1px solid rgba(57, 65, 94, 0.32); }
+
+.infobox-jump {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin-top: 15px;
+    padding-top: 13px;
+    border-top: 1px solid var(--border-in);
+}
+.infobox-jump-label {
+    font-family: var(--font-mono);
+    font-size: 9.5px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--label);
+    margin-bottom: 2px;
+}
+.infobox-jump a {
+    font-size: 12.5px;
+    text-decoration: none;
+    padding: 6px 10px;
+    border: 1px solid var(--border-in);
+    border-left-width: 3px;
+    border-radius: 0 2px 2px 0;
+    transition: background-color 0.3s var(--ease), border-color 0.3s var(--ease);
+}
+.infobox-jump a:hover { background: rgba(163, 174, 222, 0.09); border-color: #4e5a80; }
+.infobox-jump a.t-dormant      { color: var(--tier-dormant);      border-left-color: var(--tier-dormant); }
+.infobox-jump a.t-awakened     { color: var(--tier-awakened);     border-left-color: var(--tier-awakened); }
+.infobox-jump a.t-ascended     { color: var(--tier-ascended);     border-left-color: var(--tier-ascended); }
+.infobox-jump a.t-transcendent { color: var(--tier-transcendent); border-left-color: var(--tier-transcendent); }
+.infobox-jump a.t-dormant:hover      { border-color: var(--tier-dormant); }
+.infobox-jump a.t-awakened:hover     { border-color: var(--tier-awakened); }
+.infobox-jump a.t-ascended:hover     { border-color: var(--tier-ascended); }
+.infobox-jump a.t-transcendent:hover { border-color: var(--tier-transcendent); }
+
+/* ---- prev / next ---- */
+.aspect-page-nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 14px;
+    margin-top: 34px;
+    padding-top: 18px;
+    border-top: 1px solid var(--border-in);
+}
+.aspect-page-nav a {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    letter-spacing: 0.04em;
+    color: var(--glow);
+    text-decoration: none;
+    transition: color 0.3s var(--ease);
+}
+.aspect-page-nav a:hover { color: var(--gold); }
+
+/* ---- archive cards link through to the ability pages ---- */
+a.entry-card {
+    display: block;
+    text-decoration: none;
+    color: inherit;
+}
+.entry-card .card-more {
+    display: block;
+    margin-top: 11px;
+    font-family: var(--font-mono);
+    font-size: 9.5px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--label);
+    transition: color 0.4s var(--ease);
+}
+a.entry-card:hover .card-more { color: var(--gold); }
+
+@media (max-width: 900px) {
+    .aspect-layout { grid-template-columns: 1fr; }
+    .aspect-infobox { position: static; }
+    .infobox-jump { display: none; }
+}
+
+@media (max-width: 480px) {
+    .ladder-step { padding-left: 26px; }
+    .ability-entry { padding: 13px 14px; }
+    .aspect-page-nav { flex-direction: column; align-items: flex-start; }
+}
